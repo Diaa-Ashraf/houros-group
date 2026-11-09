@@ -1,13 +1,13 @@
 {{-- resources/views/storefront/checkout.blade.php --}}
 @extends('layouts.storefront')
 
-@section('title', 'إتمام الطلب والدفع | ألبان وسوبرماركت التوحيد')
+@section('title', 'إتمام الطلب | مؤسسة حورس')
 
 @section('content')
 <div class="py-6 sm:py-10 bg-canvas-base min-h-screen"
      x-data="{
         deliveryType: '{{ old('delivery_type', $deliveryType) }}',
-        paymentMethod: '{{ old('payment_method', 'cash') }}',
+        paymentMethod: '{{ old('payment_method', $paymentMethods['enable_cod'] ? 'cash' : ($paymentMethods['enable_vodafone_cash'] ? 'vodafone_cash' : 'instapay')) }}',
         selectedBranch: '{{ old('branch_id', $branches->first()?->id ?? 1) }}',
         branchesData: {{ json_encode($branches->keyBy('id')) }},
         submitting: false,
@@ -15,11 +15,11 @@
         subtotal: {{ (float)$totals['subtotal'] }},
         discountAmount: {{ (float)($totals['discount_amount'] ?? 0) }},
         couponCode: '{{ $totals['coupon_code'] ?? '' }}',
-        
+
         get discountedSubtotal() {
             return Math.max(0, this.subtotal - this.discountAmount);
         },
-        
+
         get grandTotal() {
             let fee = this.deliveryType === 'pickup' ? 0 : this.deliveryFee;
             return this.discountedSubtotal + fee;
@@ -64,9 +64,9 @@
             });
         }
      }">
-    
+
     <div class="container mx-auto px-3 sm:px-4 md:px-6 max-w-7xl space-y-6">
-        
+
         <!-- Breadcrumbs -->
         <nav class="flex items-center gap-2 text-xs font-bold text-charcoal-muted flex-wrap">
             <a href="{{ route('site.home') }}" class="hover:text-red-600 transition-colors">الرئيسية</a>
@@ -80,7 +80,7 @@
         <div class="pb-3 border-b border-cream flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
                 <h1 class="text-xl sm:text-2xl md:text-3xl font-black text-charcoal-heading">إتمام الطلب والدفع</h1>
-                <p class="text-xs sm:text-sm text-charcoal-muted mt-1">ألبان وسوبرماركت التوحيد • خدمة التوصيل السريع بالعامرية</p>
+                <p class="text-xs sm:text-sm text-charcoal-muted mt-1">مؤسسة حورس للتوريدات والتشطيبات</p>
             </div>
             <div class="flex items-center gap-2 text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-xl self-start sm:self-auto">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -88,16 +88,16 @@
             </div>
         </div>
 
-        <form action="{{ route('checkout.place') }}" 
-              method="POST" 
-              enctype="multipart/form-data" 
-              @submit.prevent="submitCheckout($event)" 
+        <form action="{{ route('checkout.place') }}"
+              method="POST"
+              enctype="multipart/form-data"
+              @submit.prevent="submitCheckout($event)"
               class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
             @csrf
 
             <!-- Form Left / Main Column (7 cols) -->
             <div class="lg:col-span-7 space-y-5">
-                
+
                 <!-- 1. Customer Information Card -->
                 <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-cream shadow-xs space-y-4">
                     <div class="flex items-center gap-2.5 border-b border-cream pb-3">
@@ -114,12 +114,12 @@
                             <label for="name" class="font-bold text-charcoal-heading block mb-1">
                                 الاسم بالكامل <span class="text-red-600">*</span>
                             </label>
-                            <input type="text" 
-                                   id="name" 
-                                   name="name" 
-                                   value="{{ old('name', $user?->name) }}" 
+                            <input type="text"
+                                   id="name"
+                                   name="name"
+                                   value="{{ old('name', $user?->name) }}"
                                    placeholder="أحمد محمود علي"
-                                   required 
+                                   required
                                    class="w-full bg-canvas-base border border-cream focus:border-red-500 focus:ring-2 focus:ring-red-500/20 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-charcoal outline-none transition-all">
                         </div>
 
@@ -128,13 +128,13 @@
                             <label for="phone" class="font-bold text-charcoal-heading block mb-1">
                                 رقم الهاتف (واتساب) <span class="text-red-600">*</span>
                             </label>
-                            <input type="tel" 
-                                   id="phone" 
-                                   name="phone" 
-                                   value="{{ old('phone', $user?->phone) }}" 
+                            <input type="tel"
+                                   id="phone"
+                                   name="phone"
+                                   value="{{ old('phone', $user?->phone) }}"
                                    placeholder="01012345678"
                                    dir="ltr"
-                                   required 
+                                   required
                                    class="w-full bg-canvas-base border border-cream focus:border-red-500 focus:ring-2 focus:ring-red-500/20 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-charcoal text-right outline-none transition-all">
                             <span class="text-[10px] text-charcoal-muted mt-1 block">رقم للتواصل ومتابعة حالة الأوردر عبر واتساب</span>
                         </div>
@@ -147,26 +147,26 @@
                         <div class="flex items-center gap-2.5">
                             <span class="w-7 h-7 rounded-xl bg-red-50 text-red-600 text-xs font-black flex items-center justify-center border border-red-200 shrink-0">2</span>
                             <div>
-                                <h2 class="font-black text-sm sm:text-base text-charcoal-heading">اختيار الفرع بالعامرية</h2>
+                                <h2 class="font-black text-sm sm:text-base text-charcoal-heading">موقع تجهيز الطلب</h2>
                                 <p class="text-[11px] text-charcoal-muted">حدد الفرع الأقرب إليك للتجهيز أو التوصيل منه</p>
                             </div>
                         </div>
                         <span class="text-[10px] font-black px-2.5 py-1 rounded-lg bg-orange-100 text-orange-900 border border-orange-200">
-                            4 فروع بالعامرية
+                            موقع مؤسسة حورس
                         </span>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                         @foreach($branches as $branch)
                         <label class="relative p-3.5 rounded-2xl border-2 cursor-pointer transition-all flex flex-col justify-between select-none group"
-                               :class="selectedBranch == {{ $branch->id }} 
-                                    ? 'border-red-600 bg-red-50/70 shadow-sm ring-2 ring-red-500/20' 
+                               :class="selectedBranch == {{ $branch->id }}
+                                    ? 'border-red-600 bg-red-50/70 shadow-sm ring-2 ring-red-500/20'
                                     : 'border-cream hover:border-orange-300 bg-white hover:bg-orange-50/30'">
-                            
+
                             <div class="flex items-start gap-2.5 mb-2">
-                                <input type="radio" 
-                                       name="branch_id" 
-                                       value="{{ $branch->id }}" 
+                                <input type="radio"
+                                       name="branch_id"
+                                       value="{{ $branch->id }}"
                                        x-model="selectedBranch"
                                        class="text-red-600 focus:ring-red-500 mt-0.5 shrink-0">
                                 <div class="min-w-0">
@@ -204,28 +204,28 @@
                     <!-- Delivery Type Radios -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                         <label class="relative flex items-center gap-3 p-3.5 rounded-2xl border-2 cursor-pointer transition-all select-none"
-                               :class="deliveryType === 'delivery' 
-                                    ? 'border-red-600 bg-red-50/70 shadow-sm ring-2 ring-red-500/20' 
+                               :class="deliveryType === 'delivery'
+                                    ? 'border-red-600 bg-red-50/70 shadow-sm ring-2 ring-red-500/20'
                                     : 'border-cream hover:border-orange-300 bg-white'">
-                            <input type="radio" 
-                                   name="delivery_type" 
-                                   value="delivery" 
-                                   x-model="deliveryType" 
+                            <input type="radio"
+                                   name="delivery_type"
+                                   value="delivery"
+                                   x-model="deliveryType"
                                    class="text-red-600 focus:ring-red-500">
                             <div class="flex-1">
                                 <span class="font-black text-xs sm:text-sm text-charcoal-heading block">🛵 توصيل سريع للمنزل</span>
-                                <span class="text-[10px] text-charcoal-muted block mt-0.5">توصيل فورى لباب البيت لجميع مناطق العامرية</span>
+                                <span class="text-[10px] text-charcoal-muted block mt-0.5">يرجى التواصل لتأكيد توفر التوصيل لمنطقتك</span>
                             </div>
                         </label>
 
                         <label class="relative flex items-center gap-3 p-3.5 rounded-2xl border-2 cursor-pointer transition-all select-none"
-                               :class="deliveryType === 'pickup' 
-                                    ? 'border-red-600 bg-red-50/70 shadow-sm ring-2 ring-red-500/20' 
+                               :class="deliveryType === 'pickup'
+                                    ? 'border-red-600 bg-red-50/70 shadow-sm ring-2 ring-red-500/20'
                                     : 'border-cream hover:border-orange-300 bg-white'">
-                            <input type="radio" 
-                                   name="delivery_type" 
-                                   value="pickup" 
-                                   x-model="deliveryType" 
+                            <input type="radio"
+                                   name="delivery_type"
+                                   value="pickup"
+                                   x-model="deliveryType"
                                    class="text-red-600 focus:ring-red-500">
                             <div class="flex-1">
                                 <span class="font-black text-xs sm:text-sm text-charcoal-heading block">🏪 استلام من الفرع المختار</span>
@@ -244,7 +244,7 @@
                         <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
                             <span class="text-[10px] text-charcoal-muted shrink-0 font-bold">عناوينك المسجلة:</span>
                             @foreach($user->addresses as $savedAddr)
-                            <button type="button" 
+                            <button type="button"
                                     onclick="document.getElementById('address').value = {{ json_encode($savedAddr['address'] ?? '') }};"
                                     class="px-2.5 py-1 rounded-lg bg-canvas-base border border-cream hover:border-red-500 hover:text-red-700 text-[11px] font-bold text-charcoal shrink-0 transition-colors cursor-pointer">
                                 {{ $savedAddr['title'] ?? 'عنوان' }}
@@ -253,9 +253,9 @@
                         </div>
                         @endif
 
-                        <textarea id="address" 
-                                  name="address" 
-                                  rows="3" 
+                        <textarea id="address"
+                                  name="address"
+                                  rows="3"
                                   placeholder="اسم المنطقة، الشارع، رقم العمارة، رقم الشقة، علامة مميزة (مثال: بجوار مسجد...)"
                                   class="w-full bg-canvas-base border border-cream focus:border-red-500 focus:ring-2 focus:ring-red-500/20 rounded-xl p-3 text-xs sm:text-sm text-charcoal outline-none transition-all leading-relaxed">{{ old('address', $user?->address) }}</textarea>
                     </div>
@@ -276,47 +276,62 @@
                         <span class="w-7 h-7 rounded-full bg-red-50 text-red-600 text-xs font-black flex items-center justify-center border border-red-200 shrink-0">4</span>
                         <div>
                             <h2 class="font-black text-sm sm:text-base text-charcoal-heading">طريقة الدفع</h2>
-                            <p class="text-[11px] text-charcoal-muted">اختر الدفع نقداً كاش أو بالتحويل اللحظي إنستاباي</p>
+                            <p class="text-[11px] text-charcoal-muted">اختر فودافون كاش أو إنستاباي أو الدفع عند الاستلام</p>
                         </div>
                     </div>
 
                     <!-- Payment Radios -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                        @if($paymentMethods['enable_cod'])
                         <label class="relative flex items-center gap-3 p-3.5 rounded-2xl border-2 cursor-pointer transition-all select-none"
-                               :class="paymentMethod === 'cash' 
-                                    ? 'border-red-600 bg-red-50/70 shadow-sm ring-2 ring-red-500/20' 
+                               :class="paymentMethod === 'cash'
+                                    ? 'border-red-600 bg-red-50/70 shadow-sm ring-2 ring-red-500/20'
                                     : 'border-cream hover:border-orange-300 bg-white'">
-                            <input type="radio" 
-                                   name="payment_method" 
-                                   value="cash" 
-                                   x-model="paymentMethod" 
+                            <input type="radio"
+                                   name="payment_method"
+                                   value="cash"
+                                   x-model="paymentMethod"
                                    class="text-red-600 focus:ring-red-500">
                             <div class="flex-1">
                                 <span class="font-black text-xs sm:text-sm text-charcoal-heading block">💵 الدفع عند الاستلام (كاش)</span>
-                                <span class="text-[10px] text-charcoal-muted block mt-0.5" 
+                                <span class="text-[10px] text-charcoal-muted block mt-0.5"
                                       x-text="deliveryType === 'pickup' ? 'تدفع في الفرع عند استلام الأوردر' : 'تدفع للمندوب عند باب البيت'"></span>
                             </div>
                         </label>
+                        @endif
 
+                        @if($paymentMethods['enable_instapay'])
                         <label class="relative flex items-center gap-3 p-3.5 rounded-2xl border-2 cursor-pointer transition-all select-none"
-                               :class="paymentMethod === 'instapay' 
-                                    ? 'border-red-600 bg-red-50/70 shadow-sm ring-2 ring-red-500/20' 
+                               :class="paymentMethod === 'instapay'
+                                    ? 'border-red-600 bg-red-50/70 shadow-sm ring-2 ring-red-500/20'
                                     : 'border-cream hover:border-orange-300 bg-white'">
-                            <input type="radio" 
-                                   name="payment_method" 
-                                   value="instapay" 
-                                   x-model="paymentMethod" 
+                            <input type="radio"
+                                   name="payment_method"
+                                   value="instapay"
+                                   x-model="paymentMethod"
                                    class="text-red-600 focus:ring-red-500">
                             <div class="flex-1">
-                                <span class="font-black text-xs sm:text-sm text-charcoal-heading block">📱 الدفع عبر InstaPay / المحفظة</span>
-                                <span class="text-[10px] text-charcoal-muted block mt-0.5">تحويل فوري برقم الفرع المختار</span>
+                                <span class="font-black text-xs sm:text-sm text-charcoal-heading block">📱 إنستاباي</span>
+                                <span class="text-[10px] text-charcoal-muted block mt-0.5">تحويل إلكتروني لحساب المؤسسة</span>
                             </div>
                         </label>
+                        @endif
+
+                        @if($paymentMethods['enable_vodafone_cash'])
+                        <label class="relative flex items-center gap-3 p-3.5 rounded-2xl border-2 cursor-pointer transition-all select-none"
+                               :class="paymentMethod === 'vodafone_cash' ? 'border-red-600 bg-red-50/70 shadow-sm ring-2 ring-red-500/20' : 'border-cream hover:border-orange-300 bg-white'">
+                            <input type="radio" name="payment_method" value="vodafone_cash" x-model="paymentMethod" class="text-red-600 focus:ring-red-500">
+                            <div class="flex-1">
+                                <span class="font-black text-xs sm:text-sm text-charcoal-heading block">📲 فودافون كاش</span>
+                                <span class="text-[10px] text-charcoal-muted block mt-0.5">حوّل للمحفظة وأرفق الإيصال</span>
+                            </div>
+                        </label>
+                        @endif
                     </div>
 
-                    <!-- InstaPay Details Panel (Dynamically Tailored by Selected Branch) -->
-                    <div x-show="paymentMethod === 'instapay'" x-cloak x-transition class="space-y-4 pt-3 border-t border-cream text-xs">
-                        
+                    <!-- Electronic payment details -->
+                    <div x-show="paymentMethod === 'instapay' || paymentMethod === 'vodafone_cash'" x-cloak x-transition class="space-y-4 pt-3 border-t border-cream text-xs">
+
                         <!-- Account Details Box -->
                         <div class="p-4 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-orange-200 space-y-2.5">
                             <div class="font-black text-amber-950 flex items-center justify-between flex-wrap gap-2">
@@ -324,40 +339,64 @@
                                     <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                                     </svg>
-                                    <span>بيانات التحويل المباشر للفرع المختار:</span>
+                                    <span x-text="paymentMethod === 'instapay' ? 'بيانات التحويل عبر إنستاباي:' : 'بيانات محفظة فودافون كاش:'"></span>
                                 </div>
-                                <span class="text-[10px] px-2.5 py-0.5 rounded-full bg-orange-200 text-orange-900 font-bold" 
+                                <span class="text-[10px] px-2.5 py-0.5 rounded-full bg-orange-200 text-orange-900 font-bold"
                                       x-text="branchesData[selectedBranch]?.name || 'الفرع المختار'"></span>
                             </div>
-                            
+
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-1">
-                                <div class="bg-white p-3 rounded-xl border border-orange-200 shadow-2xs">
-                                    <span class="text-[10px] text-gray-500 block">عنوان الدفع اللحظي (IPA):</span>
-                                    <span class="font-mono font-black text-red-600 text-xs sm:text-sm select-all block mt-0.5">
-                                        {{ settings('instapay_username', 'altawheed@instapay') }}
-                                    </span>
+                                <div x-show="paymentMethod === 'vodafone_cash'" class="bg-white p-3 rounded-xl border border-orange-200 shadow-2xs">
+                                    <span class="text-[10px] text-gray-500 block">رقم محفظة فودافون كاش:</span>
+                                    @if(!empty($paymentDetails['vodafone_cash_number']))
+                                        <span class="font-mono font-black text-red-600 text-xs sm:text-sm select-all block mt-0.5" dir="ltr">{{ $paymentDetails['vodafone_cash_number'] }}</span>
+                                    @else
+                                        <span class="font-bold text-gray-700 text-xs block mt-0.5">{{ settings('store_phone', '01002527072') }}</span>
+                                    @endif
+                                    @if(!empty($paymentDetails['vodafone_cash_number']) && (str_contains($paymentDetails['vodafone_cash_number'], '000000') || str_contains((string) $paymentDetails['vodafone_cash_instructions'], 'تجريبي')))
+                                        <span class="mt-1 block rounded bg-amber-50 px-2 py-1 text-[9px] font-bold text-amber-800">بيانات تجريبية — أكّد الرقم الرسمي هاتفياً قبل التحويل.</span>
+                                    @endif
+                                </div>
+                                <div x-show="paymentMethod === 'instapay'" class="bg-white p-3 rounded-xl border border-orange-200 shadow-2xs">
+                                    <span class="text-[10px] text-gray-500 block">بيانات إنستاباي:</span>
+                                    @if(!empty($paymentDetails['instapay_username']))
+                                        <span class="font-mono font-black text-primary-800 text-xs sm:text-sm block mt-0.5" dir="ltr">{{ $paymentDetails['instapay_username'] }}</span>
+                                    @elseif(!empty($paymentDetails['instapay_number']))
+                                        <span class="font-mono font-black text-primary-800 text-xs sm:text-sm block mt-0.5" dir="ltr">{{ $paymentDetails['instapay_number'] }}</span>
+                                    @else
+                                        <span class="font-mono font-black text-primary-800 text-xs sm:text-sm block mt-0.5">تواصل معنا لتأكيد بيانات الحساب</span>
+                                    @endif
+                                    @if(!empty($paymentDetails['instapay_name']))
+                                        <span class="mt-1 block text-[10px] font-bold text-gray-600">{{ $paymentDetails['instapay_name'] }}</span>
+                                    @endif
+                                    @if(str_contains((string) $paymentDetails['instapay_instructions'], 'تجريبي'))
+                                        <span class="mt-1 block rounded bg-amber-50 px-2 py-1 text-[9px] font-bold text-amber-800">بيانات تجريبية — أكّد الحساب الرسمي هاتفياً قبل التحويل.</span>
+                                    @endif
                                 </div>
                                 <div class="bg-white p-3 rounded-xl border border-orange-200 shadow-2xs">
-                                    <span class="text-[10px] text-gray-500 block">رقم تحويل ومحفظة الفرع:</span>
-                                    <span class="font-mono font-black text-emerald-700 text-xs sm:text-sm select-all block mt-0.5" 
+                                    <span class="text-[10px] text-gray-500 block">رقم الهاتف للتواصل:</span>
+                                    <span class="font-mono font-black text-emerald-700 text-xs sm:text-sm select-all block mt-0.5"
                                           dir="ltr"
-                                          x-text="branchesData[selectedBranch]?.phone || '{{ settings('instapay_number', '01234567890') }}'">
+                                          x-text="'01002527072'">
                                     </span>
                                 </div>
                             </div>
-                            <div class="text-[10px] text-amber-900 font-medium bg-white/80 p-2.5 rounded-xl border border-amber-200 leading-relaxed">
-                                بعد إتمام التحويل عبر تطبيق InstaPay أو محفظتك الإلكترونية، يرجى رفع صورة إيصال التحويل بالأسفل لتأكيد وتنفيذ الأوردر في الحال.
+                            <div class="text-[10px] text-amber-900 font-medium bg-white/80 p-2.5 rounded-xl border border-amber-200 leading-relaxed" x-show="paymentMethod === 'instapay'">
+                                {{ $paymentDetails['instapay_instructions'] ?: 'حوّل قيمة الطلب، ثم أرفق صورة الإيصال لمراجعة التحويل من فريق حورس.' }}
+                            </div>
+                            <div class="text-[10px] text-amber-900 font-medium bg-white/80 p-2.5 rounded-xl border border-amber-200 leading-relaxed" x-show="paymentMethod === 'vodafone_cash'">
+                                {{ $paymentDetails['vodafone_cash_instructions'] ?: 'حوّل قيمة الطلب إلى المحفظة ثم أرفق صورة الإيصال لمراجعة التحويل.' }}
                             </div>
                         </div>
 
                         <!-- Upload Receipt -->
                         <div>
                             <label for="payment_proof_image" class="font-bold text-charcoal-heading block mb-1">
-                                صورة إيصال التحويل <span class="text-red-600">*</span>
+                                صورة إيصال التحويل <span class="text-charcoal-muted font-normal">(اختياري للمراجعة)</span>
                             </label>
-                            <input type="file" 
-                                   id="payment_proof_image" 
-                                   name="payment_proof_image" 
+                            <input type="file"
+                                   id="payment_proof_image"
+                                   name="payment_proof_image"
                                    accept="image/*"
                                    class="w-full bg-canvas-base border border-cream rounded-xl p-2.5 text-xs text-charcoal file:ml-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-red-600 file:text-white hover:file:bg-red-700 cursor-pointer">
                             <span class="text-[10px] text-charcoal-muted mt-1 block">ارفع لقطة شاشة لعملية التحويل الناجحة</span>
@@ -366,13 +405,13 @@
                         <!-- Reference ID -->
                         <div>
                             <label for="instapay_reference" class="font-bold text-charcoal-heading block mb-1">
-                                رقم المرجع أو كود المعاملة <span class="text-charcoal-muted font-normal">(اختياري)</span>
+                                مرجع التحويل أو كود العملية <span class="text-charcoal-muted font-normal">(اختياري)</span>
                             </label>
-                            <input type="text" 
-                                   id="instapay_reference" 
-                                   name="instapay_reference" 
-                                   value="{{ old('instapay_reference') }}" 
-                                   placeholder="مثال: Ref #12345678"
+                            <input type="text"
+                                   id="instapay_reference"
+                                   name="instapay_reference"
+                                   value="{{ old('instapay_reference') }}"
+                                   placeholder="رقم العملية إن توفر"
                                    class="w-full bg-canvas-base border border-cream focus:border-red-500 focus:ring-2 focus:ring-red-500/20 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-charcoal outline-none transition-all">
                         </div>
 
@@ -384,10 +423,10 @@
                     <label for="notes" class="font-bold text-xs sm:text-sm text-charcoal-heading block">
                         ملاحظات إضافية لتجهيز وتوصيل الطلب <span class="text-charcoal-muted font-normal">(اختياري)</span>
                     </label>
-                    <textarea id="notes" 
-                              name="notes" 
-                              rows="2" 
-                              placeholder="أي تعليمات خاصة للمندوب، طريقة التقطيع للأجبان، أو مواعيد التوصيل المفضلة..." 
+                    <textarea id="notes"
+                              name="notes"
+                              rows="2"
+                              placeholder="أضف اللون أو المقاس أو أي تفاصيل تساعدنا في تجهيز طلبك..."
                               class="w-full bg-canvas-base border border-cream focus:border-red-500 focus:ring-2 focus:ring-red-500/20 rounded-xl p-3 text-xs sm:text-sm text-charcoal outline-none transition-all leading-relaxed">{{ old('notes') }}</textarea>
                 </div>
 
@@ -395,7 +434,7 @@
 
             <!-- Summary Right / Sidebar Column (5 cols) -->
             <div class="lg:col-span-5 space-y-5">
-                
+
                 <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-cream shadow-xs space-y-4 lg:sticky lg:top-24">
                     <div class="flex items-center justify-between border-b border-cream pb-3">
                         <h3 class="font-black text-sm sm:text-base text-charcoal-heading">
@@ -461,11 +500,14 @@
                                   x-text="grandTotal.toFixed(2) + ' ج.م'">
                             </span>
                         </div>
+                        @if((float) settings('delivery_fee', 0) <= 0)
+                            <p class="text-[10px] text-charcoal-muted leading-relaxed">تكلفة التوصيل غير مضافة للإجمالي، ويؤكدها الفرع معك قبل التحصيل.</p>
+                        @endif
                     </div>
 
                     <!-- Place Order Button -->
                     <div class="pt-2">
-                        <button type="submit" 
+                        <button type="submit"
                                 :disabled="submitting"
                                 class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600 text-white font-black text-sm text-center shadow-lg shadow-red-600/25 hover:scale-[1.01] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
                             <svg x-show="submitting" x-cloak class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">

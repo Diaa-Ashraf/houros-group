@@ -1,7 +1,7 @@
 {{-- resources/views/site/wishlist.blade.php --}}
 @extends('layouts.storefront')
 
-@section('title', 'قائمة المنتجات المفضلة | ألبان وسوبرماركت التوحيد')
+@section('title', 'قائمة المنتجات المفضلة | مؤسسة حورس للتوريدات والتشطيبات')
 
 @section('content')
 <div class="py-6 sm:py-10 bg-canvas-base min-h-[80vh]">
@@ -21,7 +21,7 @@
                     <span class="w-8 h-8 rounded-xl bg-red-50 text-red-600 flex items-center justify-center text-base">❤️</span>
                     <h1 class="text-xl sm:text-2xl font-black text-charcoal-heading">قائمة المنتجات المفضلة</h1>
                 </div>
-                <p class="text-xs sm:text-sm text-charcoal-muted mt-1">المنتجات التي قمت بحفظها لشرائها لاحقاً من سوبرماركت التوحيد بالعامرية</p>
+                <p class="text-xs sm:text-sm text-charcoal-muted mt-1">المنتجات التي قمت بحفظها للرجوع إليها لاحقاً من مؤسسة حورس.</p>
             </div>
 
             @if(isset($wishlistItems) && $wishlistItems->count() > 0)
@@ -122,7 +122,7 @@
             <h3 class="text-base sm:text-lg font-black text-charcoal-heading">قائمة المفضلة فارغة حالياً</h3>
             <p class="text-xs sm:text-sm text-charcoal-muted max-w-md mx-auto leading-relaxed">
                 @if(!auth()->check())
-                    قم بتسجيل الدخول لتتمكن من حفظ منتجات الألبان والأجبان والسلع المفضلة والرجوع إليها في أي وقت.
+                    قم بتسجيل الدخول لحفظ منتجات التشطيب والديكور المفضلة والرجوع إليها في أي وقت.
                 @else
                     لم تقم بإضافة أي منتجات إلى قائمة المفضلة بعد. تصفح تشكيلتنا الطازجة وأضف ما ترغب لشرائه لاحقاً!
                 @endif
@@ -147,7 +147,7 @@
 @push('scripts')
 <script>
     function removeFromWishlist(productId) {
-        window.tawheedConfirm('حذف من المفضلة', 'هل تود إزالة هذا المنتج من قائمة رغباتك المفضلة؟', function() {
+        window.horusConfirm('حذف من المفضلة', 'هل تود إزالة هذا المنتج من قائمة رغباتك المفضلة؟', function() {
             $.post("{{ route('wishlist.remove', ':id') }}".replace(':id', productId))
             .done(function(res) {
                 if (res.success) {
@@ -170,7 +170,7 @@
     }
 
     function clearWishlist() {
-        window.tawheedConfirm('تفريغ المفضلة', 'هل أنت متأكد من رغبتك في حذف كافة المنتجات من قائمة المفضلة؟', function() {
+        window.horusConfirm('تفريغ المفضلة', 'هل أنت متأكد من رغبتك في حذف كافة المنتجات من قائمة المفضلة؟', function() {
             $.post("{{ route('wishlist.clear') }}")
             .done(function(res) {
                 if (res.success) {

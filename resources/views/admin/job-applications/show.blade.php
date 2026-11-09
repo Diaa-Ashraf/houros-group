@@ -4,9 +4,9 @@
 
 @section('content')
 <div class="max-w-4xl mx-auto space-y-6">
- 
+
  <!-- Top Header -->
- <div class="bg-white border border-[border-orange-100] rounded-2xl p-6 sm:p-8 shadow-sm flex items-center justify-between gap-4">
+ <div class="bg-white border border-orange-100 rounded-2xl p-6 sm:p-8 shadow-sm flex items-center justify-between gap-4">
  <div>
  <div class="flex items-center gap-2 mb-1">
  <a href="{{ route('admin.job-applications.index') }}" class="text-xs font-bold text-[#DC2626] hover:underline">
@@ -44,11 +44,11 @@
 
  <!-- Application Details Grid -->
  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
- 
+
  <!-- Left 2 Cols: Details -->
  <div class="md:col-span-2 space-y-6">
- <div class="bg-white border border-[border-orange-100] rounded-2xl p-6 shadow-sm space-y-4">
- <h3 class="font-bold text-sm text-[#1F2937] border-b border-[border-orange-100] pb-3">
+ <div class="bg-white border border-orange-100 rounded-2xl p-6 shadow-sm space-y-4">
+ <h3 class="font-bold text-sm text-[#1F2937] border-b border-orange-100 pb-3">
  بيانات المتقدم والوظيفة
  </h3>
 
@@ -77,14 +77,14 @@
 
  <div class="sm:col-span-2">
  <span class="block text-gray-500 mb-1">الفرع المفضل للعمل</span>
- <strong class="text-sm text-[#1F2937]">{{ $application->branch?->name ?? 'أي فرع متاح بالعامرية' }}</strong>
+ <strong class="text-sm text-[#1F2937]">{{ $application->branch?->name ?? 'موقع مؤسسة حورس' }}</strong>
  </div>
  </div>
 
  @if($application->message)
- <div class="pt-3 border-t border-[border-orange-100]">
+ <div class="pt-3 border-t border-orange-100">
  <span class="block text-gray-500 text-xs mb-1.5">رسالة المتقدم / نبذة عن الخبرات:</span>
- <div class="p-3.5 rounded-xl bg-[bg-canvas-base] text-xs text-[#1F2937] leading-relaxed">
+ <div class="p-3.5 rounded-xl bg-canvas-base text-xs text-[#1F2937] leading-relaxed">
  {{ $application->message }}
  </div>
  </div>
@@ -92,13 +92,13 @@
  </div>
 
  <!-- CV Attachment -->
- <div class="bg-white border border-[border-orange-100] rounded-2xl p-6 shadow-sm space-y-3">
- <h3 class="font-bold text-sm text-[#1F2937] border-b border-[border-orange-100] pb-3">
+ <div class="bg-white border border-orange-100 rounded-2xl p-6 shadow-sm space-y-3">
+ <h3 class="font-bold text-sm text-[#1F2937] border-b border-orange-100 pb-3">
  السيرة الذاتية (CV)
  </h3>
 
  @if($application->cv_file)
- <div class="flex items-center justify-between p-4 rounded-xl bg-[bg-canvas-base] border border-[border-orange-100]">
+ <div class="flex items-center justify-between p-4 rounded-xl bg-canvas-base border border-orange-100">
  <div class="flex items-center gap-3">
  <span class="text-3xl"></span>
  <div>
@@ -107,7 +107,7 @@
  </div>
  </div>
 
- <a href="{{ route('admin.job-applications.download', $application->id) }}" 
+ <a href="{{ route('admin.job-applications.download', $application->id) }}"
  class="px-4 py-2 rounded-xl bg-[#1F2937] hover:bg-[#DC2626] text-white text-xs font-bold transition-all shadow-sm flex items-center gap-2">
  <span>⬇</span>
  <span>تحميل الملف</span>
@@ -121,8 +121,8 @@
 
  <!-- Right Col: Status Management -->
  <div class="space-y-6">
- <div class="bg-white border border-[border-orange-100] rounded-2xl p-6 shadow-sm space-y-4">
- <h3 class="font-bold text-sm text-[#1F2937] border-b border-[border-orange-100] pb-3">
+ <div class="bg-white border border-orange-100 rounded-2xl p-6 shadow-sm space-y-4">
+ <h3 class="font-bold text-sm text-[#1F2937] border-b border-orange-100 pb-3">
  تعديل حالة الطلب
  </h3>
 
@@ -132,7 +132,7 @@
 
  <div>
  <label for="status" class="block text-xs font-bold text-[#1F2937] mb-1.5">اختر الحالة الجديدة:</label>
- <select name="status" id="status" class="w-full bg-[bg-canvas-base] border border-[border-orange-100] rounded-xl px-3.5 py-2.5 text-xs text-[#1F2937] focus:outline-none">
+ <select name="status" id="status" class="w-full bg-canvas-base border border-orange-100 rounded-xl px-3.5 py-2.5 text-xs text-[#1F2937] focus:outline-none">
  <option value="pending" {{ $application->status === 'pending' ? 'selected' : '' }}>قيد المراجعة</option>
  <option value="reviewed" {{ $application->status === 'reviewed' ? 'selected' : '' }}>تمت المراجعة</option>
  <option value="accepted" {{ $application->status === 'accepted' ? 'selected' : '' }}>مقبول</option>
@@ -146,10 +146,10 @@
  </form>
 
  <!-- Quick WhatsApp Message to Applicant -->
- <div class="pt-4 border-t border-[border-orange-100]">
- <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $application->phone) }}?text={{ urlencode('مرحباً ' . $application->name . '، بخصوص طلب توظيفك في ألبان التوحيد...') }}" 
- target="_blank" 
- rel="noopener noreferrer" 
+ <div class="pt-4 border-t border-orange-100">
+ <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $application->phone) }}?text={{ urlencode('مرحباً ' . $application->name . '، بخصوص طلب التوظيف لدى مؤسسة حورس...') }}"
+ target="_blank"
+ rel="noopener noreferrer"
  class="w-full py-2.5 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold transition-colors flex items-center justify-center gap-2">
  <span></span>
  <span>مراسلة المتقدم عبر واتساب</span>

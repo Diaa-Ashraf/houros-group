@@ -17,11 +17,11 @@
     </div>
 
  {{-- Main Table Card --}}
- <div class="bg-white border border-[border-orange-100] rounded-2xl shadow-sm overflow-hidden">
+ <div class="bg-white border border-orange-100 rounded-2xl shadow-sm overflow-hidden">
  <div class="overflow-x-auto">
  <table class="w-full text-right border-collapse">
  <thead>
- <tr class="border-b border-[border-orange-100] bg-[bg-canvas-base]/70 text-gray-500 text-xs uppercase font-semibold">
+ <tr class="border-b border-orange-100 bg-canvas-base/70 text-gray-500 text-xs uppercase font-semibold">
  <th class="py-3.5 px-5">#</th>
  <th class="py-3.5 px-5">{{ __('اسم المشرف') }}</th>
  <th class="py-3.5 px-5">{{ __('البريد الإلكتروني') }}</th>
@@ -31,7 +31,7 @@
  </thead>
  <tbody class="divide-y divide-[#F0ECE1] text-sm text-[#1F2937]">
  @forelse($users as $user)
- <tr class="hover:bg-[bg-canvas-base]/40 transition-colors">
+ <tr class="hover:bg-canvas-base/40 transition-colors">
  <td class="py-4 px-5 text-gray-500 font-mono text-xs">{{ $loop->iteration }}</td>
  <td class="py-4 px-5">
  <div class="font-bold text-[#1F2937] flex items-center gap-2">
@@ -47,7 +47,7 @@
  <td class="py-4 px-5">
  @if(method_exists($user, 'getRoleNames') && $user->getRoleNames()->isNotEmpty())
  @foreach($user->getRoleNames() as $roleName)
- <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[bg-canvas-base] text-[#DC2626] border border-[border-orange-100]">
+ <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-canvas-base text-[#DC2626] border border-orange-100">
  {{ $roleName }}
  </span>
  @endforeach
@@ -59,7 +59,7 @@
  </td>
  <td class="py-4 px-5 text-center">
  <div class="flex items-center justify-center gap-2">
- <a href="{{ route('admin.users.edit', $user->id) }}" class="px-3 py-1.5 rounded-lg border border-[border-orange-100] bg-[bg-canvas-base] hover:bg-[#EDE8DC] text-[#1F2937] font-semibold text-xs transition-colors">
+ <a href="{{ route('admin.users.edit', $user->id) }}" class="px-3 py-1.5 rounded-lg border border-orange-100 bg-canvas-base hover:bg-[#EDE8DC] text-[#1F2937] font-semibold text-xs transition-colors">
  {{ __('تعديل') }}
  </a>
  @if(auth()->id() !== $user->id)
@@ -86,7 +86,7 @@
  </div>
 
  @if(method_exists($users, 'hasPages') && $users->hasPages())
- <div class="p-4 border-t border-[border-orange-100] bg-[bg-canvas-base]/30">
+ <div class="p-4 border-t border-orange-100 bg-canvas-base/30">
  {{ $users->links() }}
  </div>
  @endif

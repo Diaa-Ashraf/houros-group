@@ -131,9 +131,9 @@ class SearchController extends Controller
                 return [
                     'id' => $p->id,
                     'name' => $p->name,
-                    'price' => format_currency($p->final_price ?? $p->price),
+                    'price' => (float) ($p->final_price ?? $p->price) <= 0 ? 'السعر حسب الاستفسار' : format_currency($p->final_price ?? $p->price),
                     'image_url' => $p->image_url ?? asset('assets/site/img/product/product-1.jpg'),
-                    'category' => $p->category?->name ?? 'بقالة وألبان',
+                    'category' => $p->category?->name ?? 'خامات التشطيب والديكور',
                     'url' => route('product.details', $p->slug ?? $p->id),
                 ];
             });

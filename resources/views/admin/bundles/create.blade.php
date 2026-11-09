@@ -86,7 +86,7 @@
                     
                     <div>
                         <label class="block text-xs font-bold text-gray-900 mb-2">{{ __('اسم العرض المجمع') }} <span class="text-red-500">*</span></label>
-                        <input type="text" name="name" class="w-full px-4 py-2.5 rounded-xl border border-orange-100 bg-canvas-base text-gray-900 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 focus:outline-none text-xs font-bold transition-all" placeholder="مثال: بكج إفطار التوحيد الموفر (جبنة + لانشون + زبدة)" value="{{ old('name') }}" required>
+                        <input type="text" name="name" class="w-full px-4 py-2.5 rounded-xl border border-orange-100 bg-canvas-base text-gray-900 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 focus:outline-none text-xs font-bold transition-all" placeholder="مثال: باقة دهانات غرفتين" value="{{ old('name') }}" required>
                     </div>
 
                     <div>

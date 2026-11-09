@@ -14,6 +14,7 @@
 
 <div class="card">
         <div class="card-body">
+            <div class="overflow-x-auto">
             <table class="table table-hover">
                 <thead class="thead-dark">
 
@@ -51,6 +52,7 @@
         @endforeach
           </tbody>
   </table>
+  </div>
 </div>
 </div>
 

@@ -6,15 +6,15 @@
 
 @layer base {
     :root {
-        --primary-red: #DC2626;
-        --primary-red-light: #EF4444;
-        --primary-red-dark: #991B1B;
-        --accent-orange: #F97316;
-        --accent-orange-light: #FB923C;
-        --canvas-base: #FFFDF9;
-        --canvas-subtle: #FDF4EB;
+        --primary-red: #14766E;
+        --primary-red-light: #238F82;
+        --primary-red-dark: #084B4B;
+        --accent-orange: #C8A635;
+        --accent-orange-light: #D8B744;
+        --canvas-base: #F7F8F5;
+        --canvas-subtle: #EEF2EE;
         --surface-card: #FFFFFF;
-        --surface-border: #FEE2E2;
+        --surface-border: #E1E9E4;
         --text-charcoal: #1F2937;
         --text-heading: #111827;
         --text-muted: #6B7280;
@@ -31,7 +31,7 @@
     }
 
     body {
-        background-color: #FFFDF9;
+        background-color: #F7F8F5;
         color: #1F2937;
         font-family: 'Cairo', 'Alexandria', 'Readex Pro', sans-serif;
         -webkit-font-smoothing: antialiased;
@@ -51,39 +51,39 @@
 }
 
 @layer utilities {
-    /* Tawheed Signature Fiery Red Gradient */
+    /* Horus signature deep teal gradient */
     .bg-gradient-tawheed {
-        background: linear-gradient(135deg, #EF4444 0%, #DC2626 50%, #991B1B 100%);
+        background: linear-gradient(135deg, #238F82 0%, #14766E 50%, #084B4B 100%);
     }
 
     .bg-gradient-maroon {
-        background: linear-gradient(135deg, #EF4444 0%, #DC2626 50%, #991B1B 100%);
+        background: linear-gradient(135deg, #238F82 0%, #14766E 50%, #084B4B 100%);
     }
 
-    /* Tawheed Electric Orange / Amber Gradient */
+    /* Horus warm gold gradient */
     .bg-gradient-orange {
-        background: linear-gradient(135deg, #FB923C 0%, #F97316 50%, #EA580C 100%);
+        background: linear-gradient(135deg, #E7C65F 0%, #C8A635 50%, #A98727 100%);
     }
 
     .bg-gradient-amber {
-        background: linear-gradient(135deg, #FB923C 0%, #F97316 50%, #EA580C 100%);
+        background: linear-gradient(135deg, #E7C65F 0%, #C8A635 50%, #A98727 100%);
     }
 
     /* Fiery Signboard Dual Gradient */
     .bg-gradient-signboard {
-        background: linear-gradient(135deg, #DC2626 0%, #EA580C 100%);
+        background: linear-gradient(135deg, #14766E 0%, #C8A635 100%);
     }
 
     /* Signboard Text Gradient */
     .text-signboard-gradient {
-        background: linear-gradient(135deg, #DC2626 0%, #F97316 100%);
+        background: linear-gradient(135deg, #14766E 0%, #C8A635 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
     }
 
     .text-gold-gradient {
-        background: linear-gradient(135deg, #EA580C 0%, #F97316 50%, #D97706 100%);
+        background: linear-gradient(135deg, #14766E 0%, #238F82 50%, #C8A635 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -177,4 +177,197 @@
 .swiper-button-prev-custom, .swiper-button-next-custom {
     cursor: pointer;
     user-select: none;
+}
+
+/* Horus design language: architectural lines, mineral neutrals and a restrained brass accent. */
+body:not(.horus-admin-shell) main {
+    background-image: radial-gradient(circle at 100% 0, rgba(35, 143, 130, .035), transparent 27rem);
+}
+
+body:not(.horus-admin-shell) :is(.bg-gradient-to-r.from-red-600.to-orange-500, .bg-gradient-to-r.from-red-700.to-orange-600) {
+    background-image: linear-gradient(112deg, #084B4B 0%, #14766E 58%, #C8A635 100%) !important;
+}
+
+body:not(.horus-admin-shell) .bg-gradient-to-r.from-red-700.via-red-600.to-orange-500,
+body:not(.horus-admin-shell) .bg-gradient-to-r.from-red-800.via-red-600.to-orange-500 {
+    background-image: linear-gradient(112deg, #063638 0%, #0D625F 58%, #C8A635 100%) !important;
+}
+
+body :where(img, svg, video, canvas) {
+    max-width: 100%;
+}
+
+body:not(.horus-admin-shell) main :is(h1, h2) {
+    text-wrap: balance;
+}
+
+body:not(.horus-admin-shell) main :is(pre, code) {
+    overflow-wrap: anywhere;
+}
+
+body:not(.horus-admin-shell) :is(a, button, input, select, textarea):focus-visible {
+    outline: 3px solid rgba(200, 166, 53, .5);
+    outline-offset: 3px;
+}
+
+.horus-admin-shell {
+    background: #f5f7f4;
+}
+
+.horus-admin-shell > .flex.h-screen {
+    min-width: 0;
+    max-width: 100vw;
+}
+
+.horus-admin-shell main {
+    min-width: 0;
+    background-image: radial-gradient(ellipse at 100% 0, rgba(35, 143, 130, .045), transparent 36rem);
+}
+
+.horus-admin-shell main .bg-white.border {
+    border-color: #e4ebe6 !important;
+    box-shadow: 0 8px 24px rgba(15, 55, 49, .045);
+}
+
+.horus-admin-shell header {
+    border-bottom-color: #e4ebe6;
+    box-shadow: 0 6px 20px rgba(15, 55, 49, .035);
+}
+
+.horus-admin-shell :is(button, a, input, select, textarea) {
+    scroll-margin-block: 5rem;
+}
+
+.horus-admin-shell :is(input, select, textarea) {
+    max-width: 100%;
+}
+
+.horus-admin-shell :is(.overflow-x-auto, .table-responsive) {
+    max-width: 100%;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: thin;
+    scrollbar-color: #9ac9bd #edf3ef;
+}
+
+.horus-admin-shell :is(.overflow-x-auto, .table-responsive) > table {
+    min-width: 42rem;
+}
+
+.horus-admin-shell main img {
+    max-width: 100%;
+}
+
+.horus-admin-shell main canvas {
+    width: 100% !important;
+}
+
+@media (max-width: 1023px) {
+    .horus-admin-shell header {
+        min-height: 4.25rem;
+        height: auto;
+        padding-block: .55rem;
+    }
+
+    .horus-admin-shell main {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 639px) {
+    html {
+        scroll-padding-top: 1rem;
+    }
+
+    body:not(.horus-admin-shell) main {
+        background-image: radial-gradient(circle at 100% 0, rgba(35, 143, 130, .04), transparent 18rem);
+    }
+
+    .horus-admin-shell > .flex.h-screen {
+        height: 100dvh;
+        min-height: 100dvh;
+    }
+
+    .horus-admin-shell header {
+        min-height: 3.75rem;
+        padding-inline: .75rem;
+        gap: .5rem;
+    }
+
+    .horus-admin-shell header > div {
+        min-width: 0;
+    }
+
+    .horus-admin-shell header button {
+        min-height: 2.65rem;
+    }
+
+    .horus-admin-shell main {
+        padding: .75rem;
+    }
+
+    .horus-admin-shell main .max-w-7xl,
+    .horus-admin-shell main .max-w-6xl,
+    .horus-admin-shell main .max-w-5xl {
+        max-width: 100%;
+    }
+
+    .horus-admin-shell main :is(h1, h2) {
+        overflow-wrap: anywhere;
+        line-height: 1.35;
+    }
+
+    .horus-admin-shell main :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea) {
+        min-height: 2.75rem;
+        font-size: 16px !important;
+    }
+
+    .horus-admin-shell main textarea {
+        min-height: 6rem;
+    }
+
+    .horus-admin-shell main :is(.rounded-3xl, .rounded-2xl) {
+        border-radius: 1.15rem;
+    }
+
+    .horus-admin-shell :is(.overflow-x-auto, .table-responsive) > table {
+        min-width: 38rem;
+    }
+
+    .horus-admin-shell [x-show="open"].absolute {
+        max-width: calc(100vw - 1.5rem);
+    }
+
+    .horus-admin-shell main .grid {
+        min-width: 0;
+    }
+
+    .horus-admin-shell main :is(button, a.inline-flex, a.flex) {
+        -webkit-tap-highlight-color: transparent;
+    }
+}
+
+@media (max-width: 380px) {
+    .horus-admin-shell main {
+        padding: .6rem;
+    }
+
+    .horus-admin-shell header .gap-2\.5 {
+        gap: .35rem;
+    }
+
+    body:not(.horus-admin-shell) .container {
+        padding-inline: .8rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html:focus-within {
+        scroll-behavior: auto;
+    }
+
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
 }

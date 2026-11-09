@@ -1,17 +1,17 @@
 {{-- resources/views/storefront/products/shop.blade.php --}}
 @extends('layouts.storefront')
 
-@section('title', 'المتجر وتصفح المنتجات | ألبان وسوبرماركت التوحيد')
+@section('title', 'تصفح منتجات وخامات حورس للتوريدات والتشطيبات')
 
 @section('content')
-<div class="py-8 bg-gradient-to-b from-orange-50/30 via-canvas-base to-canvas-base min-h-screen" 
-     x-data="{ 
+<div class="py-8 bg-gradient-to-b from-orange-50/30 via-canvas-base to-canvas-base min-h-screen"
+     x-data="{
          mobileFiltersOpen: false,
          viewMode: 'grid',
          sort: '{{ request('sort', 'latest') }}'
      }">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        
+
         <!-- Breadcrumb & Top Indicator -->
         <nav class="flex items-center justify-between text-xs font-bold text-gray-500" aria-label="Breadcrumb">
             <div class="flex items-center gap-2">
@@ -21,7 +21,7 @@
             </div>
             <div class="hidden sm:flex items-center gap-2 text-primary-800 bg-white px-3 py-1 rounded-full border border-orange-200 shadow-xs">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>توصيل طازج يومياً لجميع أنحاء العامرية</span>
+                <span>خامات تشطيب وديكور في مكان واحد</span>
             </div>
         </nav>
 
@@ -30,13 +30,13 @@
             <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div class="space-y-2 max-w-2xl">
                     <span class="inline-block px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-amber-200 text-xs font-black tracking-wider uppercase">
-                        سوبرماركت وألبان التوحيد • 4 فروع بالعامرية
+                        مؤسسة حورس • حدائق الأهرام
                     </span>
                     <h1 class="text-2xl sm:text-4xl font-black tracking-tight leading-tight">
-                        تصفح أجود منتجات الألبان والبقالة
+                        تصفح منتجات وخامات التشطيب والديكور
                     </h1>
                     <p class="text-xs sm:text-sm text-white/90 leading-relaxed font-medium">
-                        نوفر لكم تشكيلة واسعة من الألبان الفلاحي الطازجة، الأجبان الطبيعية، المواد الغذائية، والسلع الاستهلاكية بأسعار تنافسية وجودة مضمونة.
+                        ابحث عن دهانات SCIB، الجبسون بورد، كرانيش الفيوتك، أدوات البناء ومستلزمات التشطيب.
                     </p>
                 </div>
 
@@ -55,12 +55,12 @@
 
         <!-- Horizontal Quick Categories Navigation Chips -->
         <div class="bg-white rounded-2xl p-3 border border-orange-100 shadow-xs flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth">
-            <a href="{{ route('site.products', array_merge(request()->except(['category_id', 'page']))) }}" 
+            <a href="{{ route('site.products', array_merge(request()->except(['category_id', 'page']))) }}"
                class="px-4 py-2 rounded-xl text-xs font-black shrink-0 transition-all {{ !request('category_id') ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-sm' : 'bg-gray-50 text-gray-700 hover:bg-orange-50 hover:text-red-700 border border-gray-100' }}">
                 جميع الأقسام
             </a>
             @foreach($categories as $cat)
-                <a href="{{ route('site.products', array_merge(request()->except(['category_id', 'page']), ['category_id' => $cat->id])) }}" 
+                <a href="{{ route('site.products', array_merge(request()->except(['category_id', 'page']), ['category_id' => $cat->id])) }}"
                    class="px-4 py-2 rounded-xl text-xs font-bold shrink-0 transition-all flex items-center gap-1.5 {{ request('category_id') == $cat->id ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-sm font-black' : 'bg-gray-50 text-gray-700 hover:bg-orange-50 hover:text-red-700 border border-gray-100' }}">
                     <span>{{ $cat->name }}</span>
                     <span class="text-[10px] px-1.5 py-0.2 rounded-full {{ request('category_id') == $cat->id ? 'bg-white/25 text-white' : 'bg-gray-200 text-gray-600' }}">
@@ -78,7 +78,7 @@
             <div class="bg-white rounded-2xl p-3.5 border border-orange-100 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
                 <div class="flex flex-wrap items-center gap-2">
                     <span class="font-black text-gray-900">الفلاتر المطبقة:</span>
-                    
+
                     @if(request('search'))
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-orange-50 text-orange-800 border border-orange-200 font-bold">
                             <span>بحث: "{{ request('search') }}"</span>
@@ -127,8 +127,8 @@
         <!-- Controls Toolbar: Mobile Filter Trigger & Sorting & Display View -->
         <div class="bg-white rounded-2xl p-4 border border-orange-100 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
             <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
-                <button type="button" 
-                        @click="mobileFiltersOpen = true" 
+                <button type="button"
+                        @click="mobileFiltersOpen = true"
                         class="lg:hidden flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 text-white font-black shadow-md hover:bg-red-700 transition-colors">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
@@ -148,8 +148,8 @@
             <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
                 <div class="flex items-center gap-2">
                     <label for="sortSelect" class="font-bold text-gray-700 shrink-0">الترتيب:</label>
-                    <select id="sortSelect" 
-                            name="sort" 
+                    <select id="sortSelect"
+                            name="sort"
                             onchange="window.location.href = this.value"
                             class="bg-gray-50 border border-orange-200 focus:border-red-500 rounded-xl px-3 py-2 text-xs font-bold text-gray-900 outline-none cursor-pointer">
                         <option value="{{ route('site.products', array_merge(request()->query(), ['sort' => 'latest'])) }}" {{ request('sort', 'latest') == 'latest' ? 'selected' : '' }}>الأحدث أولاً</option>
@@ -163,11 +163,11 @@
 
         <!-- 2 Column Master Layout (Filters Sidebar + Products Grid) -->
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
-            
+
             <!-- Desktop Filter Sidebar -->
             <aside class="hidden lg:block lg:col-span-1 space-y-6 sticky top-24">
                 <div class="bg-white rounded-3xl p-6 border-2 border-orange-100 shadow-sm space-y-6">
-                    
+
                     <div class="flex items-center justify-between border-b border-orange-100 pb-4">
                         <div class="flex items-center gap-2">
                             <div class="w-8 h-8 rounded-xl bg-red-50 text-red-600 flex items-center justify-center font-bold">
@@ -185,15 +185,15 @@
                     </div>
 
                     <form action="{{ route('site.products') }}" method="GET" class="space-y-5 text-xs">
-                        
+
                         <!-- Search Keyword inside Shop -->
                         <div class="space-y-1.5">
                             <label class="font-black text-gray-900 block">بحث باسم المنتج</label>
                             <div class="relative">
-                                <input type="text" 
-                                       name="search" 
-                                       value="{{ request('search') }}" 
-                                       placeholder="مثال: حليب، جبنة، أرز..." 
+                                <input type="text"
+                                       name="search"
+                                       value="{{ request('search') }}"
+                                       placeholder="مثال: دهان، جبسون بورد، أدوات..."
                                        class="w-full bg-gray-50 border border-gray-200 focus:border-red-600 focus:bg-white rounded-xl pr-9 pl-3 py-2.5 text-xs text-gray-900 outline-none transition-all">
                                 <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-600">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -209,10 +209,10 @@
                             <div class="space-y-1.5 max-h-56 overflow-y-auto pr-1">
                                 <label class="flex items-center justify-between p-2 rounded-xl hover:bg-orange-50/60 cursor-pointer transition-colors {{ !request('category_id') ? 'bg-orange-50 font-bold text-red-700' : 'text-gray-700' }}">
                                     <div class="flex items-center gap-2">
-                                        <input type="radio" 
-                                               name="category_id" 
-                                               value="" 
-                                               onchange="this.form.submit()" 
+                                        <input type="radio"
+                                               name="category_id"
+                                               value=""
+                                               onchange="this.form.submit()"
                                                {{ !request('category_id') ? 'checked' : '' }}
                                                class="text-red-600 focus:ring-red-500">
                                         <span>جميع الأقسام</span>
@@ -222,10 +222,10 @@
                                 @foreach($categories as $cat)
                                     <label class="flex items-center justify-between p-2 rounded-xl hover:bg-orange-50/60 cursor-pointer transition-colors {{ request('category_id') == $cat->id ? 'bg-orange-50 font-bold text-red-700' : 'text-gray-700' }}">
                                         <div class="flex items-center gap-2">
-                                            <input type="radio" 
-                                                   name="category_id" 
-                                                   value="{{ $cat->id }}" 
-                                                   onchange="this.form.submit()" 
+                                            <input type="radio"
+                                                   name="category_id"
+                                                   value="{{ $cat->id }}"
+                                                   onchange="this.form.submit()"
                                                    {{ request('category_id') == $cat->id ? 'checked' : '' }}
                                                    class="text-red-600 focus:ring-red-500">
                                             <span>{{ $cat->name }}</span>
@@ -241,12 +241,12 @@
                         <!-- Special Offers & Availability Switches -->
                         <div class="pt-4 border-t border-orange-100 space-y-3">
                             <label class="font-black text-gray-900 block">خيارات العرض والمخزون</label>
-                            
+
                             <label class="flex items-center justify-between p-3 rounded-2xl border cursor-pointer transition-all {{ request('deals_only') ? 'border-red-500 bg-red-50/40 text-red-900 font-bold' : 'border-gray-200 hover:border-orange-300' }}">
                                 <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" 
-                                           name="deals_only" 
-                                           value="1" 
+                                    <input type="checkbox"
+                                           name="deals_only"
+                                           value="1"
                                            {{ request('deals_only') ? 'checked' : '' }}
                                            onchange="this.form.submit()"
                                            class="w-4 h-4 rounded text-red-600 focus:ring-red-500 border-gray-300">
@@ -257,9 +257,9 @@
 
                             <label class="flex items-center justify-between p-3 rounded-2xl border cursor-pointer transition-all {{ request('in_stock') ? 'border-emerald-500 bg-emerald-50/40 text-emerald-900 font-bold' : 'border-gray-200 hover:border-orange-300' }}">
                                 <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" 
-                                           name="in_stock" 
-                                           value="1" 
+                                    <input type="checkbox"
+                                           name="in_stock"
+                                           value="1"
                                            {{ request('in_stock') ? 'checked' : '' }}
                                            onchange="this.form.submit()"
                                            class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-gray-300">
@@ -275,19 +275,19 @@
                             <div class="grid grid-cols-2 gap-2.5">
                                 <div>
                                     <label class="text-[10px] text-gray-500 font-bold block mb-1">الحد الأدنى</label>
-                                    <input type="number" 
-                                           name="min_price" 
-                                           value="{{ request('min_price') }}" 
-                                           placeholder="0" 
+                                    <input type="number"
+                                           name="min_price"
+                                           value="{{ request('min_price') }}"
+                                           placeholder="0"
                                            min="0"
                                            class="w-full bg-gray-50 border border-gray-200 focus:border-red-600 focus:bg-white rounded-xl px-3 py-2 text-xs font-bold text-gray-900 outline-none">
                                 </div>
                                 <div>
                                     <label class="text-[10px] text-gray-500 font-bold block mb-1">الحد الأقصى</label>
-                                    <input type="number" 
-                                           name="max_price" 
-                                           value="{{ request('max_price') }}" 
-                                           placeholder="1000" 
+                                    <input type="number"
+                                           name="max_price"
+                                           value="{{ request('max_price') }}"
+                                           placeholder="1000"
                                            min="0"
                                            class="w-full bg-gray-50 border border-gray-200 focus:border-red-600 focus:bg-white rounded-xl px-3 py-2 text-xs font-bold text-gray-900 outline-none">
                                 </div>
@@ -297,7 +297,7 @@
                         <input type="hidden" name="sort" value="{{ request('sort', 'latest') }}">
 
                         <!-- Submit Filter Button -->
-                        <button type="submit" 
+                        <button type="submit"
                                 class="w-full py-3 rounded-2xl bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600 text-white font-black text-xs transition-all shadow-md shadow-orange-500/20 cursor-pointer">
                             تطبيق الفلترة والبحث
                         </button>
@@ -308,16 +308,16 @@
                 <!-- Hotline & Support Banner -->
                 <div class="bg-gradient-to-br from-red-50 to-orange-50 rounded-3xl p-5 border border-orange-200 text-center space-y-2">
                     <span class="text-xs font-black text-red-900 block">محتاج طلبية خاصة أو كميات جملة؟</span>
-                    <p class="text-[11px] text-gray-600 leading-relaxed">تواصل مع خدمة العملاء والطلبات المباشرة بفروع العامرية</p>
-                    <a href="tel:{{ settings('store_phone', '01000000000') }}" class="inline-block px-4 py-2 rounded-xl bg-white border border-orange-200 text-red-700 font-black text-xs shadow-xs hover:bg-red-50 transition-colors" dir="ltr">
-                        {{ settings('store_phone', '01000000000') }}
+                    <p class="text-[11px] text-gray-600 leading-relaxed">تواصل مع حورس للاستفسار عن المنتجات والأسعار</p>
+                    <a href="tel:{{ settings('store_phone', '01002527072') }}" class="inline-block px-4 py-2 rounded-xl bg-white border border-orange-200 text-red-700 font-black text-xs shadow-xs hover:bg-red-50 transition-colors" dir="ltr">
+                        {{ settings('store_phone', '01002527072') }}
                     </a>
                 </div>
             </aside>
 
             <!-- Products Grid Main Area -->
             <main class="lg:col-span-3 space-y-6">
-                
+
                 @if($products->isNotEmpty())
                     <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3.5 sm:gap-6">
                         @foreach($products as $product)
@@ -342,16 +342,13 @@
                         <div class="space-y-1">
                             <h3 class="text-lg font-black text-gray-900">لم يتم العثور على منتجات مطابقة</h3>
                             <p class="text-xs text-gray-500 max-w-sm mx-auto leading-relaxed">
-                                جرب البحث بكلمات أخرى أو قم بإلغاء بعض الفلاتر المحددة للوصول للأصناف المطلوبة.
+                                جرب البحث بكلمات أخرى أو تواصل معنا لمعرفة الخامات المتاحة وأسعارها.
                             </p>
                         </div>
                         <div class="pt-2">
-                            <a href="{{ route('site.products') }}" 
-                               class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-orange-500 text-white text-xs font-black shadow-md hover:from-red-700 hover:to-orange-600 transition-all">
-                                <span>عرض كل المنتجات المتاحة</span>
-                                <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                </svg>
+                            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', settings('store_whatsapp', '201002527072')) }}?text={{ urlencode('مرحباً حورس، أريد الاستفسار عن المنتجات والأسعار المتاحة.') }}" target="_blank" rel="noopener noreferrer"
+                               class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-primary-800 text-white text-xs font-black shadow-md hover:bg-primary-900 transition-all">
+                                <span>اسأل حورس عن المنتجات والأسعار</span>
                             </a>
                         </div>
                     </div>
@@ -364,14 +361,14 @@
     </div>
 
     <!-- Mobile Filters Slide-over Modal -->
-    <div x-show="mobileFiltersOpen" 
-         x-cloak 
-         class="fixed inset-0 z-50 lg:hidden overflow-hidden" 
-         aria-labelledby="slide-over-title" 
-         role="dialog" 
+    <div x-show="mobileFiltersOpen"
+         x-cloak
+         class="fixed inset-0 z-50 lg:hidden overflow-hidden"
+         aria-labelledby="slide-over-title"
+         role="dialog"
          aria-modal="true">
-        
-        <div x-show="mobileFiltersOpen" 
+
+        <div x-show="mobileFiltersOpen"
              x-transition:enter="ease-in-out duration-300"
              x-transition:enter-start="opacity-0"
              x-transition:enter-end="opacity-100"

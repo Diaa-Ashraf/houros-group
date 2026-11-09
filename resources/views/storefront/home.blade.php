@@ -1,115 +1,101 @@
-{{-- resources/views/storefront/home.blade.php --}}
+{{-- Horus Group storefront landing page --}}
 @extends('layouts.storefront')
 
-@section('title', 'الرئيسية | ألبان وسوبرماركت التوحيد بالعامرية')
+@section('title', 'مؤسسة حورس للتوريدات والتشطيبات')
+@section('meta_description', 'كل احتياجات التشطيب والديكور في مكان واحد. دهانات SCIB، جبسون بورد، كرانيش فيوتك، أدوات ومستلزمات التشطيب. حدائق الأهرام، بوابة حورس.')
 
 @section('content')
-<div class="space-y-2 sm:space-y-4">
-    
-    <!-- 1. Hero Banners Slider -->
-    <x-storefront.sections.hero-slider :banners="$banners" />
-
-    <!-- 2. Interactive Flash Coupons Strip -->
-    <section class="py-2.5 bg-gradient-to-r from-red-600 via-orange-500 to-amber-500 text-white shadow-md">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-right">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <span class="font-black text-xs sm:text-sm">كوبون خصم الافتتاح: استخدم كود <span class="bg-white text-red-600 font-mono font-black px-2 py-0.5 rounded-md mx-1 select-all">TAWHEED10</span></span>
-                        <span class="text-[11px] text-white/90 hidden md:inline">واحصل على 10% خصم فوري على أول طلبية!</span>
-                    </div>
+@php
+    $horusPhone = settings('store_phone', '01002527072');
+    $horusWhatsApp = preg_replace('/[^0-9]/', '', settings('store_whatsapp', '201002527072'));
+@endphp
+<div class="horus-home" dir="rtl">
+    <section class="horus-hero">
+        <div class="horus-hero-pattern"></div>
+        <div class="container mx-auto px-4 horus-hero-inner">
+            <div class="horus-hero-copy">
+                <span class="horus-eyebrow"><i></i> مؤسسة حورس للتوريدات والتشطيبات</span>
+                <h1>كل تفاصيل التشطيب<br><em>تبدأ من اختيارك.</em></h1>
+                <p>خامات موثوقة، اختيارات متنوعة، وحلول عملية من أول التأسيس لحد اللمسة الأخيرة. كل اللي تحتاجه لمشروعك في مكان واحد.</p>
+                <div class="horus-hero-actions">
+                    <a href="{{ route('site.products') }}" class="horus-btn horus-btn-light">تصفح المنتجات <span>←</span></a>
+                    <a href="https://wa.me/{{ $horusWhatsApp }}" class="horus-btn horus-btn-outline" dir="rtl">تواصل معنا</a>
                 </div>
-                <div class="flex items-center gap-3">
-                    <a href="{{ route('site.products') }}" class="px-4 py-1.5 rounded-full bg-white text-red-600 hover:bg-amber-100 font-black text-xs shadow-sm transition-transform hover:scale-105 flex items-center gap-1.5">
-                        <span>استخدم الكوبون الآن</span>
-                        <svg class="w-3.5 h-3.5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                    </a>
-                </div>
+                <div class="horus-trust"><span>خبرة أكثر من 10 سنوات</span><b>•</b><span>وكيل معتمد لدهانات SCIB</span></div>
             </div>
+            <div class="horus-hero-art" aria-label="خامات الدهانات والتشطيب">
+                <div class="horus-arch"><div class="horus-arch-inner"><img class="horus-art-mark" src="{{ asset('assets/site/img/horus-mark.png') }}" alt="شعار حورس"><span class="horus-art-caption">من أول خطوة<br>لآخر لمسة</span></div></div>
+                <div class="horus-float horus-float-one"><strong>SCIB</strong><span>دهانات معتمدة</span></div>
+                <div class="horus-float horus-float-two"><span class="horus-dot"></span><span>خامات تشطيب<br>بجودة تثق فيها</span></div>
+            </div>
+            <div class="horus-hero-index">01 <span></span> 03</div>
         </div>
     </section>
 
-    <!-- 3. Value Propositions / Highlights Strip -->
-    <section class="py-5 bg-white border-y border-orange-100 shadow-xs">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 text-center">
-                <div class="p-3.5 rounded-2xl bg-gradient-to-br from-red-50/60 to-orange-50/40 border border-red-100 flex flex-col items-center gap-2 hover:shadow-md transition-all">
-                    <div class="w-10 h-10 rounded-xl bg-red-100/80 text-red-700 flex items-center justify-center">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xs font-black text-gray-900">ألبان فلاحي 100% طازجة</h3>
-                    <p class="text-[11px] text-gray-500 font-medium">حليب، قشطة، وسمن بلدي يومياً من مزارعنا</p>
-                </div>
+    <section class="horus-proof container mx-auto px-4" aria-label="مميزات حورس">
+        <div><span class="horus-proof-icon">✦</span><span><b>اختيارات متكاملة</b><small>من مواد البناء للديكور</small></span></div>
+        <div><span class="horus-proof-icon">✓</span><span><b>جودة موثوقة</b><small>منتجات مختارة بعناية</small></span></div>
+        <div><span class="horus-proof-icon">↗</span><span><b>خبرة أكثر من 10 سنوات</b><small>نفهم احتياجات شغلك</small></span></div>
+        <div><span class="horus-proof-icon">⌖</span><span><b>حدائق الأهرام</b><small>بوابة حورس، ٢٢ع</small></span></div>
+    </section>
 
-                <div class="p-3.5 rounded-2xl bg-gradient-to-br from-red-50/60 to-orange-50/40 border border-red-100 flex flex-col items-center gap-2 hover:shadow-md transition-all">
-                    <div class="w-10 h-10 rounded-xl bg-orange-100/80 text-orange-700 flex items-center justify-center">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xs font-black text-gray-900">توصيل سريع بالعامرية</h3>
-                    <p class="text-[11px] text-gray-500 font-medium">نوصلك في وقت قياسي بأعلى درجات التبريد</p>
-                </div>
+    <div class="horus-payments container mx-auto px-4"><span>طرق الدفع</span>@if(settings('enable_vodafone_cash', '1'))<b>فودافون كاش</b>@endif @if(settings('enable_vodafone_cash', '1') && settings('enable_instapay', '1'))<i></i>@endif @if(settings('enable_instapay', '1'))<b>إنستاباي</b>@endif @if((settings('enable_cod', '1')) && (settings('enable_vodafone_cash', '1') || settings('enable_instapay', '1')))<i></i>@endif @if(settings('enable_cod', '1'))<b>الدفع عند الاستلام</b>@endif</div>
 
-                <div class="p-3.5 rounded-2xl bg-gradient-to-br from-red-50/60 to-orange-50/40 border border-red-100 flex flex-col items-center gap-2 hover:shadow-md transition-all">
-                    <div class="w-10 h-10 rounded-xl bg-amber-100/80 text-amber-700 flex items-center justify-center">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xs font-black text-gray-900">دفع كاش أو إنستاباي</h3>
-                    <p class="text-[11px] text-gray-500 font-medium">طرق دفع فورية وآمنة تناسب الجميع</p>
-                </div>
-
-                <div class="p-3.5 rounded-2xl bg-gradient-to-br from-red-50/60 to-orange-50/40 border border-red-100 flex flex-col items-center gap-2 hover:shadow-md transition-all">
-                    <div class="w-10 h-10 rounded-xl bg-emerald-100/80 text-emerald-700 flex items-center justify-center">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xs font-black text-gray-900">4 فروع في خدمتك</h3>
-                    <p class="text-[11px] text-gray-500 font-medium">استلم طلبك مجاناً وفوراً من أقرب فرع</p>
-                </div>
-            </div>
+    <section class="horus-section container mx-auto px-4">
+        <div class="horus-section-head"><div><span class="horus-kicker">حلول لكل مرحلة</span><h2>كل احتياجات التشطيب، <em>في مكان واحد</em></h2></div><a href="{{ route('site.products') }}" class="horus-text-link">اكتشف المنتجات <span>←</span></a></div>
+        <div class="horus-services">
+            <a href="{{ route('site.products') }}" class="horus-service-card service-paint"><span class="horus-service-no">01</span><div><small>اختيار اللون يبدأ هنا</small><h3>دهانات<br>وألوان عصرية</h3><span class="horus-service-link">اكتشف الدهانات ↙</span></div><span class="horus-service-shape"></span></a>
+            <a href="{{ route('site.products') }}" class="horus-service-card service-ceiling"><span class="horus-service-no">02</span><div><small>تفاصيل تصنع الفرق</small><h3>جبسون بورد<br>وكرانيش فيوتك</h3><span class="horus-service-link">اكتشف الخامات ↙</span></div><span class="horus-service-shape"></span></a>
+            <a href="{{ route('site.products') }}" class="horus-service-card service-tools"><span class="horus-service-no">03</span><div><small>معدات يعتمد عليها</small><h3>أدوات ومستلزمات<br>التشطيب</h3><span class="horus-service-link">تصفح الأدوات ↙</span></div><span class="horus-service-shape"></span></a>
         </div>
     </section>
 
-    <!-- 3. Categories Strip -->
-    <x-storefront.sections.categories-strip :categories="$categories" />
+    <section class="horus-scip">
+        <div class="container mx-auto px-4 horus-scip-inner"><div><span class="horus-kicker">وكيل معتمد</span><h2>اختار ألوانك بثقة.<br><em>دهانات SCIB عند حورس</em></h2><p>متاح كل منتجات سكيب للدهانات، مع اختيارات تناسب احتياجاتك الداخلية والخارجية.</p><a href="https://wa.me/{{ $horusWhatsApp }}?text={{ urlencode('مرحباً، أريد الاستفسار عن دهانات SCIB') }}" class="horus-btn horus-btn-green">اسأل عن المنتجات <span>←</span></a></div><div class="horus-scip-stamp"><b>SCIB</b><span>PAINTS</span><i></i></div><span class="horus-scip-watermark">حورس</span></div>
+    </section>
 
-    <!-- 4. Today's Deals Section -->
-    <x-storefront.sections.deals-section :deals="$deals" />
+    @php
+        $horusPosts = [
+            ['image' => 'tools-finishing.jpg', 'title' => 'أدوات البناء والتشطيب', 'slug' => 'painting-and-finishing-tools'],
+            ['image' => 'paint-store.jpg', 'title' => 'دهانات SCIB وخامات التشطيب', 'slug' => 'scib-interior-exterior-paints'],
+            ['image' => 'finishing-materials.jpg', 'title' => 'مستلزمات النقاشة والمعجون', 'slug' => 'interior-exterior-putty'],
+            ['image' => 'scib-paints.jpg', 'title' => 'دهانات وألوان SCIB', 'slug' => 'computer-color-mixing'],
+            ['image' => 'horus-scib.jpg', 'title' => 'كل احتياجات التشطيب', 'slug' => 'gypsum-board-systems'],
+        ];
+    @endphp
+    <section class="horus-gallery-section container mx-auto px-4">
+        <div class="horus-section-head"><div><span class="horus-kicker">منتجات وخامات حورس</span><h2>شوف <em>تشكيلتنا</em></h2><p class="mt-2 text-[10px] text-gray-500">صور تعريفية من منشورات حورس؛ اسألنا عن الشكل والمقاس المتاح قبل الطلب.</p></div><a href="{{ route('categories.index') }}" class="horus-text-link">كل الأقسام <span>←</span></a></div>
+        <div class="horus-post-grid">
+            @foreach($horusPosts as $post)
+                <a href="{{ route('product.show', $post['slug']) }}" class="horus-post-card">
+                    <div class="horus-post-image"><img src="{{ asset('assets/site/img/horus-gallery/' . $post['image']) }}" alt="{{ $post['title'] }}" loading="lazy"></div>
+                    <div class="horus-post-caption"><b>{{ $post['title'] }}</b><span>اسأل عن السعر والتوافر <i>←</i></span></div>
+                </a>
+            @endforeach
+        </div>
+    </section>
 
-    <!-- 5. Featured Dairy & Groceries -->
-    <x-storefront.sections.products-carousel 
-        title="منتجات التوحيد الأكثر طلباً" 
-        subtitle="الأعلى تقييماً وإقبالاً" 
-        :products="$featuredProducts" 
-        :viewAllRoute="route('site.products')" 
-        badge="⭐" />
+    @if(isset($categories) && $categories->isNotEmpty())
+    <section class="horus-section container mx-auto px-4">
+        <div class="horus-section-head"><div><span class="horus-kicker">تسوق حسب القسم</span><h2>اكتشف <em>تشكيلتنا</em></h2></div><a href="{{ route('categories.index') }}" class="horus-text-link">كل الأقسام <span>←</span></a></div>
+        <div class="horus-category-grid">@foreach($categories as $category)<a href="{{ route('category.product', $category->id) }}" class="horus-category">@if($category->image)<img src="{{ $category->image_url ?? asset($category->image) }}" alt="{{ $category->name }}">@else<span class="horus-category-placeholder">ح</span>@endif<span><b>{{ $category->name }}</b><small>تسوق القسم ←</small></span></a>@endforeach</div>
+    </section>
+    @endif
 
-    <!-- 6. Bundles & Value Packs Section -->
-    <x-storefront.sections.bundles-section :bundles="$bundles" />
+    @if(isset($featuredProducts) && $featuredProducts->isNotEmpty())
+    <x-storefront.sections.products-carousel title="منتجات مختارة من حورس" subtitle="خامات وأدوات تساعدك تنجز شغلك" :products="$featuredProducts" :viewAllRoute="route('site.products')" badge="✦" />
+    @endif
 
-    <!-- 7. Latest Fresh Arrivals -->
-    <x-storefront.sections.products-carousel 
-        title="وصل حديثاً للمتجر" 
-        subtitle="طازج يومياً من مزارعنا" 
-        :products="$latestProducts" 
-        :viewAllRoute="route('site.products')" 
-        badge="🆕" />
-
-    <!-- 8. Ameriya Branches Strip -->
-    <x-storefront.sections.branches-strip :branches="$branches" />
-
+    <section class="horus-contact-band"><div class="container mx-auto px-4 horus-contact-inner"><div><span class="horus-kicker">جاهزين نساعدك تختار</span><h2>مشروعك يستاهل <em>بداية مظبوطة.</em></h2><p>كلمنا واسأل عن المنتجات والأسعار أو زورنا في حدائق الأهرام.</p></div><a href="tel:{{ $horusPhone }}" class="horus-phone"><span>اتصل بنا</span><b dir="ltr">{{ $horusPhone }}</b><i>↗</i></a></div></section>
 </div>
 @endsection
+
+@push('styles')
+<style>
+.horus-home{--h-ink:#073f40;--h-deep:#062f31;--h-green:#159b8b;--h-mint:#82d9c7;--h-paper:#f5f4ef;--h-gold:#e2bf52;color:#173b3a;background:#fff;font-family:'Cairo','Alexandria',sans-serif}.horus-home *{box-sizing:border-box}.horus-hero{position:relative;overflow:hidden;background:var(--h-deep);color:#fff;min-height:590px}.horus-hero:before{content:"";position:absolute;inset:0 48% 0 0;background:linear-gradient(135deg,rgba(16,138,127,.35),transparent 68%)}.horus-hero-pattern{position:absolute;width:680px;height:680px;border:1px solid rgba(130,217,199,.13);border-radius:50%;left:-230px;top:-280px;box-shadow:0 0 0 60px rgba(130,217,199,.025),0 0 0 120px rgba(130,217,199,.025)}.horus-hero-inner{position:relative;min-height:590px;display:flex;align-items:center}.horus-hero-copy{position:relative;z-index:2;width:57%;padding:70px 0 80px}.horus-eyebrow,.horus-kicker{display:inline-flex;align-items:center;gap:10px;color:var(--h-green);font-size:12px;font-weight:800;letter-spacing:.04em}.horus-eyebrow{color:var(--h-mint);border:1px solid rgba(130,217,199,.28);padding:8px 13px;border-radius:30px}.horus-eyebrow i{width:7px;height:7px;background:var(--h-gold);border-radius:50%;box-shadow:0 0 0 4px rgba(226,191,82,.13)}.horus-hero h1{font-size:clamp(40px,5vw,68px);line-height:1.35;letter-spacing:-.045em;margin:26px 0 14px;font-weight:900}.horus-hero h1 em,.horus-section-head h2 em,.horus-scip h2 em,.horus-contact-band h2 em{font-style:normal;color:var(--h-mint)}.horus-hero-copy>p{max-width:490px;color:rgba(255,255,255,.72);font-size:16px;line-height:2}.horus-hero-actions{display:flex;gap:12px;margin-top:28px}.horus-btn{display:inline-flex;align-items:center;gap:24px;padding:13px 20px;border-radius:5px;font-size:13px;font-weight:800;transition:.2s}.horus-btn:hover{transform:translateY(-2px)}.horus-btn-light{background:#fff;color:var(--h-deep)}.horus-btn-outline{color:white;border:1px solid rgba(255,255,255,.38)}.horus-trust{display:flex;gap:12px;align-items:center;margin-top:35px;color:rgba(255,255,255,.62);font-size:11px}.horus-trust b{color:var(--h-gold)}.horus-hero-art{position:absolute;left:2%;top:50%;transform:translateY(-50%);width:39%;height:480px}.horus-arch{position:absolute;inset:0 12% 0 5%;border:1px solid rgba(130,217,199,.5);border-radius:220px 220px 8px 8px;padding:10px;background:linear-gradient(145deg,rgba(20,143,132,.8),rgba(8,57,58,.5));box-shadow:0 30px 80px #001e2080}.horus-arch-inner{height:100%;border-radius:210px 210px 3px 3px;background:radial-gradient(ellipse at 55% 32%,#58b7a3 0,#167d77 25%,#0c5657 58%,#073839 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}.horus-arch-inner:before,.horus-arch-inner:after{content:"";position:absolute;border:1px solid #c8ead335;border-radius:50%;width:440px;height:440px}.horus-arch-inner:after{width:330px;height:330px}.horus-art-mark{width:168px;height:190px;object-fit:contain;filter:drop-shadow(0 4px 18px #002a2b80)}.horus-art-caption{position:absolute;bottom:45px;font-size:17px;line-height:1.6;text-align:center;color:#d6f1e8;letter-spacing:.12em}.horus-float{position:absolute;z-index:1;background:#fff;color:var(--h-deep);box-shadow:0 15px 35px #001d1d55;border-radius:5px;padding:12px 16px}.horus-float-one{top:18%;right:-2%;display:flex;flex-direction:column;align-items:center}.horus-float-one strong{font-size:26px;letter-spacing:-.04em}.horus-float-one span,.horus-float-two{font-size:10px}.horus-float-two{bottom:17%;left:-4%;display:flex;gap:10px;align-items:center;line-height:1.7}.horus-dot{width:9px;height:9px;border-radius:50%;background:#3aa995;box-shadow:0 0 0 5px #3aa99520}.horus-hero-index{position:absolute;bottom:27px;left:16px;display:flex;align-items:center;gap:9px;font-size:10px;letter-spacing:.2em;color:#ffffff8c}.horus-hero-index span{height:1px;width:35px;background:var(--h-mint)}
+.horus-proof{position:relative;margin-top:-1px;background:#fff;display:grid;grid-template-columns:repeat(4,1fr);padding-top:23px;padding-bottom:23px;box-shadow:0 12px 35px #0a373710;border-bottom:1px solid #e9eeea}.horus-proof>div{display:flex;align-items:center;justify-content:center;gap:12px;border-left:1px solid #e8ece8}.horus-proof>div:last-child{border:0}.horus-proof-icon{width:37px;height:37px;border-radius:50%;display:grid;place-items:center;color:var(--h-green);background:#e9f6f1;font-size:17px;font-weight:900}.horus-proof b,.horus-proof small{display:block}.horus-proof b{font-size:12px}.horus-proof small{font-size:10px;color:#87928e;margin-top:2px}.horus-section{padding-top:86px;padding-bottom:78px}.horus-section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:27px}.horus-kicker{font-size:10px;letter-spacing:.14em;text-transform:uppercase}.horus-section-head h2,.horus-scip h2,.horus-contact-band h2{font-size:clamp(25px,3vw,38px);line-height:1.5;font-weight:900;margin:6px 0 0;color:#183b3a}.horus-section-head h2 em,.horus-contact-band h2 em{color:var(--h-green)}.horus-text-link{font-size:11px;font-weight:800;color:var(--h-green);padding-bottom:8px}.horus-text-link span{font-size:16px;margin-right:8px}.horus-services{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.horus-service-card{position:relative;min-height:280px;overflow:hidden;padding:23px 25px;color:#fff;background:#104849;display:flex;flex-direction:column;justify-content:space-between;border-radius:4px;transition:.25s}.horus-service-card:hover{transform:translateY(-5px);box-shadow:0 16px 30px #073f4026;color:#fff}.service-paint{background:linear-gradient(130deg,#0b4d4d,#13877a)}.service-ceiling{background:linear-gradient(130deg,#163d3d,#387a6b)}.service-tools{background:linear-gradient(130deg,#243b39,#55715d)}.horus-service-no{font-size:10px;letter-spacing:.16em;color:#ffffff87}.horus-service-card>div{z-index:1}.horus-service-card small{font-size:10px;color:#b7ded0}.horus-service-card h3{font-size:24px;font-weight:900;line-height:1.5;margin:8px 0 16px}.horus-service-link{font-size:10px;color:#d5e9de}.horus-service-shape{position:absolute;width:215px;height:215px;border:1px solid #ffffff29;border-radius:50%;left:-58px;top:20px;box-shadow:0 0 0 24px #ffffff08,0 0 0 50px #ffffff06}.horus-service-shape:before,.horus-service-shape:after{content:"";position:absolute;border:1px solid #ffffff30;border-radius:50%;inset:30px}.horus-service-shape:after{inset:64px}
+.horus-payments{display:flex;justify-content:center;align-items:center;gap:18px;padding-top:17px;padding-bottom:17px;color:#6c7b76;font-size:10px;border-bottom:1px solid #eef1ed}.horus-payments>span{font-weight:700;color:#214644}.horus-payments b{font-weight:700;color:#138579}.horus-payments i{width:3px;height:3px;border-radius:50%;background:#bdc9c2}
+.horus-scip{background:#f2f5ef;overflow:hidden}.horus-scip-inner{min-height:340px;position:relative;display:flex;align-items:center;padding-top:52px;padding-bottom:52px}.horus-scip-inner>div:first-child{position:relative;z-index:1;max-width:490px}.horus-scip h2 em{color:var(--h-green)}.horus-scip p{font-size:13px;line-height:1.9;color:#6e7b73;max-width:400px;margin:10px 0 20px}.horus-btn-green{background:var(--h-ink);color:white}.horus-scip-stamp{position:absolute;left:16%;top:50%;transform:translateY(-50%) rotate(-7deg);width:245px;height:245px;border:1px solid #188678;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#0d635d;background:#e8f2e9;box-shadow:0 0 0 12px #e8f2e980,0 0 0 13px #18867835}.horus-scip-stamp b{font-size:62px;letter-spacing:-.09em}.horus-scip-stamp span{letter-spacing:.3em;font-size:12px}.horus-scip-stamp i{width:48px;height:4px;background:#82c87a;margin-top:10px;border-radius:5px}.horus-scip-watermark{position:absolute;left:-2%;bottom:-70px;font-family:serif;font-size:230px;color:#0a595708;font-weight:bold}.horus-gallery-section{padding-top:72px;padding-bottom:60px}.horus-post-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.horus-post-card{display:flex;flex-direction:column;overflow:hidden;border:1px solid #e5ece7;border-radius:5px;background:#fff;color:#173b3a;transition:.2s}.horus-post-card:hover{transform:translateY(-4px);border-color:#59aa9a;box-shadow:0 14px 28px #073f4017}.horus-post-image{aspect-ratio:3/4;background:#f5f6f2;overflow:hidden}.horus-post-image img{width:100%;height:100%;object-fit:contain}.horus-post-caption{display:flex;flex-direction:column;gap:8px;padding:12px}.horus-post-caption b{font-size:11px;line-height:1.6}.horus-post-caption span{display:flex;justify-content:space-between;align-items:center;color:var(--h-green);font-size:10px;font-weight:800}.horus-post-caption i{font-style:normal;font-size:15px}.horus-category-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.horus-category{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid #e9efeb;border-radius:4px;color:#183b3a;transition:.2s}.horus-category:hover{border-color:#54a995;box-shadow:0 8px 20px #0c51420e}.horus-category img,.horus-category-placeholder{width:56px;height:56px;object-fit:cover;background:#edf4ef;border-radius:3px}.horus-category-placeholder{display:grid;place-items:center;color:var(--h-green);font-family:serif;font-size:28px}.horus-category b,.horus-category small{display:block}.horus-category b{font-size:12px}.horus-category small{color:#81918b;font-size:9px;margin-top:4px}.horus-contact-band{background:var(--h-deep);color:white}.horus-contact-inner{display:flex;justify-content:space-between;align-items:center;padding-top:43px;padding-bottom:43px}.horus-contact-band h2{color:#fff;font-size:30px}.horus-contact-band h2 em{color:var(--h-mint)}.horus-contact-band p{color:#ffffff9c;font-size:12px;margin:5px 0 0}.horus-phone{display:flex;align-items:center;gap:15px;padding:12px 17px;border:1px solid #ffffff45;border-radius:4px;color:white}.horus-phone span{font-size:10px;color:#b4d6cb}.horus-phone b{font-size:19px;letter-spacing:.03em}.horus-phone i{font-style:normal;color:var(--h-mint);font-size:18px}
+@media(max-width:767px){.horus-payments{gap:8px;flex-wrap:wrap;font-size:9px}.horus-payments>span{width:100%;text-align:center}.horus-hero,.horus-hero-inner{min-height:670px}.horus-hero-copy{width:100%;padding:52px 0 300px}.horus-hero h1{font-size:40px}.horus-hero-copy>p{font-size:13px;max-width:94%}.horus-hero-art{width:53%;height:255px;left:4%;top:auto;bottom:23px;transform:none}.horus-art-mark{width:92px;height:110px}.horus-art-caption{bottom:18px;font-size:11px}.horus-float-one{top:8%;right:-15%}.horus-float-one strong{font-size:18px}.horus-float-two{bottom:10%;left:-20%;font-size:9px}.horus-trust{font-size:9px;gap:7px;margin-top:24px}.horus-hero-index{bottom:18px}.horus-proof{grid-template-columns:repeat(2,1fr);row-gap:15px;padding-top:18px;padding-bottom:18px}.horus-proof>div{justify-content:flex-start;padding-right:8px;border:0}.horus-proof b{font-size:10px}.horus-proof small{font-size:9px}.horus-proof-icon{width:31px;height:31px}.horus-section{padding-top:55px;padding-bottom:50px}.horus-section-head h2{font-size:24px}.horus-section-head{align-items:start;gap:10px}.horus-text-link{white-space:nowrap;font-size:9px;padding-top:14px}.horus-services{grid-template-columns:1fr;gap:10px}.horus-service-card{min-height:190px;padding:18px 20px}.horus-service-card h3{font-size:22px}.horus-service-shape{left:-25px;top:-45px}.horus-scip-inner{min-height:400px;align-items:flex-start;padding-top:45px}.horus-scip-inner>div:first-child{max-width:75%}.horus-scip h2{font-size:26px}.horus-scip-stamp{width:135px;height:135px;left:3%;top:auto;bottom:26px;transform:rotate(-7deg)}.horus-scip-stamp b{font-size:38px}.horus-scip-stamp span{font-size:8px}.horus-scip-stamp i{margin-top:5px;width:30px}.horus-scip-watermark{font-size:125px;bottom:-35px}.horus-gallery-section{padding-top:48px;padding-bottom:42px}.horus-post-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.horus-post-caption{padding:9px}.horus-post-caption b{font-size:10px}.horus-category-grid{grid-template-columns:repeat(2,1fr);gap:8px}.horus-category{padding:8px;gap:8px}.horus-category img,.horus-category-placeholder{width:42px;height:42px}.horus-category b{font-size:10px}.horus-contact-inner{align-items:flex-start;gap:18px;flex-direction:column;padding-top:32px;padding-bottom:32px}.horus-contact-band h2{font-size:25px}.horus-phone b{font-size:17px}.horus-home .swiper{margin-top:0}}
+</style>
+@endpush

@@ -60,7 +60,7 @@ class OrderController extends Controller
         ]);
 
         if ($request->delivery_type === 'delivery' && empty(trim($request->address ?? ''))) {
-            return back()->withInput()->withErrors(['address' => 'يرجى تحديد عنوان التوصيل داخل منطقة العامرية.']);
+            return back()->withInput()->withErrors(['address' => 'يرجى تحديد عنوان العميل لتجهيز طلب التوصيل.']);
         }
 
         $order = DB::transaction(function () use ($request) {
@@ -74,13 +74,13 @@ class OrderController extends Controller
                 default => 'ADM',
             };
 
-            $publicOrderId = 'TWH-' . $sourcePrefix . '-' . strtoupper(Str::random(5)) . '-' . date('d');
+            $publicOrderId = 'HOR-' . $sourcePrefix . '-' . strtoupper(Str::random(5)) . '-' . date('d');
             $orderNumber = 'ORD-' . date('Ymd') . '-' . rand(1000, 9999);
 
             // Compute total
             $totalPrice = 0.0;
             foreach ($request->items as $item) {
-                $qty = (float)($item['quantity'] ?? 1);
+                $qty = max(1, (int) round((float)($item['quantity'] ?? 1)));
                 $unitPrice = (float)($item['price'] ?? 0);
                 $totalPrice += ($qty * $unitPrice);
             }
@@ -114,9 +114,16 @@ class OrderController extends Controller
             ]);
 
             foreach ($request->items as $itemData) {
-                $qty = (float)($itemData['quantity'] ?? 1);
+                $qty = max(1, (int) round((float)($itemData['quantity'] ?? 1)));
                 $unitPrice = (float)($itemData['price'] ?? 0);
                 $itemTotal = round($qty * $unitPrice, 2);
+
+                $product = Product::lockForUpdate()->find($itemData['product_id']);
+                if (!$product || !$product->is_active || !$product->is_available || $product->available_stock < $qty) {
+                    throw \Illuminate\Validation\ValidationException::withMessages([
+                        'items' => 'أحد المنتجات لم يعد متاحاً بالكمية المطلوبة. حدّث الطلب وحاول مرة أخرى.',
+                    ]);
+                }
 
                 $order->orderItems()->create([
                     'product_id' => $itemData['product_id'],
@@ -125,16 +132,16 @@ class OrderController extends Controller
                     'quantity' => max(1, (int)round($qty)),
                     'portion_type' => $itemData['portion_type'] ?? 'piece',
                     'portion_label' => $itemData['portion_label'] ?? null,
-                    'custom_amount' => $qty,
+                    'custom_amount' => null,
                     'notes' => $itemData['notes'] ?? null,
                 ]);
 
-                // Deduct stock if product exists
-                $product = Product::lockForUpdate()->find($itemData['product_id']);
+                // Keep the legacy and current inventory columns synchronized.
                 if ($product) {
-                    $newStock = max(0, $product->stock_quantity - (int)ceil($qty));
+                    $newStock = max(0, $product->available_stock - $qty);
                     $product->update([
                         'stock_quantity' => $newStock,
+                        'quantity' => $newStock,
                         'is_available' => $newStock > 0,
                     ]);
                 }

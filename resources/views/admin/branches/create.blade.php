@@ -9,7 +9,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
             <h2 class="text-2xl font-black text-gray-900 tracking-tight">{{ __('إضافة فرع جديد') }}</h2>
-            <p class="text-xs text-gray-500 font-medium mt-0.5">{{ __('أدخل بيانات الفرع الجديد ومواعيد العمل وأرقام التواصل بمنطقة العامرية') }}</p>
+            <p class="text-xs text-gray-500 font-medium mt-0.5">{{ __('أدخل عنوان الموقع وأرقام التواصل ومواعيد العمل.') }}</p>
         </div>
         <a href="{{ route('admin.branches.index') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-orange-200 bg-canvas-base hover:bg-orange-50 text-gray-900 text-xs font-bold transition-colors">
             <span>&rarr;</span>
@@ -39,7 +39,7 @@
                     {{ __('اسم الفرع') }} <span class="text-red-500">*</span>
                 </label>
                 <input type="text" name="name" id="name" value="{{ old('name') }}" required
-                       placeholder="مثال: فرع كينج مريوط"
+                       placeholder="مثال: موقع حورس - حدائق الأهرام"
                        class="w-full bg-canvas-base border border-orange-100 rounded-xl px-4 py-2.5 text-xs font-bold text-gray-900 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 focus:outline-none transition-all">
             </div>
 
@@ -79,7 +79,7 @@
                     {{ __('العنوان التفصيلي للفرع') }} <span class="text-red-500">*</span>
                 </label>
                 <input type="text" name="address" id="address" value="{{ old('address') }}" required
-                       placeholder="مثال: طريق الكينج - بجوار مسجد الفتح، كينج مريوط، العامرية"
+                       placeholder="مثال: ٢٢ع حدائق الأهرام، بوابة حورس"
                        class="w-full bg-canvas-base border border-orange-100 rounded-xl px-4 py-2.5 text-xs font-medium text-gray-900 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 focus:outline-none transition-all">
             </div>
 

@@ -1,7 +1,7 @@
 {{-- resources/views/storefront/orders/index.blade.php --}}
 @extends('storefront.account.layout')
 
-@section('title', 'سجل طلباتي | ألبان وسوبرماركت التوحيد')
+@section('title', 'سجل طلباتي | مؤسسة حورس')
 @section('page_title', 'سجل طلباتي')
 
 @section('account_content')
@@ -133,7 +133,7 @@
             </p>
             <div class="pt-2">
                 <a href="{{ route('site.products') }}" class="inline-block py-2.5 px-6 rounded-xl bg-primary-800 text-white font-bold text-xs">
-                    تصفح منتجات التوحيد
+                    تصفح منتجات حورس
                 </a>
             </div>
         </div>

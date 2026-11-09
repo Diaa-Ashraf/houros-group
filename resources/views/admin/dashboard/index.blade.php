@@ -10,14 +10,14 @@
             <div class="flex items-center gap-2 mb-1.5">
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-orange-100 text-orange-700">
                     <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
-                    <span>لوحة تحكم ألبان وسوبرماركت التوحيد بالعامرية</span>
+                    <span>لوحة تحكم مؤسسة حورس للتوريدات والتشطيبات</span>
                 </span>
             </div>
             <h1 class="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
                 إحصائيات المبيعات والطلبات اليومية
             </h1>
             <p class="text-xs sm:text-sm text-gray-500 font-medium mt-1">
-                نظرة شاملة على حركة المبيعات، الطلبات المعلقة، ونشاط فروع العامرية.
+                نظرة شاملة على المبيعات، الطلبات، المخزون، ونشاط المؤسسة.
             </p>
         </div>
 
@@ -123,7 +123,7 @@
             <div class="flex items-center justify-between mb-5">
                 <div>
                     <h2 class="text-base font-black text-gray-900">الأصناف والمنتجات الأكثر مبيعاً</h2>
-                    <p class="text-xs text-gray-500">المنتجات الأكثر طلباً في ألبان وسوبرماركت التوحيد</p>
+                    <p class="text-xs text-gray-500">المنتجات الأكثر طلباً في مؤسسة حورس</p>
                 </div>
                 <a href="{{ route('admin.products.index') }}" class="text-xs font-bold text-red-600 hover:text-orange-600 transition-colors">
                     عرض كل المنتجات ←
@@ -194,7 +194,7 @@
                         </div>
                         <div>
                             <strong class="text-xs font-bold text-gray-900 block group-hover:text-red-600 transition-colors">إنشاء عرض مجمع (Bundle)</strong>
-                            <span class="text-[11px] text-gray-500 font-medium">ادمج عدة أصناف بلدية بسعر مخفض</span>
+                            <span class="text-[11px] text-gray-500 font-medium">كوّن باقة من منتجات حورس بسعر مخفض.</span>
                         </div>
                     </a>
 
@@ -220,7 +220,7 @@
                         </div>
                         <div>
                             <strong class="text-xs font-bold text-gray-900 block group-hover:text-red-600 transition-colors">متابعة السلات المتروكة</strong>
-                            <span class="text-[11px] text-gray-500 font-medium">التواصل الفوري مع العملاء بالعامرية</span>
+                            <span class="text-[11px] text-gray-500 font-medium">التواصل مع العملاء والمهتمين</span>
                         </div>
                     </a>
 
@@ -234,7 +234,7 @@
                         </div>
                         <div>
                             <strong class="text-xs font-bold text-gray-900 block group-hover:text-red-600 transition-colors">إعدادات المتجر العامة</strong>
-                            <span class="text-[11px] text-gray-500 font-medium">اسم المتجر، أرقام الفروع، ورسوم التوصيل</span>
+                            <span class="text-[11px] text-gray-500 font-medium">اسم المؤسسة، بيانات التواصل، وإعدادات التوصيل</span>
                         </div>
                     </a>
                 </div>

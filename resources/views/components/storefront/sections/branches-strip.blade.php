@@ -6,8 +6,8 @@
  <div class="container mx-auto px-4">
  <!-- Section Header -->
  <div class="text-center max-w-xl mx-auto mb-8 space-y-2">
- <span class="text-xs font-bold text-accent-700 uppercase tracking-wider block">فروعنا بالعامرية والإسكندرية</span>
- <h2 class="text-xl sm:text-3xl font-black text-charcoal-heading">4 فروع في خدمتك يومياً</h2>
+ <span class="text-xs font-bold text-accent-700 uppercase tracking-wider block">زورونا في حدائق الأهرام</span>
+ <h2 class="text-xl sm:text-3xl font-black text-charcoal-heading">فرع حورس في خدمتك</h2>
  <p class="text-xs text-charcoal-muted">نوفر لك إمكانية الشراء المباشر أو الطلب أونلاين والاستلام مجاناً من أقرب فرع لك.</p>
  </div>
 

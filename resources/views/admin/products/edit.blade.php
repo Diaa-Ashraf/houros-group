@@ -92,7 +92,7 @@
                         <div class="flex items-center gap-2">
                             <span class="text-xl">⚖️</span>
                             <h4 class="font-black text-sm text-gray-900">
-                                {{ __('إعدادات البيع بالوزن والتقطيع (للأجبان واللحوم والألبان)') }}
+                                {{ __('إعدادات وحدة البيع والكمية (قطعة، عبوة، متر، كيلوجرام، أو لتر)') }}
                             </h4>
                             <span class="text-[11px] font-black px-2.5 py-0.5 rounded-full"
                                   :class="isWeighted ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-200 text-gray-600'"
@@ -100,7 +100,7 @@
                             </span>
                         </div>
                         <p class="text-xs text-gray-600 font-medium">
-                            {{ __('تفعيل هذا الخيار يمكن العملاء من اختيار الأوزان (ثمن، ربع، نصف، كيلو) أو شراء بمبلغ مالي مخصص (مثال: جبنة بـ 20 ج.م) واختيار طريقة التقطيع.') }}
+                            {{ __('استخدمه للمنتجات التي تباع حسب الوزن أو الطول، وحدد وحدات البيع المتاحة.') }}
                         </p>
                     </div>
 
@@ -124,17 +124,18 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label for="unit_type" class="block text-xs font-bold text-amber-950 mb-1.5">
-                                {{ __('وحدة القياس والتسعير الأساسية') }} <span class="text-red-500">*</span>
+                            {{ __('وحدة البيع الأساسية') }} <span class="text-red-500">*</span>
                             </label>
                             <select id="unit_type" name="unit_type" x-model="unitType" class="w-full px-4 py-2.5 rounded-xl border border-orange-200 bg-white text-xs font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500/20">
-                                <option value="kg">كيلوجرام (كجم) - السعر هو سعر الكيلو الكامل (الافتراضي للأجبان)</option>
-                                <option value="gram">جرام</option>
                                 <option value="piece">قطعة / قالب</option>
+                                <option value="pack">عبوة</option>
+                                <option value="meter">متر</option>
+                                <option value="kg">كيلوجرام (كجم)</option>
                                 <option value="liter">لتر</option>
                             </select>
                         </div>
                         <div class="flex items-center text-xs text-amber-950 bg-white/90 p-3.5 rounded-2xl border border-orange-200 font-medium">
-                            <span>💡 يرجى كتابة <strong>سعر الكيلو الكامل</strong> في خانة "السعر الأساسي" بالأسفل، وسيتكفل المتجر بحساب أسعار الربع والثمن والـ 20 ج.م تلقائياً للعميل.</span>
+                            <span>💡 السعر المدخل هو سعر وحدة القياس المحددة. اترك الخيار مغلقاً للمنتجات المباعة بالقطعة أو العبوة.</span>
                         </div>
                     </div>
 
@@ -142,40 +143,37 @@
                     <div>
                         <h5 class="text-xs font-black text-amber-950 mb-2.5 flex items-center gap-1.5">
                             <span>📊</span>
-                            <span>{{ __('معاينة حية لأسعار الأوزان المحسوبة تلقائياً للعميل:') }}</span>
+                            <span>{{ __('معاينة سعر الوحدة المحسوب تلقائياً للعميل:') }}</span>
                         </h5>
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                             <div class="bg-white p-3 rounded-2xl border border-orange-200 text-center shadow-xs">
-                                <span class="text-[11px] font-bold text-gray-500 block">ثمن كيلو (125 جم)</span>
+                                <span class="text-[11px] font-bold text-gray-500 block">ثمن الوحدة (12.5%)</span>
                                 <span class="text-sm font-black text-red-600 block mt-1" x-text="(basePrice * 0.125).toFixed(2) + ' ج.م'">0.00 ج.م</span>
                             </div>
                             <div class="bg-white p-3 rounded-2xl border border-orange-200 text-center shadow-xs">
-                                <span class="text-[11px] font-bold text-gray-500 block">ربع كيلو (250 جم)</span>
+                                <span class="text-[11px] font-bold text-gray-500 block">ربع الوحدة (25%)</span>
                                 <span class="text-sm font-black text-red-600 block mt-1" x-text="(basePrice * 0.25).toFixed(2) + ' ج.م'">0.00 ج.م</span>
                             </div>
                             <div class="bg-white p-3 rounded-2xl border border-orange-200 text-center shadow-xs">
-                                <span class="text-[11px] font-bold text-gray-500 block">نصف كيلو (500 جم)</span>
+                                <span class="text-[11px] font-bold text-gray-500 block">نصف الوحدة (50%)</span>
                                 <span class="text-sm font-black text-red-600 block mt-1" x-text="(basePrice * 0.50).toFixed(2) + ' ج.م'">0.00 ج.م</span>
                             </div>
                             <div class="bg-white p-3 rounded-2xl border border-orange-200 text-center shadow-xs">
-                                <span class="text-[11px] font-bold text-gray-500 block">كيلو كامل (1000 جم)</span>
+                                <span class="text-[11px] font-bold text-gray-500 block">وحدة كاملة</span>
                                 <span class="text-sm font-black text-red-600 block mt-1" x-text="(basePrice * 1.0).toFixed(2) + ' ج.م'">0.00 ج.م</span>
                             </div>
                         </div>
                     </div>
 
-                    {{-- Slicing Options Supported --}}
+                    {{-- Unit selling guidance --}}
                     <div class="p-4 bg-white/80 rounded-2xl border border-orange-200">
                         <h5 class="text-xs font-black text-amber-950 mb-2 flex items-center gap-1.5">
-                            <span>🔪</span>
-                            <span>{{ __('خيارات التقطيع المتاحة للزبون في صفحة المنتج:') }}</span>
+                            <span>📐</span>
+                            <span>{{ __('تذكير بوحدات البيع:') }}</span>
                         </h5>
                         <div class="flex flex-wrap gap-2 text-xs font-bold text-gray-700">
-                            <span class="px-3 py-1 bg-amber-100/70 border border-amber-200 rounded-xl">🥪 شرائح رقيقة (ساندوتشات)</span>
-                            <span class="px-3 py-1 bg-amber-100/70 border border-amber-200 rounded-xl">🧀 شرائح سميكة</span>
-                            <span class="px-3 py-1 bg-amber-100/70 border border-amber-200 rounded-xl">🧱 قالب سليم (بدون تقطيع)</span>
-                            <span class="px-3 py-1 bg-amber-100/70 border border-amber-200 rounded-xl">🥣 مكعبات / بشر</span>
-                            <span class="px-3 py-1 bg-emerald-100/70 border border-emerald-200 text-emerald-900 rounded-xl">💵 شراء بقيمة مخصصة (مثال: بـ 20 ج.م)</span>
+                            <span class="px-3 py-1 bg-amber-100/70 border border-amber-200 rounded-xl">الوحدة الكاملة</span>
+                            <span class="px-3 py-1 bg-emerald-100/70 border border-emerald-200 text-emerald-900 rounded-xl">أجزاء الوحدة تحسب كنسبة من السعر</span>
                         </div>
                     </div>
                 </div>
@@ -191,7 +189,7 @@
                 @endphp
                 <input type="text" id="keywords" name="keywords" 
                        class="w-full px-4 py-2.5 rounded-xl border border-orange-100 bg-canvas-base text-gray-900 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 focus:outline-none text-xs font-medium transition-all @error('keywords') border-red-500 @enderror" 
-                       value="{{ old('keywords', $keywordsVal) }}" placeholder="ألبان، جبن، طازج">
+                       value="{{ old('keywords', $keywordsVal) }}" placeholder="دهانات، جبسون بورد، أدوات تشطيب، ديكور">
                 @error('keywords')
                     <p class="text-red-500 text-xs mt-1.5 font-bold">{{ $message }}</p>
                 @enderror
@@ -236,7 +234,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
                 <div>
                     <label for="price" class="block text-xs font-bold text-gray-900 mb-2">
-                        {{ __('السعر الأساسي (أو سعر الكيلو)') }} (ج.م) <span class="text-red-500">*</span>
+                        {{ __('سعر وحدة البيع') }} (ج.م) <span class="text-red-500">*</span>
                     </label>
                     <div class="relative">
                         <input type="number" step="0.01" id="price" name="price" 
@@ -277,6 +275,10 @@
                     @enderror
                 </div>
             </div>
+
+            <p class="-mt-4 text-[11px] leading-relaxed text-primary-800 bg-primary-50 border border-primary-100 rounded-xl px-3 py-2">
+                اكتب السعر الفعلي للبيع. عند إبقاء السعر 0 يظهر الصنف كطلب استفسار، ويتواصل العميل معكم عبر واتساب بدلاً من إضافته للسلة.
+            </p>
 
             {{-- Flags & Switches --}}
             <div class="p-4 rounded-2xl bg-canvas-base border border-orange-100 flex flex-wrap items-center gap-8">

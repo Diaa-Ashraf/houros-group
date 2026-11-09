@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title', __('حسابي ولوحة التحكم الشخصية - ') . settings('site_name', 'Regalest Store'))
+@section('title', __('حسابي ولوحة التحكم الشخصية - ') . settings('site_name', 'مؤسسة حورس للتوريدات والتشطيبات'))
 
 @section('content')
 <div class="bg-[#FAF8F5] min-h-[85vh] py-4 sm:py-8 md:py-12 text-[#18181B]" x-data="{ 
@@ -414,7 +414,7 @@
  
  </div>
  <h3 class="text-sm sm:text-base font-bold text-[#18181B]">{{ __('لا توجد طلبات سابقة حتى الآن') }}</h3>
- <p class="text-xs text-[#71717A] max-w-sm mx-auto">{{ __('استكشف تشكيلتنا الحصرية من المجوهرات والمقتنيات الملكية وابدأ طلبك الأول الآن.') }}</p>
+ <p class="text-xs text-[#71717A] max-w-sm mx-auto">{{ __('استكشف خامات التشطيب والديكور المتاحة لدى مؤسسة حورس وابدأ طلبك الآن.') }}</p>
  <div class="pt-2">
  <a href="{{ route('product.shop') }}" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#18181B] text-[#EADBCC] hover:bg-black text-xs font-bold transition-all shadow-sm">
  <span></span>

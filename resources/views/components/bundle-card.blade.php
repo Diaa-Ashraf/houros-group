@@ -8,7 +8,7 @@ $savingsAmount = max(0, (float)$bundle->original_total - (float)$bundle->bundle_
 
 // Build WhatsApp Payload for Bundles
 $storePhone = preg_replace('/[^0-9]/', '', settings('whatsapp_number', '01000000000'));
-$waText = "طلب عرض مجمع من سوبرماركت وألبان التوحيد \n"
+$waText = "طلب عرض مجمع من مؤسسة حورس للتوريدات والتشطيبات \n"
 . "▪ العرض: " . $bundle->name . "\n"
 . "▪ السعر الإجمالي: " . $displayPrice . "\n"
 . "▪ يحتوي على: " . $bundle->products->pluck('name')->implode(' + ');

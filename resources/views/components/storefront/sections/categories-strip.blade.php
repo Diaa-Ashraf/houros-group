@@ -7,7 +7,7 @@
         <div class="flex items-center justify-between mb-5">
             <div>
                 <span class="text-xs font-bold text-accent-700 uppercase tracking-wider block">تسوق حسب القسم</span>
-                <h2 class="text-lg sm:text-2xl font-black text-charcoal-heading">أقسام ألبان وسوبرماركت التوحيد</h2>
+                <h2 class="text-lg sm:text-2xl font-black text-charcoal-heading">أقسام مؤسسة حورس</h2>
             </div>
             <a href="{{ route('site.products') }}" class="text-xs font-bold text-primary-800 hover:text-accent-600 transition-colors flex items-center gap-1">
                 <span>عرض الكل</span>

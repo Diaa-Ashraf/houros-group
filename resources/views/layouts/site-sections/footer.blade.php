@@ -1,9 +1,9 @@
-<!-- Grounded Luxury Footer (Royal Gold & Dark Obsidian) -->
-<footer class="bg-[#C5A059] text-[#18181B] border-t border-[#B38E44] pt-14 pb-10">
+<!-- Horus Group site footer -->
+<footer class="bg-[#073f40] text-white border-t border-[#82d9c7]/30 pt-14 pb-10">
  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
  <!-- Main Footer Grid -->
- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pb-10 border-b border-black/15">
+ <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pb-10 border-b border-white/15">
 
  <!-- Col 1: Brand Essence -->
  <div class="space-y-3">
@@ -12,33 +12,33 @@
  @endphp
  <a href="{{ route('site.home') }}" class="flex items-center gap-2.5 group">
  @if($footerLogo)
- <img src="{{ $footerLogo }}" alt="{{ settings('site_name', 'Regalest Store') }}" class="h-9 max-w-[45px] object-contain drop-shadow-sm rounded-lg">
+ <img src="{{ $footerLogo }}" alt="{{ settings('site_name', 'مؤسسة حورس للتوريدات والتشطيبات') }}" class="h-9 max-w-[45px] object-contain drop-shadow-sm rounded-lg">
  @else
- <span class="text-2xl"></span>
+                    <span class="horus-brand-mark w-10 h-10 rounded-xl text-white flex items-center justify-center font-black text-xl">ح</span>
  @endif
  <div>
- <h3 class="font-royal text-lg font-bold tracking-wider text-[#18181B] group-hover:text-white transition-colors">
- {{ settings('site_name', 'Regalest Store') }}
+ <h3 class="font-royal text-lg font-bold tracking-wider text-white group-hover:text-[#82d9c7] transition-colors">
+ {{ settings('site_name', 'مؤسسة حورس للتوريدات والتشطيبات') }}
  </h3>
- <span class="text-[9px] tracking-[0.2em] text-[#18181B]/80 uppercase block font-bold">
- {{ settings('site_slogan', __('Haute Horlogerie • المتجر الملكي')) }}
+ <span class="text-[9px] tracking-[0.2em] text-[#82d9c7] uppercase block font-bold">
+ {{ settings('site_tagline', 'حلول متكاملة للتشطيب والديكور') }}
  </span>
  </div>
  </a>
 
- <p class="text-xs leading-relaxed text-[#18181B]/85 font-medium">
- {{ settings('footer_about', __('وجهتك الأولى لاقتناء أرقى ساعات اليد والمقتنيات الكلاسيكية المصممة بأعلى معايير الحرفية والدقة الملكية مع شحن مباشر.')) }}
+ <p class="text-xs leading-relaxed text-white/75 font-medium">
+ {{ settings('about_us_short', 'خامات الديكور والتشطيب ودهانات SCIB وأدوات البناء في مكان واحد.') }}
  </p>
 
  <!-- Social Icons -->
  @php
- $storePhone = preg_replace('/[^0-9]/', '', settings('whatsapp_number', '963999999999'));
+ $storePhone = preg_replace('/[^0-9]/', '', settings('store_whatsapp', '201002527072'));
  $fbLink = settings('facebook_link', '');
  $instaLink = settings('instagram_link', '');
  $xLink = settings('twitter_link', '');
  @endphp
  <div class="flex items-center gap-2 pt-1">
- <a href="https://wa.me/{{ $storePhone }}" target="_blank" class="w-8 h-8 rounded-full bg-[#18181B] text-[#25D366] hover:bg-[#25D366] hover:text-white transition-all shadow-xs flex items-center justify-center" title="WhatsApp">
+ <a href="https://wa.me/{{ $storePhone }}" target="_blank" class="w-8 h-8 rounded-full bg-white/10 text-[#25D366] hover:bg-[#25D366] hover:text-white transition-all shadow-xs flex items-center justify-center" title="WhatsApp">
  <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z" />
  </svg>
@@ -82,17 +82,17 @@
  <div>
  <h4 class="text-xs font-black text-[#18181B] uppercase tracking-wider mb-4 flex items-center gap-1.5">
  <span class="w-1.5 h-1.5 rounded-full bg-[#18181B]"></span>
- {{ __('خدمة العملاء والشحن') }}
+ {{ __('التواصل والتوصيل') }}
  </h4>
- <ul class="space-y-2 text-xs font-semibold text-[#18181B]/90">
+ <ul class="space-y-2 text-xs font-semibold text-white/80">
  <li class="flex items-center gap-2">
  <span class="text-[#18181B]"></span>
- <span>{{ settings('store_address', 'دمشق، سوريا • شحن لكافة المحافظات') }}</span>
+                    <span>{{ settings('address', '٢٢ع حدائق الأهرام، بوابة حورس') }}</span>
  </li>
  <li class="flex items-center gap-2">
  <span class="text-[#18181B]"></span>
  <a href="https://wa.me/{{ $storePhone }}" dir="ltr" class="text-[#18181B] hover:text-white font-bold transition-colors">
- {{ settings('whatsapp_number', '+963 999 999 999') }}
+                    {{ settings('store_phone', '01002527072') }}
  </a>
  </li>
  <li class="flex items-center gap-2">
@@ -108,10 +108,10 @@
  <!-- Copyright -->
  <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-bold text-[#18181B]/80">
  <p>
- © {{ date('Y') }} {{ settings('site_name', 'Regalest Store') }}. {{ __('جميع الحقوق محفوظة.') }}
+ © {{ date('Y') }} {{ settings('site_name', 'مؤسسة حورس للتوريدات والتشطيبات') }}. {{ __('جميع الحقوق محفوظة.') }}
  </p>
  <div class="text-[11px] text-[#18181B] font-black">
- {{ settings('site_slogan', __('المتجر الفاخر للهدايا والمقتنيات')) }}
+ {{ settings('site_tagline', 'حلول متكاملة للتشطيب والديكور') }}
  </div>
  </div>
 

@@ -74,6 +74,6 @@ class SocialAuthController extends Controller
 
         Auth::login($user, true);
 
-        return redirect()->intended(route('site.home'))->with('success', __('تم تسجيل الدخول بنجاح! مرحباً بك في متجر Regalest.'));
+        return redirect()->intended(route('site.home'))->with('success', __('تم تسجيل الدخول بنجاح! أهلاً بك في مؤسسة حورس.'));
     }
 }

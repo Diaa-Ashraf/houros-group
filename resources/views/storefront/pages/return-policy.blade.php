@@ -1,7 +1,7 @@
 {{-- resources/views/storefront/pages/return-policy.blade.php --}}
 @extends('layouts.storefront')
 
-@section('title', 'سياسة الاستبدال والاسترجاع | ' . settings('site_name', 'ألبان وسوبرماركت التوحيد'))
+@section('title', 'سياسة الاستبدال والاسترجاع | ' . settings('site_name', 'مؤسسة حورس للتوريدات والتشطيبات'))
 
 @section('content')
 @php
@@ -22,10 +22,10 @@
         <div class="bg-white rounded-3xl border border-cream p-6 sm:p-10 shadow-sm space-y-8">
             <div class="border-b border-gray-100 pb-5 space-y-2">
                 <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-800 border border-amber-100">
-                    ضمان رضا العميل بنسبة 100%
+                    سياسة خدمة العملاء
                 </span>
                 <h1 class="text-2xl sm:text-3xl font-black text-charcoal-heading">سياسة الاستبدال والاسترجاع</h1>
-                <p class="text-xs text-charcoal-muted">حرصاً منا على صحة وسلامة أهالينا في العامرية</p>
+                <p class="text-xs text-charcoal-muted">لضمان معالجة واضحة وعادلة لكل طلب</p>
             </div>
 
             @if(!empty($customReturn))
@@ -35,38 +35,37 @@
             @else
             <div class="text-xs sm:text-sm text-charcoal leading-relaxed space-y-6">
                 <section class="space-y-2">
-                    <h2 class="text-base font-bold text-primary-800">1. فحص الطلب فور الاستلام (حق العميل الكامل)</h2>
+                    <h2 class="text-base font-bold text-primary-800">1. مراجعة الطلب عند الاستلام</h2>
                     <p class="text-charcoal-muted">
-                        يحق للعميل فحص جميع الأصناف والمنتجات بحضور مندوب التوصيل قبل مغادرته، أو عند استلام الطلب داخل الفرع. في حال وجود أي منتج غير مطابق أو تالف، يحق للعميل رفض استلام هذا المنتج فوراً وخصم قيمته من الفاتورة.
+                        يرجى مراجعة المنتجات عند الاستلام. إذا وصل منتج تالفاً أو غير مطابق للطلب، تواصل معنا مع رقم الطلب وصورة توضح المشكلة حتى نراجعها ونرتب الحل المناسب.
                     </p>
                 </section>
 
                 <section class="space-y-2">
-                    <h2 class="text-base font-bold text-primary-800">2. المنتجات الطازجة سريعة التلف (الألبان، القشطة، الأجبان الطازجة)</h2>
+                    <h2 class="text-base font-bold text-primary-800">2. الاستبدال والاسترجاع</h2>
                     <p class="text-charcoal-muted">
-                        نظراً لطبيعة منتجات الألبان الطازجة وحساسيتها العالية للحرارة وحفظها المبرد، نرجو الإبلاغ عن أي ملاحظة بخصوص جودة المنتج أو مذاقه خلال <strong>24 ساعة</strong> كحد أقصى من الاستلام، مع الاحتفاظ بالمنتج وعبوته في الثلاجة حتى يتم إرسال مندوب لاستبداله أو استرداد قيمته.
+                        تختلف حالة كل منتج بحسب نوعه وحالته عند التسليم. تواصل معنا قبل إعادة أي منتج لنوضح لك خطوات الاستبدال أو الاسترجاع المناسبة.
                     </p>
                 </section>
 
                 <section class="space-y-2">
-                    <h2 class="text-base font-bold text-primary-800">3. منتجات البقالة والمعلبات الجافة</h2>
+                    <h2 class="text-base font-bold text-primary-800">3. المنتجات التي تم توريدها أو تركيبها</h2>
                     <p class="text-charcoal-muted">
-                        يمكن استبدال أو استرجاع منتجات البقالة الجافة والمغلفة خلال <strong>14 يوماً</strong> من تاريخ الشراء، بشرط أن تكون العبوة الأصلية مغلقة تماماً ولم يتم فتحها أو استخدامها، ومرفقة بفاتورة الشراء أو رقم الطلب.
+                        المنتجات التي تم قصها أو تجهيزها حسب الطلب أو تركيبها قد تتطلب مراجعة خاصة. يرجى التحقق من المقاسات والمواصفات قبل اعتماد الطلب، والتواصل معنا فوراً عند وجود اختلاف.
                     </p>
                 </section>
 
                 <section class="space-y-2">
                     <h2 class="text-base font-bold text-primary-800">4. آلية استرداد الأموال</h2>
                     <div class="text-charcoal-muted space-y-1">
-                        <p><strong>الدفع نقداً عند الاستلام:</strong> يتم رد المبلغ نقداً فور استلام الصنف المسترجع من مندوبنا.</p>
-                        <p><strong>الدفع عبر InstaPay:</strong> يتم تحويل المبلغ المسترد إلى نفس حساب InstaPay أو المحفظة الإلكترونية للعميل خلال 24 ساعة من تأكيد عملية الإرجاع.</p>
+                        <p>يتم الاتفاق مع العميل على طريقة إعادة المبلغ بعد مراجعة الطلب وحالة المنتجات.</p>
                     </div>
                 </section>
 
                 <section class="space-y-2">
                     <h2 class="text-base font-bold text-primary-800">5. كيف تقدم طلب استرجاع أو استبدال؟</h2>
                     <p class="text-charcoal-muted">
-                        يمكنك التواصل مباشرة مع خدمة العملاء عبر واتساب أو الاتصال الهاتفي (<span dir="ltr">{{ settings('store_phone', '01000000000') }}</span>) أو من خلال صفحة <a href="{{ route('contact.index') }}" class="text-primary-800 font-bold underline">اتصل بنا</a> وتزويدنا برقم طلبك وسيقوم فريقنا بخدمتك على الفور.
+                        تواصل معنا عبر واتساب أو الاتصال الهاتفي (<span dir="ltr">{{ settings('store_phone', '01002527072') }}</span>) أو من خلال صفحة <a href="{{ route('contact.index') }}" class="text-primary-800 font-bold underline">اتصل بنا</a> مع رقم الطلب وتفاصيل المشكلة.
                     </p>
                 </section>
             </div>

@@ -11,7 +11,7 @@ use Illuminate\View\View;
 class PageController extends Controller
 {
     /**
-     * Display the About Us page with Alban Al-Tawheed's story, values & branches overview.
+     * Display the Horus Group about page and active branch overview.
      */
     public function about(): View
     {
@@ -102,10 +102,9 @@ class PageController extends Controller
             ];
         }
 
-        // Active Products
+        // Include active quote-only products so search engines can discover the full catalog.
         $products = \App\Models\Product::select(['id', 'slug', 'updated_at'])
             ->where('is_active', true)
-            ->where('is_available', true)
             ->latest('updated_at')
             ->take(500)
             ->get();

@@ -1,7 +1,7 @@
 {{-- resources/views/storefront/categories/show.blade.php --}}
 @extends('layouts.storefront')
 
-@section('title', $category->name . ' | ألبان وسوبرماركت التوحيد')
+@section('title', $category->name . ' | مؤسسة حورس')
 
 @section('content')
 <div class="py-8 bg-canvas-base min-h-screen">
@@ -19,7 +19,7 @@
  <!-- Category Hero Banner -->
  <div class="bg-white rounded-3xl p-6 sm:p-8 border border-cream shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
  <div class="space-y-1 text-center sm:text-start">
- <span class="text-xs font-bold text-accent-700 uppercase tracking-wider block">قسم في ألبان وسوبرماركت التوحيد</span>
+ <span class="text-xs font-bold text-accent-700 uppercase tracking-wider block">قسم من منتجات مؤسسة حورس</span>
  <h1 class="text-2xl sm:text-3xl font-black text-charcoal-heading">{{ $category->name }}</h1>
  @if($category->description)
  <p class="text-xs sm:text-sm text-charcoal-muted max-w-xl leading-relaxed">{{ $category->description }}</p>
@@ -133,12 +133,12 @@
  @else
  <div class="bg-white rounded-3xl p-12 border border-cream text-center space-y-3 shadow-sm">
  <span class="text-4xl block"></span>
- <h3 class="text-base font-bold text-charcoal-heading">لا توجد منتجات مطابقة في هذا القسم حالياً</h3>
+ <h3 class="text-base font-bold text-charcoal-heading">قائمة منتجات هذا القسم قيد التجهيز</h3>
  <p class="text-xs text-charcoal-muted max-w-sm mx-auto">
- جرب تغيير خيارات الفلترة أو تصفح باقي أقسام سوبرماركت التوحيد.
+ تواصل مع مؤسسة حورس لمعرفة الخامات المتاحة وأسعارها.
  </p>
- <a href="{{ route('category.product', $category->id) }}" class="inline-block px-5 py-2.5 rounded-xl bg-primary-800 text-white font-bold text-xs">
- عرض كل منتجات القسم
+ <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', settings('store_whatsapp', '201002527072')) }}?text={{ urlencode('مرحباً حورس، أريد الاستفسار عن: ' . $category->name) }}" target="_blank" rel="noopener noreferrer" class="inline-block px-5 py-2.5 rounded-xl bg-primary-800 text-white font-bold text-xs">
+ اسأل عن منتجات {{ $category->name }}
  </a>
  </div>
  @endif

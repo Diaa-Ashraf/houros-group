@@ -66,7 +66,7 @@
                         {{ __('عنوان إصدار المجلة') }} <span class="text-red-500">*</span>
                     </label>
                     <input type="text" name="title" id="title" required
-                        value="{{ old('title', 'مجلة عروض ألبان وسوبرماركت التوحيد') }}"
+                        value="{{ old('title', 'عروض مؤسسة حورس للتوريدات والتشطيبات') }}"
                         placeholder="مثال: مجلة عروض الأسبوع الأول من أكتوبر"
                         class="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 text-gray-900 font-bold text-xs focus:border-red-500 focus:bg-white focus:ring-2 focus:ring-red-500/20 focus:outline-none transition-all">
                 </div>
@@ -88,7 +88,7 @@
                         {{ __('الوصف الترويجي أسفل العنوان') }}
                     </label>
                     <input type="text" name="subtitle" id="subtitle"
-                        value="{{ old('subtitle', 'تصفح كل عروض الأسبوع، كراتين التوفير، الخصومات الحصرية على الألبان الفلاحي الطازجة وسلع التموين بفروع العامرية الأربعة.') }}"
+                        value="{{ old('subtitle', 'اكتشف أحدث عروض خامات التشطيب والديكور لدى مؤسسة حورس.') }}"
                         class="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 text-gray-900 font-medium text-xs focus:border-red-500 focus:bg-white focus:ring-2 focus:ring-red-500/20 focus:outline-none transition-all">
                 </div>
 

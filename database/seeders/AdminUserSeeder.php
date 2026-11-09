@@ -2,38 +2,51 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use RuntimeException;
 
 class AdminUserSeeder extends Seeder
 {
     public function run(): void
     {
-        $adminPassword = env('ADMIN_INITIAL_PASSWORD', '12345678');
+        $email = 'admin@horusgroup.com';
+        $admin = User::where('email', $email)->first();
 
-        $admin = User::updateOrCreate(
-            ['email' => 'admin@altawheed.com'],
-            [
-                'name' => 'مدير ألبان التوحيد',
-                'password' => Hash::make($adminPassword),
-                'phone' => '01000000000',
-                'address' => 'العامرية، الإسكندرية',
+        // Preserve the existing administrator and password when moving from the old store.
+        if (!$admin) {
+            $legacyAdmin = User::where('email', 'admin@altawheed.com')->first();
+            if ($legacyAdmin && $legacyAdmin->hasRole('super_admin')) {
+                $legacyAdmin->update(['email' => $email, 'name' => 'مدير مؤسسة حورس']);
+                $admin = $legacyAdmin->fresh();
+            }
+        }
+
+        if (!$admin) {
+            $password = env('ADMIN_INITIAL_PASSWORD');
+            if (!$password) {
+                throw new RuntimeException('Set ADMIN_INITIAL_PASSWORD before creating the Horus administrator account.');
+            }
+
+            $admin = User::create([
+                'name' => 'مدير مؤسسة حورس',
+                'email' => $email,
+                'password' => Hash::make($password),
+                'phone' => '01002527072',
+                'address' => '٢٢ع حدائق الأهرام، بوابة حورس',
                 'is_active' => true,
                 'email_verified_at' => now(),
-            ]
-        );
+            ]);
+        } else {
+            $admin->update([
+                'name' => 'مدير مؤسسة حورس',
+                'phone' => '01002527072',
+                'address' => '٢٢ع حدائق الأهرام، بوابة حورس',
+                'is_active' => true,
+            ]);
+        }
 
         $admin->syncRoles(['super_admin']);
-
-        // Also ensure admin@regalest.com if existing has super_admin role and valid password
-        $oldAdmin = User::where('email', 'admin@regalest.com')->first();
-        if ($oldAdmin) {
-            $oldAdmin->update([
-                'name' => 'مدير النظام',
-                'password' => Hash::make($adminPassword),
-            ]);
-            $oldAdmin->syncRoles(['super_admin']);
-        }
     }
 }

@@ -1,9 +1,9 @@
 {{-- resources/views/components/storefront/layout/whatsapp-float.blade.php --}}
 @php
     $isEnabled = settings('whatsapp_floating_button', '1') == '1';
-    $storeWhatsApp = settings('store_whatsapp', '201000000000');
+    $storeWhatsApp = settings('store_whatsapp', '201002527072');
     $cleanNumber = preg_replace('/[^0-9]/', '', $storeWhatsApp);
-    $defaultMessage = urlencode('مرحباً ألبان التوحيد، أريد الاستفسار عن المنتجات والتوصيل في العامرية');
+    $defaultMessage = urlencode('مرحباً مؤسسة حورس، أريد الاستفسار عن المنتجات والأسعار.');
 @endphp
 
 @if($isEnabled)

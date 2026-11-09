@@ -3,15 +3,13 @@
 	
 	<!-- Brand / Logo Area -->
 	<div class="h-20 flex items-center gap-3 px-6 border-b border-[#EADBCC]">
-		<div class="w-10 h-10 rounded-xl bg-gradient-maroon text-white flex items-center justify-center text-xl font-bold shadow-sm flex-shrink-0">
-			ت
-		</div>
+		<img src="{{ asset('assets/site/img/horus-mark.png') }}" alt="" class="w-10 h-10 rounded-xl object-contain flex-shrink-0">
 		<div class="min-w-0">
 			<h1 class="font-bold text-sm text-[#18181B] leading-tight truncate">
-				{{ settings('site_name', 'ألبان وسوبرماركت التوحيد') }}
+				{{ settings('site_name', 'مؤسسة حورس للتوريدات والتشطيبات') }}
 			</h1>
 			<span class="text-[11px] text-[#71717A] block font-medium">
-				{{ __('لوحة إدارة السوبرماركت والفروع') }}
+				{{ __('لوحة إدارة مؤسسة حورس') }}
 			</span>
 		</div>
 	</div>
@@ -42,7 +40,7 @@
 		<a href="{{ route('admin.branches.index') }}" 
 		   class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all {{ request()->routeIs('admin.branches.*') ? 'bg-[#C5A059] text-white shadow-sm' : 'text-[#52525B] hover:text-[#18181B] hover:bg-[#F8F6F2]' }}">
 			<span class="text-base flex-shrink-0">🏪</span>
-			<span class="whitespace-nowrap">{{ __('فروع التوحيد (4 فروع)') }}</span>
+			<span class="whitespace-nowrap">{{ __('موقع المؤسسة') }}</span>
 		</a>
 
 		<!-- Orders -->

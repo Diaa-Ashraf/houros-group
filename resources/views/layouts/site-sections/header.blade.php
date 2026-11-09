@@ -1,6 +1,6 @@
 @php
-$storePhone = preg_replace('/[^0-9]/', '', settings('whatsapp_number', '963999999999'));
-$waConciergeUrl = "https://wa.me/{$storePhone}?text=" . urlencode("مرحباً بك، أود الاستفسار عن المقتنيات والهدايا المتوفرة لدى المتجر.");
+$storePhone = preg_replace('/[^0-9]/', '', settings('store_whatsapp', '201002527072'));
+$waConciergeUrl = "https://wa.me/{$storePhone}?text=" . urlencode("مرحباً مؤسسة حورس، أود الاستفسار عن خامات التشطيب والديكور.");
 @endphp
 
 <div x-data="{
@@ -61,7 +61,8 @@ $waConciergeUrl = "https://wa.me/{$storePhone}?text=" . urlencode("مرحباً 
  }
  }"
  :class="isScrolled ? 'shadow-2xl bg-[#C5A059]/95 backdrop-blur-md border-b border-[#B38E44] py-0' : 'bg-[#C5A059] shadow-md'"
- class="w-full sticky top-0 z-50 text-[#18181B] transition-all duration-300 ease-in-out">
+ class="w-full sticky top-0 z-50 text-white transition-all duration-300 ease-in-out"
+ :class="isScrolled ? 'shadow-xl bg-[#073f40]/95 backdrop-blur-md border-b border-[#82d9c7]/30 py-0' : 'bg-[#073f40] shadow-md'">
 
  {{-- Layer A: Top Utility Marquee Bar (Collapses smoothly on scroll) --}}
  <div x-show="!isScrolled"
@@ -73,15 +74,15 @@ $waConciergeUrl = "https://wa.me/{$storePhone}?text=" . urlencode("مرحباً 
  {{-- Marquee Ticker --}}
  <div class="flex-1 overflow-hidden whitespace-nowrap">
  <div class="inline-block animate-marquee hover:pause">
- <span class="mx-3 sm:mx-6 text-[#EADBCC] font-bold">{{ __('أسرع قبل نفاد الكمية! أفضل العروض بانتظارك بضغطة واحدة!') }}</span>
- <span class="mx-3 sm:mx-6 text-gray-300">{{ __('تسوق الآن واستمتع بتجربة مختلفة تماماً من الهدايا والإكسسوارات الفاخرة!') }}</span>
- <span class="mx-3 sm:mx-6 text-[#EADBCC] font-bold">{{ __('شحن سريع وموثوق لكافة المحافظات مع الدفع عند الاستلام') }}</span>
+ <span class="mx-3 sm:mx-6 text-[#82d9c7] font-bold">{{ __('خامات تشطيب وديكور متنوعة بجودة تليق بشغلك') }}</span>
+ <span class="mx-3 sm:mx-6 text-white/75">{{ __('من التأسيس لحد آخر لمسة ديكور، حورس معاك خطوة بخطوة') }}</span>
+ <span class="mx-3 sm:mx-6 text-[#82d9c7] font-bold">{{ __('تواصل معنا لتأكيد التوافر والتوصيل وطرق الدفع') }}</span>
  </div>
  </div>
 
  {{-- Currency & Language Controls --}}
  <div class="flex items-center gap-2 sm:gap-3 shrink-0">
- <span class="text-[9px] sm:text-[10px] font-bold text-[#18181B] bg-[#EADBCC] rounded-full px-2 py-0.5">USD ($)</span>
+ <span class="text-[9px] sm:text-[10px] font-bold text-[#073f40] bg-[#82d9c7] rounded-full px-2 py-0.5">جنيه مصري</span>
 
  <div class="flex items-center gap-1 text-[9px] sm:text-[10px]">
  @if(app()->getLocale() === 'ar')
@@ -469,7 +470,7 @@ $waConciergeUrl = "https://wa.me/{$storePhone}?text=" . urlencode("مرحباً 
 
  <div class="p-4 border-b border-gray-100 flex items-center justify-between bg-[#F8F9FA]">
  <div class="flex items-center gap-2">
- <span class="font-royal font-bold text-base text-[#18181B]">{{ __('سلة المقتنيات') }}</span>
+ <span class="font-royal font-bold text-base text-[#18181B]">{{ __('سلة المشتريات') }}</span>
  <span class="text-xs px-2 py-0.5 rounded-full bg-[#C5A059] text-white font-bold" x-text="cart.count"></span>
  </div>
  <button @click="cartDrawerOpen = false" class="p-1 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-200 transition-colors">

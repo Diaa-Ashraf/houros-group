@@ -14,28 +14,28 @@ class SettingsSeeder extends Seeder
             [
                 'group' => 'general',
                 'key' => 'site_name',
-                'value' => 'ألبان وسوبرماركت التوحيد',
+                'value' => 'مؤسسة حورس للتوريدات والتشطيبات',
                 'type' => 'text',
                 'description' => 'اسم المتجر الرسمي',
             ],
             [
                 'group' => 'general',
                 'key' => 'site_tagline',
-                'value' => 'أصالة الطعم البلدي وجودة السوبرماركت في العامرية',
+                'value' => 'حلول متكاملة للتشطيب والديكور',
                 'type' => 'text',
                 'description' => 'الشعار اللفظي للمتجر',
             ],
             [
                 'group' => 'general',
                 'key' => 'site_logo',
-                'value' => 'assets/site/img/logo.png',
+                'value' => 'assets/site/img/horus-logo.png',
                 'type' => 'image',
                 'description' => 'شعار المتجر الرسمي (Logo)',
             ],
             [
                 'group' => 'general',
                 'key' => 'site_favicon',
-                'value' => 'assets/site/img/logo.png',
+                'value' => 'assets/site/img/horus-mark.png',
                 'type' => 'image',
                 'description' => 'أيقونة التاب في المتصفح (Favicon)',
             ],
@@ -58,49 +58,49 @@ class SettingsSeeder extends Seeder
             [
                 'group' => 'contact',
                 'key' => 'store_phone',
-                'value' => '01000000000',
+                'value' => '01002527072',
                 'type' => 'text',
                 'description' => 'رقم هاتف المتجر والشكاوى الرئيسي',
             ],
             [
                 'group' => 'contact',
                 'key' => 'store_phone_secondary',
-                'value' => '034400000',
+                'value' => '',
                 'type' => 'text',
                 'description' => 'هاتف إضافي أو خط أرضي',
             ],
             [
                 'group' => 'contact',
                 'key' => 'store_whatsapp',
-                'value' => '201000000000',
+                'value' => '201002527072',
                 'type' => 'text',
                 'description' => 'رقم الواتساب الموحد لاستقبال الطلبات',
             ],
             [
                 'group' => 'contact',
                 'key' => 'store_email',
-                'value' => 'info@altawheed-dairy.com',
+                'value' => '',
                 'type' => 'text',
                 'description' => 'البريد الإلكتروني الرسمي',
             ],
             [
                 'group' => 'contact',
                 'key' => 'address',
-                'value' => 'شارع المستشفى - بجوار الإسعاف، العامرية، الإسكندرية',
+                'value' => '٢٢ع حدائق الأهرام، بوابة حورس',
                 'type' => 'text',
                 'description' => 'عنوان الإدارة والفرع الرئيسي',
             ],
             [
                 'group' => 'contact',
                 'key' => 'working_hours',
-                'value' => 'يومياً: من 8:00 صباحاً حتى 2:00 بعد منتصف الليل',
+                'value' => 'تواصل معنا لمعرفة مواعيد العمل',
                 'type' => 'text',
                 'description' => 'مواعيد العمل الرسمية واستقبال الزوار',
             ],
             [
                 'group' => 'contact',
                 'key' => 'delivery_working_hours',
-                'value' => 'خدمة التوصيل السريع متاحة يومياً من 8:00 ص حتى 2:00 ص',
+                'value' => 'تواصل معنا لمعرفة تفاصيل التوصيل',
                 'type' => 'text',
                 'description' => 'مواعيد حركة أسطول التوصيل للمنازل',
             ],
@@ -130,7 +130,7 @@ class SettingsSeeder extends Seeder
             [
                 'group' => 'payments',
                 'key' => 'instapay_username',
-                'value' => 'altawheed@instapay',
+                'value' => 'horus.demo@instapay',
                 'type' => 'text',
                 'description' => 'عنوان الدفع اللحظي (InstaPay IPA / Username)',
             ],
@@ -144,14 +144,14 @@ class SettingsSeeder extends Seeder
             [
                 'group' => 'payments',
                 'key' => 'instapay_name',
-                'value' => 'ألبان وسوبرماركت التوحيد',
+                'value' => 'مؤسسة حورس للتوريدات والتشطيبات (تجريبي)',
                 'type' => 'text',
                 'description' => 'اسم صاحب الحساب في تطبيق إنستاباي',
             ],
             [
                 'group' => 'payments',
                 'key' => 'instapay_instructions',
-                'value' => 'يرجى تحويل القيمة عبر تطبيق InstaPay ثم إرفاق صورة إشعار التحويل لتأكيد تجهيز الطلب فوراً.',
+                'value' => 'بيانات تجريبية للعرض فقط: لا تحوّل أي مبالغ قبل تأكيد رقم الحساب الرسمي من المؤسسة.',
                 'type' => 'textarea',
                 'description' => 'تعليمات الدفع الموضحة للعميل في صفحة الدفع',
             ],
@@ -169,40 +169,47 @@ class SettingsSeeder extends Seeder
                 'type' => 'text',
                 'description' => 'رقم محفظة فودافون كاش الرسمية',
             ],
+            [
+                'group' => 'payments',
+                'key' => 'vodafone_cash_instructions',
+                'value' => 'رقم تجريبي للعرض فقط: لا تحوّل أي مبالغ قبل تأكيد رقم المحفظة الرسمي من المؤسسة.',
+                'type' => 'textarea',
+                'description' => 'تعليمات الدفع الموضحة للعميل في صفحة الدفع',
+            ],
 
             // 4. Shipping & Delivery
             [
                 'group' => 'shipping',
                 'key' => 'delivery_fee',
-                'value' => '20',
+                'value' => '0',
                 'type' => 'number',
-                'description' => 'رسوم التوصيل الافتراضية داخل نطاق العامرية (ج.م)',
+                'description' => 'رسوم التوصيل الافتراضية (ج.م)',
             ],
             [
                 'group' => 'shipping',
                 'key' => 'free_delivery_threshold',
-                'value' => '300',
+                'value' => '0',
                 'type' => 'number',
                 'description' => 'قيمة الطلب المؤهلة للشحن والتوصيل المجاني (ج.م)',
             ],
             [
                 'group' => 'shipping',
                 'key' => 'min_order_amount',
-                'value' => '50',
+                'value' => '0',
                 'type' => 'number',
                 'description' => 'الحد الأدنى لقيمة الطلب (ج.م)',
             ],
             [
                 'group' => 'shipping',
                 'key' => 'estimated_delivery_time',
-                'value' => '30 - 45 دقيقة',
+                'value' => 'يتم تأكيد موعد التجهيز والتوصيل عند التواصل',
                 'type' => 'text',
                 'description' => 'متوسط وقت التوصيل المتوقع',
             ],
             [
                 'group' => 'shipping',
                 'key' => 'delivery_coverage_areas',
-                'value' => 'العامرية، كينج مريوط، شارع الإسعاف، النهضة، عبد القادر، وقرى مريوط',
+                'value' => 'حدائق الأهرام والمناطق القريبة، يرجى التواصل لتأكيد التغطية',
                 'type' => 'text',
                 'description' => 'مناطق التغطية بالتوصيل الفوري',
             ],
@@ -225,7 +232,7 @@ class SettingsSeeder extends Seeder
             [
                 'group' => 'announcements',
                 'key' => 'announcement_bar_text',
-                'value' => 'التوصيل السريع متاح لجميع مناطق العامرية وقرى مريوط والإسكندرية',
+                'value' => 'كل احتياجات التشطيب والديكور في مكان واحد • حدائق الأهرام، بوابة حورس',
                 'type' => 'text',
                 'description' => 'نص الإعلان أو العرض الترويجي في الشريط العلوي',
             ],
@@ -241,21 +248,21 @@ class SettingsSeeder extends Seeder
             [
                 'group' => 'social',
                 'key' => 'facebook_link',
-                'value' => 'https://facebook.com/altawheed.dairy',
+                'value' => '',
                 'type' => 'text',
                 'description' => 'رابط صفحة فيسبوك',
             ],
             [
                 'group' => 'social',
                 'key' => 'instagram_link',
-                'value' => 'https://instagram.com/altawheed.dairy',
+                'value' => '',
                 'type' => 'text',
                 'description' => 'رابط حساب إنستغرام',
             ],
             [
                 'group' => 'social',
                 'key' => 'tiktok_link',
-                'value' => 'https://tiktok.com/@altawheed.dairy',
+                'value' => '',
                 'type' => 'text',
                 'description' => 'رابط حساب تيك توك',
             ],
@@ -271,28 +278,28 @@ class SettingsSeeder extends Seeder
             [
                 'group' => 'seo',
                 'key' => 'meta_title',
-                'value' => 'ألبان وسوبرماركت التوحيد | العامرية - الإسكندرية',
+                'value' => 'مؤسسة حورس للتوريدات والتشطيبات | حدائق الأهرام',
                 'type' => 'text',
                 'description' => 'عنوان المتجر الافتراضي في محركات البحث',
             ],
             [
                 'group' => 'seo',
                 'key' => 'meta_description',
-                'value' => 'ألبان وسوبرماركت التوحيد في العامرية، الإسكندرية. أجود منتجات الألبان والأجبان الطبيعية والسلع الغذائية وخدمة توصيل فورية.',
+                'value' => 'خامات التشطيب والديكور، دهانات SCIB، أدوات البناء والجبسون بورد. مؤسسة حورس، حدائق الأهرام، بوابة حورس.',
                 'type' => 'textarea',
                 'description' => 'الوصف التعريفي للمتجر في نتائج محركات البحث',
             ],
             [
                 'group' => 'seo',
                 'key' => 'meta_keywords',
-                'value' => 'ألبان التوحيد, سوبرماركت التوحيد, جبن بلدي, ألبان العامرية, توصيل طلبات العامرية, سوبرماركت الإسكندرية, كينج مريوط',
+                'value' => 'حورس للتوريدات والتشطيبات, دهانات SCIB, تشطيب, جبسون بورد, كرانيش فيوتك, دهانات, حدائق الأهرام',
                 'type' => 'text',
                 'description' => 'الكلمات المفتاحية للموقع',
             ],
             [
                 'group' => 'seo',
                 'key' => 'og_image',
-                'value' => 'assets/site/img/og-cover.png',
+                'value' => 'assets/site/img/horus-cover.svg',
                 'type' => 'image',
                 'description' => 'صورة المشاركة على شبكات التواصل (OG Image)',
             ],
@@ -315,14 +322,14 @@ class SettingsSeeder extends Seeder
             [
                 'group' => 'policies',
                 'key' => 'about_us_content',
-                'value' => 'ألبان وسوبرماركت التوحيد، الاسم الرائد في تقديم أجود منتجات الألبان البلدية الطبيعية والجبن الطازج والسلع الغذائية في العامرية والإسكندرية عبر 4 فروع وخدمة توصيل فورية.',
+                'value' => 'مؤسسة حورس للتوريدات والتشطيبات. نوفر خامات الديكور والتشطيب، ودهانات SCIB، وأدوات ومستلزمات البناء. مقرنا ٢٢ع حدائق الأهرام، بوابة حورس. خبرة أكثر من 10 سنوات.',
                 'type' => 'textarea',
-                'description' => 'نبذة تعريفية شاملة عن تاريخ ورؤية ألبان التوحيد',
+                'description' => 'نبذة تعريفية عن مؤسسة حورس للتوريدات والتشطيبات',
             ],
             [
                 'group' => 'policies',
                 'key' => 'about_us_short',
-                'value' => 'من أكبر مراكز الألبان والسوبرماركت في منطقة العامرية والإسكندرية. نوفر أجود منتجات الألبان الطازجة، الأجبان الطبيعية، والسلع الغذائية بأسعار الجملة والتجزئة وخدمة توصيل سريعة حتى باب بيتك.',
+                'value' => 'نوفر خامات التشطيب والديكور، دهانات SCIB، أدوات ومستلزمات البناء، وحلولاً عملية من التأسيس حتى اللمسة الأخيرة.',
                 'type' => 'textarea',
                 'description' => 'نبذة مختصرة لفوتر الموقع',
             ],
@@ -387,6 +394,14 @@ class SettingsSeeder extends Seeder
         ];
 
         foreach ($settings as $setting) {
+            if (
+                ($setting['group'] ?? null) === 'payments'
+                && in_array($setting['key'] ?? '', ['instapay_username', 'instapay_number', 'instapay_name', 'instapay_instructions', 'vodafone_cash_number', 'vodafone_cash_instructions'], true)
+                && Setting::where('key', $setting['key'])->whereNotNull('value')->where('value', '<>', '')->exists()
+            ) {
+                continue;
+            }
+
             Setting::updateOrCreate(
                 ['key' => $setting['key']],
                 $setting

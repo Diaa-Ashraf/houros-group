@@ -14,13 +14,13 @@
                     <span>{{ __('العودة لقائمة الطلبات') }}</span>
                 </a>
                 <span class="text-gray-300">•</span>
-                <span class="text-xs font-bold text-orange-600">تسجيل طلبات العامرية المباشرة</span>
+                <span class="text-xs font-bold text-primary-700">تسجيل طلب مباشر لمؤسسة حورس</span>
             </div>
             <h1 class="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
                 {{ __('إنشاء وتسجيل طلب جديد') }}
             </h1>
             <p class="text-xs sm:text-sm text-gray-500 font-medium mt-1">
-                {{ __('تسجيل طلبات الواتساب، الهاتف، أو طلبات الشراء المباشرة من فروع العامرية وتحديث المخزون آلياً.') }}
+                {{ __('تسجيل الطلبات الواردة من الهاتف أو واتساب وتحديث المخزون آلياً.') }}
             </p>
         </div>
 
@@ -108,7 +108,7 @@
                             <span class="w-7 h-7 rounded-xl bg-red-50 text-red-600 flex items-center justify-center text-xs">2</span>
                             <span>{{ __('بيانات العميل وعنوان التوصيل') }}</span>
                         </h3>
-                        <span class="text-[11px] text-gray-400 font-bold">منطقة العامرية والإسكندرية</span>
+                        <span class="text-[11px] text-gray-400 font-bold">منطقة العميل</span>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -142,7 +142,7 @@
                                 <input type="radio" name="delivery_type" value="delivery" x-model="deliveryType" class="sr-only">
                                 <span class="text-xl">🛵</span>
                                 <div>
-                                    <span class="text-xs font-black block">توصيل منزلي سريع بالعامرية</span>
+                                    <span class="text-xs font-black block">توصيل إلى عنوان العميل</span>
                                     <span class="text-[10px] text-gray-500">مع مندوب توصيل المتجر</span>
                                 </div>
                             </label>
@@ -165,7 +165,7 @@
                             {{ __('عنوان التوصيل بالتفصيل') }} <span class="text-red-500">*</span>
                         </label>
                         <textarea name="address" rows="2"
-                                  placeholder="مثال: العامرية، شارع السوق التجاري، بجوار مسجد التوحيد، عمارة 4 شقة 2"
+                                  placeholder="المنطقة، الشارع، رقم المبنى، وأقرب علامة مميزة"
                                   class="w-full px-4 py-2.5 rounded-xl border border-orange-100 bg-canvas-base text-gray-900 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 focus:bg-white transition-all">{{ old('address') }}</textarea>
                     </div>
 
@@ -174,9 +174,9 @@
                         <label class="block text-xs font-bold text-gray-900">
                             {{ __('الفرع المسؤول عن التجهيز أو الاستلام') }}
                         </label>
-                        <select name="branch_id" 
+                        <select name="branch_id"
                                 class="w-full px-4 py-2.5 rounded-xl border border-orange-100 bg-canvas-base text-gray-900 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 focus:bg-white transition-all">
-                            <option value="">-- توصيل مركزي / أو اختر فرع العامرية المعني --</option>
+                            <option value="">-- توصيل مركزي / اختر الموقع المرتبط بالطلب --</option>
                             @foreach($branches as $b)
                                 <option value="{{ $b->id }}" {{ old('branch_id') == $b->id ? 'selected' : '' }}>
                                     🏬 {{ $b->name }} ({{ $b->phone }})
@@ -197,8 +197,8 @@
                             <p class="text-[11px] text-gray-500 mt-0.5">{{ __('اختر الأصناف، حدد الأوزان أو الكميات، والأسعار') }}</p>
                         </div>
 
-                        <button type="button" 
-                                @click="addItem()" 
+                        <button type="button"
+                                @click="addItem()"
                                 class="px-3.5 py-2 rounded-xl bg-red-50 hover:bg-red-100 border border-red-200 text-red-700 text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer">
                             <span>+</span>
                             <span>إضافة صنف آخر</span>
@@ -209,16 +209,16 @@
                     <div class="space-y-3">
                         <template x-for="(item, index) in items" :key="index">
                             <div class="p-4 rounded-2xl bg-canvas-base/60 border border-orange-100 space-y-3 transition-all hover:border-orange-200">
-                                
+
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-2">
                                         <span class="w-6 h-6 rounded-lg bg-orange-100 text-orange-800 flex items-center justify-center font-black text-xs" x-text="index + 1"></span>
                                         <span class="text-xs font-bold text-gray-700">بيانات الصنف</span>
                                     </div>
 
-                                    <button type="button" 
+                                    <button type="button"
                                             x-show="items.length > 1"
-                                            @click="removeItem(index)" 
+                                            @click="removeItem(index)"
                                             class="text-xs font-bold text-rose-600 hover:text-rose-800 hover:underline flex items-center gap-1 cursor-pointer">
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
@@ -233,15 +233,15 @@
                                         <label class="block text-[11px] font-bold text-gray-700 mb-1">
                                             اختر المنتج <span class="text-red-500">*</span>
                                         </label>
-                                        <select :name="'items[' + index + '][product_id]'" 
-                                                x-model="item.product_id" 
+                                        <select :name="'items[' + index + '][product_id]'"
+                                                x-model="item.product_id"
                                                 @change="onProductSelect(index)"
-                                                required 
+                                                required
                                                 class="w-full px-3 py-2 rounded-xl border border-orange-100 bg-white text-gray-900 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500">
                                             <option value="">-- اختر المنتج من القائمة --</option>
                                             @foreach($products as $p)
-                                                <option value="{{ $p->id }}" 
-                                                        data-price="{{ $p->price }}" 
+                                                <option value="{{ $p->id }}"
+                                                        data-price="{{ $p->price }}"
                                                         data-portion="{{ $p->portion_unit ?? 'piece' }}"
                                                         data-name="{{ $p->name }}">
                                                     {{ $p->name }} — ({{ number_format($p->price, 2) }} ج.م)
@@ -253,17 +253,16 @@
                                     <!-- Portion / Weight Type -->
                                     <div class="sm:col-span-3">
                                         <label class="block text-[11px] font-bold text-gray-700 mb-1">
-                                            نوع الوزن / التجزئة
+                                            وصف الوحدة / الكمية
                                         </label>
-                                        <select :name="'items[' + index + '][portion_label]'" 
+                                        <select :name="'items[' + index + '][portion_label]'"
                                                 x-model="item.portion_label"
                                                 class="w-full px-3 py-2 rounded-xl border border-orange-100 bg-white text-gray-900 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500">
-                                            <option value="قطعة / عبوة كاملة">قطعة / عبوة</option>
-                                            <option value="1 كيلو">1 كيلو</option>
-                                            <option value="نصف كيلو (500 جم)">نصف كيلو (500 جم)</option>
-                                            <option value="ربع كيلو (250 جم)">ربع كيلو (250 جم)</option>
-                                            <option value="تمن كيلو (125 جم)">ثمن كيلو (125 جم)</option>
-                                            <option value="وزن حسب الطلب">وزن حسب الطلب</option>
+                                            <option value="قطعة / عبوة كاملة" selected>قطعة / عبوة كاملة</option>
+                                            <option value="وحدة كاملة">وحدة كاملة</option>
+                                            <option value="نصف وحدة">نصف وحدة</option>
+                                            <option value="ربع وحدة">ربع وحدة</option>
+                                            <option value="حسب المقاس أو الكمية">حسب المقاس أو الكمية</option>
                                         </select>
                                     </div>
 
@@ -272,11 +271,11 @@
                                         <label class="block text-[11px] font-bold text-gray-700 mb-1">
                                             الكمية / العدد <span class="text-red-500">*</span>
                                         </label>
-                                        <input type="number" 
-                                               step="0.05" 
-                                               min="0.05"
-                                               :name="'items[' + index + '][quantity]'" 
-                                               x-model.number="item.quantity" 
+                                        <input type="number"
+                                               step="1"
+                                               min="1"
+                                               :name="'items[' + index + '][quantity]'"
+                                               x-model.number="item.quantity"
                                                required
                                                class="w-full px-3 py-2 rounded-xl border border-orange-100 bg-white text-gray-900 text-xs font-bold text-center focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500">
                                     </div>
@@ -286,21 +285,21 @@
                                     <!-- Unit Price -->
                                     <div class="sm:col-span-4">
                                         <label class="block text-[10px] font-bold text-gray-500 mb-1">سعر الوحدة (ج.م)</label>
-                                        <input type="number" 
-                                               step="0.5" 
-                                               :name="'items[' + index + '][price]'" 
-                                               x-model.number="item.price" 
+                                        <input type="number"
+                                               step="0.5"
+                                               :name="'items[' + index + '][price]'"
+                                               x-model.number="item.price"
                                                required
                                                class="w-full px-3 py-1.5 rounded-lg border border-orange-100 bg-white text-gray-900 text-xs font-bold focus:outline-none">
                                     </div>
 
                                     <!-- Notes for this item -->
                                     <div class="sm:col-span-5">
-                                        <label class="block text-[10px] font-bold text-gray-500 mb-1">ملاحظة تقطيع / تجهيز (اختياري)</label>
-                                        <input type="text" 
-                                               :name="'items[' + index + '][notes]'" 
-                                               x-model="item.notes" 
-                                               placeholder="مثال: تقطيع شرائح رفيعة، جبنة قديمة..."
+                                        <label class="block text-[10px] font-bold text-gray-500 mb-1">ملاحظة تجهيز (اختياري)</label>
+                                        <input type="text"
+                                               :name="'items[' + index + '][notes]'"
+                                               x-model="item.notes"
+                                               placeholder="مثال: اللون المطلوب، المقاس، أو تعليمات التجهيز..."
                                                class="w-full px-3 py-1.5 rounded-lg border border-orange-100 bg-white text-gray-900 text-xs focus:outline-none">
                                     </div>
 
@@ -316,8 +315,8 @@
                     </div>
 
                     <div class="pt-2 flex justify-start">
-                        <button type="button" 
-                                @click="addItem()" 
+                        <button type="button"
+                                @click="addItem()"
                                 class="px-4 py-2 rounded-xl bg-orange-50 hover:bg-orange-100 border border-orange-200 text-red-700 text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer">
                             <span>+</span>
                             <span>إضافة صنف إضافي للطلب</span>
@@ -362,8 +361,8 @@
                                 class="w-full px-3.5 py-2.5 rounded-xl border border-orange-100 bg-canvas-base text-gray-900 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500">
                             <option value="cash_on_delivery" selected>💵 الدفع نقدياً عند الاستلام (Cash)</option>
                             <option value="instapay">📱 تحويل إنستاباي (InstaPay)</option>
+                            <option value="vodafone_cash">📲 فودافون كاش</option>
                             <option value="cash_in_branch">🏪 كاش داخل الفرع</option>
-                            <option value="vodafone_cash">📱 فودافون كاش / محفظة إلكترونية</option>
                         </select>
                     </div>
 
@@ -405,7 +404,7 @@
                     </div>
 
                     <div class="pt-2 space-y-2">
-                        <button type="submit" 
+                        <button type="submit"
                                 class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600 text-white font-black text-sm shadow-lg shadow-red-500/30 transition-all transform active:scale-98 flex items-center justify-center gap-2 cursor-pointer">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
@@ -413,7 +412,7 @@
                             <span>تسجيل وحفظ الطلب الآن</span>
                         </button>
 
-                        <a href="{{ route('admin.orders.index') }}" 
+                        <a href="{{ route('admin.orders.index') }}"
                            class="w-full py-2.5 px-4 rounded-xl border border-gray-700 hover:bg-gray-800 text-gray-300 hover:text-white text-xs font-bold text-center block transition-colors">
                             {{ __('إلغاء والعودة') }}
                         </a>

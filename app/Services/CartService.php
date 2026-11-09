@@ -8,18 +8,20 @@ use Illuminate\Support\Facades\Session;
 
 class CartService
 {
-    protected string $sessionKey = 'tawhid_cart';
+    protected string $sessionKey = 'horus_cart';
 
     /**
      * Get all items currently in cart
      */
     public function getItems(): array
     {
+        Session::forget('tawhid_cart');
+
         return Session::get($this->sessionKey, []);
     }
 
     /**
-     * Add single product to cart with support for custom portions, weights, and slicing notes
+     * Add a product to cart, including fractional quantities for products sold by a unit of measure.
      */
     public function addProduct(
         int $productId, 
@@ -28,9 +30,23 @@ class CartService
         ?float $customAmount = null, 
         ?string $notes = null
     ): array {
-        $product = Product::active()->inStock()->find($productId);
+        $product = Product::active()->find($productId);
 
         if (!$product) {
+            return [
+                'success' => false,
+                'message' => __('المنتج غير متوفر حالياً أو الكمية نفدت.'),
+            ];
+        }
+
+        if ((float) $product->final_price <= 0) {
+            return [
+                'success' => false,
+                'message' => __('سعر هذا الصنف يحدد حسب المقاس والكمية. تواصل معنا للاستفسار قبل الطلب.'),
+            ];
+        }
+
+        if (!$product->is_available || $product->available_stock < 1) {
             return [
                 'success' => false,
                 'message' => __('المنتج غير متوفر حالياً أو الكمية نفدت.'),
@@ -42,26 +58,32 @@ class CartService
         $portionLabel = '';
         $unitPrice = $basePrice;
 
-        // Calculate price and label according to portion type or custom amount
+        // Fractional quantities are only supported for products explicitly marked as measured goods.
+        if (!$product->is_weighted) {
+            $portionType = 'piece';
+            $customAmount = null;
+        }
+
+        // Calculate the selected quantity and label against the configured unit price.
         if ($portionType === '125g') {
             $unitPrice = round($basePrice * 0.125, 2);
-            $portionLabel = 'ثمن كيلو (125 جم)';
+            $portionLabel = 'ثمن الوحدة';
         } elseif ($portionType === '250g') {
             $unitPrice = round($basePrice * 0.25, 2);
-            $portionLabel = 'ربع كيلو (250 جم)';
+            $portionLabel = 'ربع الوحدة';
         } elseif ($portionType === '500g') {
             $unitPrice = round($basePrice * 0.5, 2);
-            $portionLabel = 'نصف كيلو (500 جم)';
+            $portionLabel = 'نصف الوحدة';
         } elseif ($portionType === '1000g' || $portionType === '1kg') {
             $unitPrice = $basePrice;
-            $portionLabel = 'كيلو كامل (1000 جم)';
+            $portionLabel = 'وحدة كاملة';
         } elseif ($portionType === 'custom_price' && $customAmount && $customAmount > 0) {
             $unitPrice = (float)$customAmount;
-            $approxGrams = $basePrice > 0 ? round(($customAmount / $basePrice) * 1000) : 0;
-            $portionLabel = "بمبلغ {$customAmount} ج.م (حوالي {$approxGrams} جم)";
+            $approxQuantity = $basePrice > 0 ? round(($customAmount / $basePrice), 2) : 0;
+            $portionLabel = "بمبلغ {$customAmount} ج.م (حوالي {$approxQuantity} وحدة)";
         } else {
             $portionType = 'piece';
-            $portionLabel = $product->is_weighted ? '1 كيلو' : 'قطعة / عبوة';
+            $portionLabel = $product->is_weighted ? 'وحدة كاملة' : 'قطعة / عبوة';
         }
 
         $cart = $this->getItems();
@@ -157,6 +179,7 @@ class CartService
                 'id' => $p->id,
                 'name' => $p->name,
                 'image' => $p->image_url,
+                'quantity' => (int) ($p->pivot->quantity ?? 1),
             ])->toArray(),
         ];
 
@@ -309,6 +332,7 @@ class CartService
     public function clear(): void
     {
         Session::forget($this->sessionKey);
+        Session::forget($this->couponSessionKey);
     }
 
     /**
@@ -337,10 +361,10 @@ class CartService
             return 0.0;
         }
 
-        return (float) settings('delivery_fee', 15.0);
+        return (float) settings('delivery_fee', 0.0);
     }
 
-    protected string $couponSessionKey = 'tawhid_coupon';
+    protected string $couponSessionKey = 'horus_coupon';
 
     /**
      * Apply a coupon to cart session
@@ -358,6 +382,8 @@ class CartService
      */
     public function getAppliedCoupon(): ?array
     {
+        Session::forget('tawhid_coupon');
+
         return Session::get($this->couponSessionKey, null);
     }
 
@@ -419,7 +445,9 @@ class CartService
             'formatted_subtotal' => format_currency($subtotal),
             'formatted_discount' => format_currency($discountAmount),
             'formatted_tax' => format_currency($taxAmount),
-            'formatted_delivery_fee' => $deliveryFee > 0 ? format_currency($deliveryFee) : __('مجاناً'),
+            'formatted_delivery_fee' => $deliveryType === 'pickup'
+                ? __('مجاناً')
+                : ($deliveryFee > 0 ? format_currency($deliveryFee) : __('تحدد مع الفرع')),
             'formatted_total' => format_currency($grandTotal),
         ];
     }

@@ -8,47 +8,53 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', settings('site_name', 'ألبان وسوبرماركت التوحيد')) | العامرية - الإسكندرية</title>
-    <meta name="description" content="@yield('meta_description', 'ألبان وسوبرماركت التوحيد في العامرية، الإسكندرية. أجود منتجات الألبان والأجبان الطبيعية والسلع الغذائية وخدمة توصيل فورية.')">
-    <meta name="keywords" content="@yield('meta_keywords', 'ألبان التوحيد, سوبرماركت التوحيد, جبن بلدي, ألبان العامرية, توصيل طلبات العامرية, سوبرماركت الإسكندرية, كينج مريوط')">
+    <title>@yield('title', settings('site_name', 'مؤسسة حورس للتوريدات والتشطيبات'))</title>
+    <meta name="description" content="@yield('meta_description', 'مؤسسة حورس للتوريدات والتشطيبات. دهانات SCIB، مواد البناء، أدوات التشطيب والديكور في حدائق الأهرام.')">
+    <meta name="keywords" content="@yield('meta_keywords', 'حورس للتوريدات والتشطيبات, دهانات SCIB, مواد التشطيب, جبسون بورد, كرانيش فيوتك, حدائق الأهرام')">
     <link rel="canonical" href="{{ url()->current() }}" />
 
     <!-- Open Graph / Facebook / WhatsApp -->
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="ar_EG" />
-    <meta property="og:site_name" content="ألبان وسوبرماركت التوحيد" />
+    <meta property="og:site_name" content="مؤسسة حورس للتوريدات والتشطيبات" />
     <meta property="og:url" content="{{ url()->current() }}" />
-    <meta property="og:title" content="@yield('title', settings('site_name', 'ألبان وسوبرماركت التوحيد')) | العامرية - الإسكندرية" />
-    <meta property="og:description" content="@yield('meta_description', 'ألبان وسوبرماركت التوحيد في العامرية، الإسكندرية. أجود منتجات الألبان والأجبان الطبيعية والسلع الغذائية والعروض الحصرية.')" />
-    <meta property="og:image" content="@yield('og_image', asset('assets/site/img/og-cover.png'))" />
+    <meta property="og:title" content="@yield('title', settings('site_name', 'مؤسسة حورس للتوريدات والتشطيبات'))" />
+    <meta property="og:description" content="@yield('meta_description', 'كل احتياجات التشطيب والديكور في مكان واحد. حدائق الأهرام، بوابة حورس.')" />
+    <meta property="og:image" content="@yield('og_image', asset('assets/site/img/horus-cover.svg'))" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="@yield('title', settings('site_name', 'ألبان وسوبرماركت التوحيد')) | العامرية" />
-    <meta name="twitter:description" content="@yield('meta_description', 'ألبان وسوبرماركت التوحيد في العامرية، الإسكندرية.')" />
-    <meta name="twitter:image" content="@yield('og_image', asset('assets/site/img/og-cover.png'))" />
+    <meta name="twitter:title" content="@yield('title', settings('site_name', 'مؤسسة حورس للتوريدات والتشطيبات'))" />
+    <meta name="twitter:description" content="@yield('meta_description', 'كل احتياجات التشطيب والديكور في مكان واحد. حدائق الأهرام، بوابة حورس.')" />
+    <meta name="twitter:image" content="@yield('og_image', asset('assets/site/img/horus-cover.svg'))" />
 
     @yield('meta')
 
-    <!-- Global Schema.org JSON-LD (GroceryStore / LocalBusiness) -->
+    <!-- Structured data for Horus Group -->
+    @php
+        $acceptedPayments = collect([
+            settings('enable_cod', '1') == '1' ? 'Cash on delivery' : null,
+            settings('enable_instapay', '1') == '1' ? 'InstaPay' : null,
+            settings('enable_vodafone_cash', '1') == '1' ? 'Vodafone Cash' : null,
+        ])->filter()->implode(', ');
+    @endphp
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "GroceryStore",
-        "name": "ألبان وسوبرماركت التوحيد",
-        "image": "{{ asset('assets/site/img/og-cover.png') }}",
-        "telephone": "{{ settings('store_phone', '01000000000') }}",
+        "@type": "HomeAndConstructionBusiness",
+        "name": "مؤسسة حورس للتوريدات والتشطيبات",
+        "image": "{{ asset('assets/site/img/horus-cover.svg') }}",
+        "telephone": @json(settings('store_phone', '01002527072')),
         "address": {
             "@type": "PostalAddress",
-            "streetAddress": "شارع المستشفى - بجوار الإسعاف",
-            "addressLocality": "العامرية",
-            "addressRegion": "الإسكندرية",
+            "streetAddress": "٢٢ع حدائق الأهرام، بوابة حورس",
+            "addressLocality": "حدائق الأهرام",
+            "addressRegion": "الجيزة",
             "addressCountry": "EG"
         },
         "priceRange": "EGP",
         "currenciesAccepted": "EGP",
-        "paymentAccepted": "Cash, InstaPay",
-        "openingHours": "Mo-Su 08:00-00:00",
+        "paymentAccepted": @json($acceptedPayments),
         "url": "{{ url('/') }}"
     }
     </script>
@@ -61,7 +67,7 @@
         <link rel="shortcut icon" href="{{ $siteFavicon }}">
         <link rel="apple-touch-icon" href="{{ $siteFavicon }}">
     @else
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥛</text></svg>">
+        <link rel="icon" href="{{ asset('assets/site/img/horus-mark.png') }}">
     @endif
 
     <!-- Google Arabic Fonts (Cairo, Alexandria, Readex Pro) -->
@@ -77,11 +83,13 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
+        :root { --horus-ink: #073f40; --horus-green: #159b8b; --horus-mint: #82d9c7; --horus-gold: #e2bf52; }
+        .horus-brand-mark { background: linear-gradient(145deg, #159b8b, #073f40); border: 1px solid #82d9c7; box-shadow: 0 5px 16px rgba(7,63,64,.22); font-family: Georgia, serif; }
         [x-cloak] {
             display: none !important;
         }
 
-        /* Toastr customization for Tawheed brand */
+        /* Toastr customization for Horus brand */
         #toast-container > div {
             opacity: 1 !important;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15) !important;
@@ -91,11 +99,9 @@
             direction: rtl !important;
         }
         .toast-success {
-            background-color: #065F46 !important;
+            background-color: #073f40 !important;
         }
-        .toast-error {
-            background-color: #730E1F !important;
-        }
+        .toast-error { background-color: #7B2D2D !important; }
 
         /* Prevent unwanted iOS Safari automatic zoom on form input focus */
         @media screen and (max-width: 768px) {
@@ -109,7 +115,7 @@
 </head>
 
 <body class="bg-canvas-base text-charcoal font-sans antialiased min-h-screen flex flex-col overflow-x-clip selection:bg-primary-700 selection:text-white">
-    
+
     <!-- Top Information Bar -->
     <x-storefront.layout.top-bar />
 
@@ -133,34 +139,34 @@
     <!-- WhatsApp Floating Action Button -->
     <x-storefront.layout.whatsapp-float />
 
-    <!-- Custom Tawheed Modal Dialog -->
-    <div id="tawheedModal" 
+    <!-- Storefront confirmation dialog -->
+    <div id="horusModal"
          class="fixed inset-0 z-[99999] bg-charcoal-heading/60 backdrop-blur-xs flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300"
          dir="rtl">
-        <div id="tawheedModalCard" 
+        <div id="horusModalCard"
              class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl border border-cream transform scale-95 transition-all duration-300 space-y-4">
-            
-            <div id="tawheedModalIcon" class="w-12 h-12 rounded-2xl bg-primary-50 text-primary-800 border border-primary-200 flex items-center justify-center text-xl mx-auto shadow-inner">
+
+            <div id="horusModalIcon" class="w-12 h-12 rounded-2xl bg-primary-50 text-primary-800 border border-primary-200 flex items-center justify-center text-xl mx-auto shadow-inner">
                 🔔
             </div>
 
             <div class="space-y-1.5">
-                <h3 id="tawheedModalTitle" class="text-base font-bold text-charcoal-heading">
+                <h3 id="horusModalTitle" class="text-base font-bold text-charcoal-heading">
                     تأكيد الإجراء
                 </h3>
-                <p id="tawheedModalDesc" class="text-xs text-charcoal-muted leading-relaxed">
+                <p id="horusModalDesc" class="text-xs text-charcoal-muted leading-relaxed">
                     هل أنت متأكد من المتابعة؟
                 </p>
             </div>
 
             <div class="flex items-center gap-2.5 pt-2">
-                <button type="button" 
-                        id="tawheedModalCancelBtn"
+                <button type="button"
+                        id="horusModalCancelBtn"
                         class="flex-1 py-2.5 px-4 rounded-xl bg-gray-100 hover:bg-gray-200 text-charcoal text-xs font-bold transition-colors cursor-pointer">
                     إلغاء
                 </button>
-                <button type="button" 
-                        id="tawheedModalConfirmBtn"
+                <button type="button"
+                        id="horusModalConfirmBtn"
                         class="flex-1 py-2.5 px-4 rounded-xl bg-primary-800 hover:bg-primary-900 text-white text-xs font-bold transition-all shadow-sm cursor-pointer">
                     تأكيد
                 </button>
@@ -201,15 +207,15 @@
             toastr.info(@json(session('status')));
         @endif
 
-        // Global Tawheed Modal Helper
-        window.tawheedConfirm = function(title, message, onConfirm, onCancel, options = {}) {
-            const modal = document.getElementById('tawheedModal');
-            const card = document.getElementById('tawheedModalCard');
-            const titleEl = document.getElementById('tawheedModalTitle');
-            const descEl = document.getElementById('tawheedModalDesc');
-            const confirmBtn = document.getElementById('tawheedModalConfirmBtn');
-            const cancelBtn = document.getElementById('tawheedModalCancelBtn');
-            const iconEl = document.getElementById('tawheedModalIcon');
+        // Global storefront modal helper
+        window.horusConfirm = function(title, message, onConfirm, onCancel, options = {}) {
+            const modal = document.getElementById('horusModal');
+            const card = document.getElementById('horusModalCard');
+            const titleEl = document.getElementById('horusModalTitle');
+            const descEl = document.getElementById('horusModalDesc');
+            const confirmBtn = document.getElementById('horusModalConfirmBtn');
+            const cancelBtn = document.getElementById('horusModalCancelBtn');
+            const iconEl = document.getElementById('horusModalIcon');
 
             if (!modal) return;
 

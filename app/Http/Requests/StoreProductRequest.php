@@ -48,7 +48,7 @@ class StoreProductRequest extends FormRequest
             'featured' => 'nullable',
             'is_active' => 'nullable',
             'is_weighted' => 'nullable',
-            'unit_type' => 'nullable|string|in:kg,piece,gram,liter',
+            'unit_type' => 'nullable|string|in:kg,piece,gram,liter,meter,pack',
         ];
     }
 

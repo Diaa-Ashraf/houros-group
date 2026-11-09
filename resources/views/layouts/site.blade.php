@@ -7,8 +7,8 @@
  <meta http-equiv="X-UA-Compatible" content="ie=edge">
  <meta name="csrf-token" content="{{ csrf_token() }}">
 
- <title>{{ settings('site_name', 'Regalest Store') }} | {{ __('Luxury Timepieces') }}</title>
- <meta name="description" content="Regalest Store — وجهتك الأولى للساعات والمقتنيات الملكية والفاخرة">
+ <title>@yield('title', settings('site_name', 'مؤسسة حورس للتوريدات والتشطيبات'))</title>
+ <meta name="description" content="@yield('meta_description', 'خامات التشطيب والديكور، دهانات SCIB، وأدوات البناء من مؤسسة حورس في حدائق الأهرام.')">
 
  @php
  $siteFavicon = get_site_favicon();
@@ -37,6 +37,8 @@
  @vite(['resources/css/app.css', 'resources/js/app.js'])
 
  <style>
+ :root { --horus-ink: #073f40; --horus-green: #159b8b; --horus-mint: #82d9c7; --horus-gold: #e2bf52; }
+ .horus-brand-mark { background: linear-gradient(145deg, #159b8b, #073f40); border: 1px solid #82d9c7; box-shadow: 0 5px 16px rgba(7,63,64,.22); }
  [x-cloak] {
  display: none !important;
  }
@@ -56,7 +58,7 @@
  @stack('styles')
 </head>
 
-<body class="bg-[#F8F9FA] text-[#18181B] font-sans antialiased min-h-screen flex flex-col overflow-x-clip"
+ <body class="bg-canvas-base text-charcoal font-sans antialiased min-h-screen flex flex-col overflow-x-clip"
  x-data="{ showBackToTop: false }"
  @scroll.window="showBackToTop = (window.pageYOffset > 300)">
 
@@ -73,8 +75,8 @@
  ========================================================================= --}}
  {{-- 1. Floating WhatsApp VIP Trigger (bottom-end: end-6 bottom-6) --}}
  @php
- $storePhone = preg_replace('/[^0-9]/', '', settings('whatsapp_number', '963999999999'));
- $waFloatingUrl = "https://wa.me/{$storePhone}?text=" . urlencode("مرحباً، أود الاستفسار والتواصل مع إدارة ريجاليست ستور ");
+ $storePhone = preg_replace('/[^0-9]/', '', settings('store_whatsapp', '201002527072'));
+ $waFloatingUrl = "https://wa.me/{$storePhone}?text=" . urlencode("مرحباً مؤسسة حورس، أود الاستفسار عن خامات التشطيب والديكور.");
  @endphp
  <a href="{{ $waFloatingUrl }}"
  target="_blank"

@@ -21,7 +21,10 @@
  شكراً لك، تم استلام طلبك!
  </h1>
  <p class="text-xs sm:text-sm text-charcoal-muted max-w-md mx-auto leading-relaxed">
- فريق ألبان وسوبرماركت التوحيد بالعامرية يقوم بتجهيز طلبك بعناية تامة لضمان أعلى مستويات الجودة والنظافة.
+ فريق مؤسسة حورس يراجع طلبك ويتواصل معك لتأكيد تفاصيل المنتجات والاستلام.
+ @if($order->delivery_type === 'delivery')
+ <span class="block mt-2">سيتم تأكيد تكلفة التوصيل معك قبل التحصيل.</span>
+ @endif
  </p>
  </div>
 
@@ -50,15 +53,15 @@
  </button>
  </div>
 
- <!-- InstaPay Review Alert (If InstaPay selected) -->
- @if($order->payment_method === 'instapay')
+ <!-- Digital Payment Review Alert -->
+ @if(in_array($order->payment_method, ['instapay', 'vodafone_cash'], true))
  <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs text-right space-y-1 max-w-lg mx-auto">
  <div class="font-bold flex items-center gap-1.5">
  <span></span>
- <span>طلبك قيد المراجعة والتحقق من تحويل إنستاباي</span>
+ <span>طلبك قيد المراجعة والتحقق من الدفع الإلكتروني</span>
  </div>
  <p class="text-[11px] leading-relaxed text-amber-800">
- سيقوم فريق الحسابات بمطابقة إيصال التحويل المرفق والبدء فوراً في إرسال طلبك.
+ سيتواصل معك فريق حورس لتأكيد التحويل واستكمال تجهيز الطلب.
  </p>
  </div>
  @endif
@@ -91,7 +94,7 @@
  <div class="p-3.5 rounded-2xl bg-canvas-base space-y-1">
  <span class="text-[10px] text-charcoal-muted block">طريقة الدفع:</span>
  <span class="font-bold text-charcoal block">
- {{ $order->payment_method === 'instapay' ? ' تحويل فوري عبر إنستاباي' : ' الدفع كاش عند الاستلام' }}
+ {{ $order->payment_method_label }}
  </span>
  @if($order->instapay_reference)
  <span class="text-[10px] text-charcoal-muted">المرجع: {{ $order->instapay_reference }}</span>
@@ -141,8 +144,8 @@
  </a>
 
  @php
- $whatsappMsg = urlencode("مرحباً ألبان وسوبرماركت التوحيد، أود متابعة طلبي رقم: {$order->public_order_id}");
- $storeWhatsapp = preg_replace('/[^0-9]/', '', settings('store_whatsapp', '201000000000'));
+ $whatsappMsg = urlencode("مرحباً مؤسسة حورس، أود متابعة طلبي رقم: {$order->public_order_id}");
+ $storeWhatsapp = preg_replace('/[^0-9]/', '', settings('store_whatsapp', '201002527072'));
  @endphp
  <a href="https://wa.me/{{ $storeWhatsapp }}?text={{ $whatsappMsg }}" 
  target="_blank" 

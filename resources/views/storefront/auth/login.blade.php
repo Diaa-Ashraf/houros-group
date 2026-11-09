@@ -1,7 +1,7 @@
 {{-- resources/views/storefront/auth/login.blade.php --}}
 @extends('layouts.storefront')
 
-@section('title', 'تسجيل الدخول | ألبان وسوبرماركت التوحيد')
+@section('title', 'تسجيل الدخول | مؤسسة حورس')
 
 @section('content')
 <div class="py-12 bg-canvas-base min-h-[80vh] flex items-center justify-center">
@@ -18,7 +18,7 @@
  تسجيل الدخول لحسابك
  </h1>
  <p class="text-xs text-charcoal-muted">
- أدخل رقم الهاتف أو البريد لمتابعة طلباتك في ألبان التوحيد
+ أدخل رقم الهاتف أو البريد لمتابعة طلباتك لدى مؤسسة حورس
  </p>
  </div>
 

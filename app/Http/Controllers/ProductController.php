@@ -73,7 +73,7 @@ class ProductController extends Controller
         $data['slug'] = Str::slug($request->input('name') ?? 'product-' . time()) . '-' . time();
         $data['stock_quantity'] = (int)($data['stock_quantity'] ?? $data['quantity'] ?? 0);
         $data['quantity'] = $data['stock_quantity'];
-        $data['is_available'] = $data['stock_quantity'] > 0;
+        $data['is_available'] = (float) $data['price'] > 0 && $data['stock_quantity'] > 0;
         $data['featured'] = $request->boolean('featured', false);
         $data['is_active'] = $request->boolean('is_active', true);
         $data['is_weighted'] = $request->boolean('is_weighted', false);
@@ -106,7 +106,7 @@ class ProductController extends Controller
         $stock = (int)($data['stock_quantity'] ?? $data['quantity'] ?? $product->stock_quantity);
         $data['stock_quantity'] = $stock;
         $data['quantity'] = $stock;
-        $data['is_available'] = $stock > 0;
+        $data['is_available'] = (float) $data['price'] > 0 && $stock > 0;
         $data['featured'] = $request->boolean('featured', $product->featured);
         $data['is_active'] = $request->boolean('is_active', $product->is_active);
         $data['is_weighted'] = $request->boolean('is_weighted', false);

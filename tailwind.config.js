@@ -13,39 +13,39 @@ export default {
     theme: {
         extend: {
             colors: {
-                // Al-Tawheed Signature Signboard Palette (أحمر اليافطة الناري والبرتقالي الساطع)
+                // Horus Group signature palette: deep teal with a restrained gold accent.
                 primary: {
-                    50: '#FEF2F2',
-                    100: '#FEE2E2',
-                    200: '#FECACA',
-                    300: '#FCA5A5',
-                    400: '#F87171',
-                    500: '#EF4444',
-                    600: '#DC2626',
-                    700: '#B91C1C',
-                    800: '#991B1B',
-                    900: '#7F1D1D',
-                    DEFAULT: '#DC2626', // أحمر التوحيد الناري من اليافطة
-                    dark: '#991B1B',
-                    light: '#EF4444',
+                    50: '#EAF5F2',
+                    100: '#D4ECE6',
+                    200: '#A9D9CE',
+                    300: '#79C2B4',
+                    400: '#4BAA9A',
+                    500: '#238F82',
+                    600: '#14766E',
+                    700: '#0D625F',
+                    800: '#084B4B',
+                    900: '#063638',
+                    DEFAULT: '#14766E',
+                    dark: '#084B4B',
+                    light: '#238F82',
                 },
-                // Electric Amber / Orange Accent (برتقالي اليافطة المضيء "ماركت وألبان")
+                // Warm gold accent inspired by the construction and decor sector.
                 accent: {
-                    50: '#FFF7ED',
-                    100: '#FFEDD5',
-                    200: '#FED7AA',
-                    300: '#FDBA74',
-                    400: '#FB923C',
-                    500: '#F97316',
-                    600: '#EA580C',
-                    700: '#C2410C',
-                    DEFAULT: '#F97316', // برتقالي اليافطة الصريح
+                    50: '#FCF8E9',
+                    100: '#F7EDC7',
+                    200: '#EFDB91',
+                    300: '#E7C65F',
+                    400: '#D8B744',
+                    500: '#C8A635',
+                    600: '#A98727',
+                    700: '#80651F',
+                    DEFAULT: '#C8A635',
                 },
-                // Warm Cream Backgrounds (درجات القشطة والزبادي والكانفاس المريح)
+                // Warm neutral backgrounds for product photography and catalog screens.
                 canvas: {
-                    base: '#FBF9F5',
-                    subtle: '#F4EFE6',
-                    dark: '#EAE2D5',
+                    base: '#F7F8F5',
+                    subtle: '#EEF2EE',
+                    dark: '#E1E9E4',
                 },
                 surface: {
                     card: '#FFFFFF',
@@ -53,7 +53,7 @@ export default {
                     hover: '#F9F7F2',
                     border: '#EDE7DC',
                     subtle: '#F6F3EC',
-                    champagne: '#E5DDCF',
+                    champagne: '#E4E9E4',
                 },
                 // Deep Charcoal Typography for maximum legibility
                 charcoal: {
@@ -65,11 +65,11 @@ export default {
                 },
                 // Legacy compatibility tokens
                 gold: {
-                    champagne: '#D97706',
-                    satin: '#B45309',
-                    bronze: '#92400E',
-                    dark: '#78350F',
-                    DEFAULT: '#D97706',
+                    champagne: '#D8B744',
+                    satin: '#C8A635',
+                    bronze: '#A98727',
+                    dark: '#80651F',
+                    DEFAULT: '#C8A635',
                 },
                 obsidian: {
                     DEFAULT: '#111827',
@@ -84,8 +84,8 @@ export default {
                 emerald: {
                     wa: '#25D366',
                 },
-                rose: {
-                    promo: '#DC2626',
+                    rose: {
+                    promo: '#14766E',
                 },
             },
             fontFamily: {

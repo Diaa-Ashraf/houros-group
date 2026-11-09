@@ -15,7 +15,7 @@
                     <div class="relative z-10 container mx-auto px-6 sm:px-12 py-8 max-w-2xl text-white space-y-3.5 text-right" dir="rtl">
                         <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-black bg-gradient-to-r from-amber-400 to-orange-500 text-gray-900 shadow-lg">
                             <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
-                            <span>ألبان وسوبرماركت التوحيد بالعامرية</span>
+                            <span>مؤسسة حورس للتوريدات والتشطيبات</span>
                         </span>
                         <h2 class="text-2xl sm:text-4xl md:text-5xl font-black leading-tight tracking-tight drop-shadow-md">
                             {{ $banner->title }}
@@ -37,17 +37,17 @@
                     </div>
                 </div>
                 @empty
-                <!-- Default Supermarket Hero Banner 1 -->
+                <!-- Default Horus Group hero banner -->
                 <div class="swiper-slide relative h-full w-full bg-gradient-to-r from-red-800 via-red-600 to-orange-500 flex items-center overflow-hidden" style="height: 100%;">
                     <div class="relative z-10 container mx-auto px-6 sm:px-12 py-8 max-w-2xl text-white space-y-3.5 text-right" dir="rtl">
                         <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-black bg-amber-400 text-gray-900 shadow-md">
                             <span>منتجات بلدية 100% طازجة يومياً</span>
                         </span>
                         <h2 class="text-2xl sm:text-4xl md:text-5xl font-black leading-tight tracking-tight">
-                            ألبان وسوبرماركت التوحيد بالعامرية
+                            مؤسسة حورس للتوريدات والتشطيبات
                         </h2>
                         <p class="text-xs sm:text-sm md:text-base text-white/90 leading-relaxed font-medium">
-                            قشطة، حليب بلدي طبيعي، جبن أبيض وقريش ورومي فاخر، وكل احتياجات بيتك من السوبرماركت بأعلى جودة وتوصيل فوري لباب البيت.
+                            دهانات SCIB، جبسون بورد، كرانيش فيوتك، وأدوات ومستلزمات التشطيب والديكور.
                         </p>
                         <div class="pt-2 flex flex-wrap items-center gap-3">
                             <a href="{{ route('site.products') }}" class="px-7 py-3 rounded-2xl bg-amber-400 hover:bg-amber-500 text-gray-950 font-black text-xs sm:text-sm transition-all shadow-lg">

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="مؤسسة حورس للتوريدات والتشطيبات">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#073638"/><stop offset="1" stop-color="#0d625f"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#238f82" stop-opacity=".55"/><stop offset="1" stop-color="#238f82" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#f7f8f5"/>
+  <path d="M0 0h1200v630H0z" fill="url(#bg)"/>
+  <circle cx="1070" cy="85" r="390" fill="url(#glow)"/>
+  <circle cx="1060" cy="330" r="260" fill="none" stroke="#82d9c7" stroke-opacity=".16"/>
+  <circle cx="1060" cy="330" r="210" fill="none" stroke="#82d9c7" stroke-opacity=".12"/>
+  <rect x="82" y="92" width="126" height="126" rx="27" fill="#0a5150" stroke="#82d9c7" stroke-width="2"/>
+  <path d="M105 151c17-20 43-26 78-13-14 1-26 7-35 17 13 0 24 5 37 15-17-7-31-7-45-1-9 4-17 12-23 24 3-20 10-34 24-45-12-3-23-1-36 3Z" fill="none" stroke="#eef8f1" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M106 192c20-14 37-17 54-12 9 2 17 7 25 16-18-7-33-7-47-1-9 4-17 10-25 19" fill="none" stroke="#82d9c7" stroke-width="5" stroke-linecap="round"/>
+  <text x="248" y="143" fill="#ffffff" font-size="39" font-weight="700" font-family="Arial, sans-serif">HOURAS GROUP</text>
+  <text x="248" y="195" fill="#82d9c7" font-size="28" font-family="Arial, sans-serif">SUPPLIES &amp; FINISHING</text>
+  <text x="1090" y="300" text-anchor="end" direction="rtl" fill="#ffffff" font-size="52" font-weight="700" font-family="Cairo, Arial, sans-serif">مؤسسة حورس</text>
+  <text x="1090" y="365" text-anchor="end" direction="rtl" fill="#ffffff" font-size="34" font-family="Cairo, Arial, sans-serif">للتوريدات والتشطيبات</text>
+  <path d="M700 405h390" stroke="#82d9c7" stroke-width="2" opacity=".65"/>
+  <text x="1090" y="458" text-anchor="end" direction="rtl" fill="#d4ece6" font-size="23" font-family="Cairo, Arial, sans-serif">دهانات SCIB • جبسون بورد • ديكور</text>
+  <text x="1090" y="510" text-anchor="end" direction="rtl" fill="#d4ece6" font-size="23" font-family="Cairo, Arial, sans-serif">كرانيش فيوتك • أدوات ومستلزمات التشطيب</text>
+  <rect x="82" y="492" width="450" height="74" rx="8" fill="#f7f8f5"/>
+  <text x="307" y="540" text-anchor="middle" fill="#073f40" font-size="29" font-weight="700" font-family="Arial, sans-serif">010 0252 7072</text>
+  <text x="1090" y="580" text-anchor="end" direction="rtl" fill="#82d9c7" font-size="18" font-family="Cairo, Arial, sans-serif">٢٢ع حدائق الأهرام، بوابة حورس</text>
+</svg>

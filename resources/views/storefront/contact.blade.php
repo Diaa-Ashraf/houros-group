@@ -1,9 +1,13 @@
 {{-- resources/views/storefront/contact.blade.php --}}
 @extends('layouts.storefront')
 
-@section('title', 'اتصل بنا | ألبان وسوبرماركت التوحيد بالعامرية')
+@section('title', 'تواصل مع مؤسسة حورس للتوريدات والتشطيبات')
 
 @section('content')
+@php
+    $contactPhone = $settings['store_phone'] ?? '01002527072';
+    $contactWhatsApp = preg_replace('/[^0-9]/', '', $settings['store_whatsapp'] ?? '201002527072');
+@endphp
 <div class="bg-gray-50/50 min-h-screen py-8">
  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
 
@@ -23,10 +27,10 @@
  <span>نسعد بخدمتكم والاستماع لآرائكم دائماً</span>
  </div>
  <h1 class="text-2xl sm:text-4xl font-black max-w-2xl mx-auto leading-tight">
- تواصل مع إدارة ألبان وسوبرماركت التوحيد
+ تواصل مع مؤسسة حورس
  </h1>
  <p class="text-xs sm:text-sm text-cream-muted max-w-xl mx-auto leading-relaxed">
- سواء كان لديك استفسار عن منتج، متابعة لطلبك، طلب كميات جملة أو شكوى، فريقنا متواجد لخدمتك ومساعدتك في أي وقت.
+ للاستفسار عن المنتجات والأسعار أو خامات التشطيب، تواصل معنا وسنساعدك في اختيار المناسب.
  </p>
  </div>
 
@@ -53,8 +57,8 @@
  </div>
  <div>
  <span class="text-[11px] text-charcoal-muted block">خدمة العملاء والطلبات:</span>
- <a href="tel:01000000000" class="text-sm font-black text-primary-800 hover:underline" dir="ltr">
- {{ $settings['site_phone'] ?? '01012345678' }}
+ <a href="tel:{{ $contactPhone }}" class="text-sm font-black text-primary-800 hover:underline" dir="ltr">
+ {{ $contactPhone }}
  </a>
  </div>
  </div>
@@ -68,8 +72,8 @@
  </div>
  <div>
  <span class="text-[11px] text-charcoal-muted block">واتساب الطلبات السريعة:</span>
- <a href="https://wa.me/201012345678" target="_blank" rel="noopener noreferrer" class="text-sm font-black text-emerald-700 hover:underline" dir="ltr">
- {{ $settings['site_whatsapp'] ?? '+20 101 234 5678' }}
+ <a href="https://wa.me/{{ $contactWhatsApp }}" target="_blank" rel="noopener noreferrer" class="text-sm font-black text-emerald-700 hover:underline" dir="ltr">
+ {{ $settings['store_whatsapp'] ?? '+20 100 252 7072' }}
  </a>
  </div>
  </div>
@@ -83,7 +87,7 @@
  </div>
  <div>
  <span class="text-[11px] text-charcoal-muted block">مواعيد استقبال الطلبات:</span>
- <span class="text-xs font-bold text-charcoal-heading">يومياً من 8:00 صباحاً حتى 12:00 منتصف الليل</span>
+ <span class="text-xs font-bold text-charcoal-heading">{{ $settings['working_hours'] ?? 'تواصل معنا لمعرفة مواعيد العمل' }}</span>
  </div>
  </div>
 
@@ -96,7 +100,7 @@
  </div>
  <div>
  <span class="text-[11px] text-charcoal-muted block">المنطقة والخدمة:</span>
- <span class="text-xs font-bold text-charcoal-heading">العامرية، كينج مريوط، وضواحي غرب الإسكندرية</span>
+ <span class="text-xs font-bold text-charcoal-heading">٢٢ع حدائق الأهرام، بوابة حورس</span>
  </div>
  </div>
  </div>
@@ -108,7 +112,7 @@
  <svg class="w-4 h-4 text-primary-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
  </svg>
- <span>أرقام الفروع المباشرة</span>
+ <span>موقع المؤسسة وبيانات التواصل</span>
  </h3>
  <a href="{{ route('branches.index') }}" class="text-[11px] font-bold text-primary-800 hover:underline">
  عرض الخرائط ←
@@ -223,11 +227,11 @@
  </label>
  <select name="subject" id="subject" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-xs text-charcoal bg-white focus:border-primary-800 focus:ring-1 focus:ring-primary-800 transition-colors">
  <option value="">اختر موضوع الرسالة...</option>
- <option value="استفسار عام عن منتجات الألبان والبقالة" {{ old('subject') == 'استفسار عام عن منتجات الألبان والبقالة' ? 'selected' : '' }}>استفسار عام عن المنتجات</option>
- <option value="متابعة أو استفسار عن طلب ديليفري" {{ old('subject') == 'متابعة أو استفسار عن طلب ديليفري' ? 'selected' : '' }}>متابعة طلب دليفري</option>
- <option value="طلب كميات أو أسعار جملة للمطاعم والمحلات" {{ old('subject') == 'طلب كميات أو أسعار جملة للمطاعم والمحلات' ? 'selected' : '' }}>طلب كميات أو توريدات جملة</option>
+ <option value="استفسار عن منتجات وخامات التشطيب" {{ old('subject') == 'استفسار عن منتجات وخامات التشطيب' ? 'selected' : '' }}>استفسار عن المنتجات والخامات</option>
+ <option value="متابعة أو استفسار عن طلب" {{ old('subject') == 'متابعة أو استفسار عن طلب' ? 'selected' : '' }}>متابعة طلب</option>
+ <option value="طلب توريدات أو أسعار كميات" {{ old('subject') == 'طلب توريدات أو أسعار كميات' ? 'selected' : '' }}>توريدات وأسعار كميات</option>
  <option value="شكوى بخصوص جودة منتج أو خدمة" {{ old('subject') == 'شكوى بخصوص جودة منتج أو خدمة' ? 'selected' : '' }}>شكوى أو ملاحظة</option>
- <option value="اقتراح لتطوير خدمات التوحيد" {{ old('subject') == 'اقتراح لتطوير خدمات التوحيد' ? 'selected' : '' }}>اقتراح للتطوير</option>
+ <option value="اقتراح لتطوير خدمات حورس" {{ old('subject') == 'اقتراح لتطوير خدمات حورس' ? 'selected' : '' }}>اقتراح للتطوير</option>
  </select>
  </div>
  </div>

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', __('التقارير الشاملة وتحليلات أداء الفروع والمبيعات'))
+@section('title', __('التقارير الشاملة وتحليلات أداء المواقع والمبيعات'))
 
 @section('content')
 <div class="space-y-6 sm:space-y-8" x-data="{ viewMode: 'chart', activeBranchTab: 'all' }">
@@ -11,11 +11,11 @@
             <div class="flex items-center gap-2 mb-1.5">
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-xs">
                     <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-                    <span>لوحة التقارير المالية ومبيعات فروع العامرية</span>
+                    <span>لوحة التقارير المالية ومبيعات مؤسسة حورس</span>
                 </span>
             </div>
             <h1 class="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
-                {{ __('التقارير المالية وتحليلات أداء الفروع') }}
+                {{ __('التقارير المالية وتحليلات أداء المواقع') }}
             </h1>
             <p class="text-xs sm:text-sm text-gray-500 font-medium mt-1">
                 {{ __('إيرادات كل فرع، مبيعات اليوم، حركة الطلبات، ونشاط مندوبي التوصيل ومجلة العروض.') }}
@@ -128,25 +128,25 @@
 
     </div>
 
-    {{-- 3. BRAND NEW: Detailed Branch Performance Breakdown (فروع ألبان وسوبرماركت التوحيد بالعامرية) --}}
+    {{-- 3. Location performance breakdown --}}
     <div class="bg-white border border-orange-100 rounded-3xl p-6 sm:p-8 shadow-xs space-y-6">
         
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-orange-100 pb-5">
             <div>
                 <div class="flex items-center gap-2 mb-1">
-                    <span class="text-xs font-black text-red-600 uppercase tracking-wider">🏢 أداء الفروع الأربعة بالعامرية</span>
+                    <span class="text-xs font-black text-primary-700 uppercase tracking-wider">🏢 أداء المواقع</span>
                 </div>
                 <h2 class="text-xl sm:text-2xl font-black text-gray-900">
                     {{ __('تقرير مبيعات وإيرادات كل فرع') }}
                 </h2>
                 <p class="text-xs text-gray-500 font-medium mt-1">
-                    {{ __('متابعة دقيقة لمبيعات اليوم وإجمالي إيرادات الفترة لكل فرع من فروع العامرية.') }}
+                    {{ __('متابعة دقيقة للمبيعات وإجمالي الإيرادات حسب الموقع.') }}
                 </p>
             </div>
 
             <div class="flex items-center gap-2">
                 <span class="px-3.5 py-1.5 rounded-xl bg-orange-50 border border-orange-200 text-orange-800 text-xs font-black">
-                    {{ count($reports['branch_metrics'] ?? []) }} فروع مسجلة
+                    {{ count($reports['branch_metrics'] ?? []) }} مواقع مسجلة
                 </span>
             </div>
         </div>
@@ -229,7 +229,7 @@
                 </div>
             @empty
                 <div class="col-span-4 p-8 text-center text-gray-500">
-                    لا توجد بيانات فروع مسجلة حالياً.
+                    لا توجد بيانات مواقع مسجلة حالياً.
                 </div>
             @endforelse
         </div>
@@ -237,7 +237,7 @@
         {{-- Detailed Branches Table --}}
         <div class="border border-orange-100 rounded-2xl overflow-hidden">
             <div class="bg-canvas-base px-5 py-3 border-b border-orange-100 flex items-center justify-between">
-                <span class="text-xs font-black text-gray-900">جدول مقارنة أداء الفروع التفصيلي</span>
+                <span class="text-xs font-black text-gray-900">جدول مقارنة أداء المواقع</span>
                 <span class="text-[11px] text-gray-500 font-medium">محدّث لحظياً</span>
             </div>
             <div class="overflow-x-auto">
@@ -350,8 +350,8 @@
                     <div class="col-span-2 sm:col-span-1 p-3 bg-canvas-base border border-orange-100 rounded-2xl flex items-center gap-3">
                         <span class="text-xl">🏪</span>
                         <div class="min-w-0">
-                            <span class="text-[10px] text-gray-500 font-bold block">{{ __('المبيعات حسب الفروع:') }}</span>
-                            <span class="text-xs sm:text-sm font-black text-red-600 block truncate">{{ count($reports['branch_metrics'] ?? []) }} فروع</span>
+                            <span class="text-[10px] text-gray-500 font-bold block">{{ __('المبيعات حسب المواقع:') }}</span>
+                            <span class="text-xs sm:text-sm font-black text-red-600 block truncate">{{ count($reports['branch_metrics'] ?? []) }} مواقع</span>
                         </div>
                     </div>
                 </div>
@@ -457,7 +457,7 @@
                     </div>
                     <div>
                         <h3 class="font-black text-gray-900 text-base leading-tight">{{ __('أكثر المنتجات طلباً ومبيعاً') }}</h3>
-                        <p class="text-[11px] text-gray-500 font-medium mt-0.5">{{ __('المنتجات الأعلى مبيعاً في فروع التوحيد') }}</p>
+                        <p class="text-[11px] text-gray-500 font-medium mt-0.5">{{ __('المنتجات الأعلى مبيعاً في مؤسسة حورس') }}</p>
                     </div>
                 </div>
 

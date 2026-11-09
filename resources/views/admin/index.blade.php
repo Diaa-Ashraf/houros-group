@@ -10,14 +10,14 @@
             <div class="flex items-center gap-2 mb-2">
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-xs">
                     <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-                    <span>ألبان وسوبرماركت التوحيد بالعامرية (4 فروع)</span>
+                    <span>مؤسسة حورس للتوريدات والتشطيبات</span>
                 </span>
             </div>
             <h1 class="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
                 لوحة المتابعة الشاملة والإحصائيات
             </h1>
             <p class="text-xs sm:text-sm text-gray-500 font-medium mt-1">
-                متابعة حركة الطلبات حسب الفروع، تحويلات إنستاباي، مجلة العروض، والتقارير المالية.
+                متابعة الطلبات، التحويلات الإلكترونية، عروض المنتجات، والتقارير المالية.
             </p>
         </div>
 
@@ -116,19 +116,19 @@
         </div>
     </div>
 
-    {{-- Branch Performance Section (فروع العامرية الأربعة ومتابعة طلبات كل فرع) --}}
+    {{-- Branch Performance Section (locations and order activity) --}}
     <div class="bg-white border border-orange-100 rounded-3xl p-6 sm:p-7 shadow-xs space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-orange-100">
             <div>
                 <div class="flex items-center gap-2">
                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                    <h2 class="font-black text-base sm:text-lg text-gray-900">متابعة أداء ومبيعات فروع العامرية (4 فروع)</h2>
+                    <h2 class="font-black text-base sm:text-lg text-gray-900">متابعة أداء الموقع والطلبات</h2>
                 </div>
-                <p class="text-xs text-gray-500 mt-0.5">تفاصيل الطلبات والاستلام وتوزيع المبيعات على كل فرع من فروع المتجر</p>
+                <p class="text-xs text-gray-500 mt-0.5">تفاصيل الطلبات والاستلام والمبيعات حسب الموقع</p>
             </div>
             <div class="flex items-center gap-2">
                 <a href="{{ route('admin.branches.index') }}" class="px-3.5 py-1.5 rounded-xl bg-orange-50 hover:bg-orange-100 border border-orange-200 text-xs font-bold text-red-700 transition-colors">
-                    إدارة الفروع ←
+                    إدارة الموقع ←
                 </a>
                 <a href="{{ route('admin.reports.index') }}" class="px-3.5 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 border border-red-200 text-xs font-bold text-red-700 transition-colors">
                     التقارير الشاملة ←
@@ -166,7 +166,7 @@
                 </div>
             @empty
                 <div class="col-span-4 py-6 text-center text-xs text-gray-400">
-                    لا توجد فروع مسجلة حتى الآن.
+                    لا توجد مواقع مسجلة حتى الآن.
                 </div>
             @endforelse
         </div>
@@ -179,7 +179,7 @@
             <div class="flex items-center justify-between mb-5">
                 <div>
                     <h2 class="text-base font-black text-gray-900">الأصناف والمنتجات الأكثر طلباً ومبيعاً</h2>
-                    <p class="text-xs text-gray-500">الألبان، الأجبان، والسلع الغذائية الأكثر طلباً بالعامرية</p>
+                    <p class="text-xs text-gray-500">خامات التشطيب والديكور الأكثر طلباً</p>
                 </div>
                 <a href="{{ route('admin.products.index') }}" class="text-xs font-bold text-red-600 hover:text-orange-600 transition-colors">
                     عرض كل المنتجات ←
@@ -234,11 +234,11 @@
             @endif
         </div>
 
-        {{-- Quick Management Tools (مجلة العروض، الفروع، التقارير) --}}
+        {{-- Quick Management Tools (offers, locations and reports) --}}
         <div class="lg:col-span-4 bg-white border border-orange-100 rounded-3xl p-6 shadow-xs flex flex-col justify-between">
             <div>
                 <h2 class="text-base font-black text-gray-900 mb-1">إجراءات وروابط سريعة</h2>
-                <p class="text-xs text-gray-500 mb-4">أدوات إدارة متجر وفروع ألبان التوحيد</p>
+                <p class="text-xs text-gray-500 mb-4">أدوات إدارة متجر مؤسسة حورس</p>
                 
                 <div class="space-y-2.5">
                     <a href="{{ route('admin.deals.index') }}" 
@@ -262,8 +262,8 @@
                             </svg>
                         </div>
                         <div>
-                            <strong class="text-xs font-bold text-gray-900 block group-hover:text-red-600 transition-colors">فروع العامرية (4 فروع)</strong>
-                            <span class="text-[11px] text-gray-500 font-medium">تحديث أرقام ومواعيد عمل الفروع والموقع</span>
+                            <strong class="text-xs font-bold text-gray-900 block group-hover:text-red-600 transition-colors">موقع المؤسسة</strong>
+                            <span class="text-[11px] text-gray-500 font-medium">تحديث بيانات الموقع ومواعيد العمل</span>
                         </div>
                     </a>
 

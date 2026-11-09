@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
             RoleAndPermissionSeeder::class,
             SettingsSeeder::class,
             AdminUserSeeder::class,
-            TawheedStoreSeeder::class,
+            HorusStoreSeeder::class,
         ]);
     }
 }

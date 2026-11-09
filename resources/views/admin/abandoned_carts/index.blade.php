@@ -11,11 +11,11 @@
  </div>
 
  {{-- Main Table Card --}}
- <div class="bg-white border border-[border-orange-100] rounded-2xl shadow-sm overflow-hidden">
+ <div class="bg-white border border-orange-100 rounded-2xl shadow-sm overflow-hidden">
  <div class="overflow-x-auto">
  <table class="w-full text-right border-collapse">
  <thead>
- <tr class="border-b border-[border-orange-100] bg-[bg-canvas-base]/70 text-gray-500 text-xs uppercase font-semibold">
+ <tr class="border-b border-orange-100 bg-canvas-base/70 text-gray-500 text-xs uppercase font-semibold">
  <th class="py-3.5 px-5">العميل</th>
  <th class="py-3.5 px-5">بيانات الاتصال</th>
  <th class="py-3.5 px-5">محتويات السلة</th>
@@ -30,10 +30,10 @@
  @php
  $phone = $cart->customer_phone ?? $cart->user?->phone;
  $cleanPhone = $phone ? preg_replace('/[^0-9]/', '', $phone) : null;
- $storeName = settings('site_name', 'Regalest Store');
+ $storeName = settings('site_name', 'مؤسسة حورس للتوريدات والتشطيبات');
  $waFollowupMsg = urlencode("مرحباً بك من متجر {$storeName} ! لاحظنا أنك تركت بعض المنتجات الفاخرة في سلتك. هل تواجهك أي مشكلة في إتمام طلبك؟ نحن هنا لمساعدتك ويسعدنا تقديم كود خصم خاص بك!");
  @endphp
- <tr class="hover:bg-[bg-canvas-base]/40 transition-colors">
+ <tr class="hover:bg-canvas-base/40 transition-colors">
  <td class="py-4 px-5">
  <div class="font-bold text-[#1F2937]">
  {{ $cart->customer_name ?? $cart->user?->name ?? 'زائر / ضيف' }}
@@ -56,7 +56,7 @@
  @endif
  </td>
  <td class="py-4 px-5">
- <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold bg-[bg-canvas-base] text-gray-500 border border-[border-orange-100]">
+ <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold bg-canvas-base text-gray-500 border border-orange-100">
  {{ $cart->item_count }} منتجات
  </span>
  <div class="text-xs text-gray-500 mt-1 space-y-0.5">
@@ -96,7 +96,7 @@
  @if(!$cart->is_recovered)
  <form action="{{ route('admin.abandoned-carts.recover', $cart->id) }}" method="POST">
  @csrf
- <button type="submit" class="px-2.5 py-1.5 rounded-lg border border-[border-orange-100] bg-[bg-canvas-base] hover:bg-[#EDE8DC] text-[#1F2937] font-semibold text-xs transition-colors" title="تعيين كمستردة">
+ <button type="submit" class="px-2.5 py-1.5 rounded-lg border border-orange-100 bg-canvas-base hover:bg-[#EDE8DC] text-[#1F2937] font-semibold text-xs transition-colors" title="تعيين كمستردة">
  تم الشراء
  </button>
  </form>
@@ -123,7 +123,7 @@
  </div>
 
  @if(method_exists($carts, 'hasPages') && $carts->hasPages())
- <div class="p-4 border-t border-[border-orange-100] bg-[bg-canvas-base]/30">
+ <div class="p-4 border-t border-orange-100 bg-canvas-base/30">
  {{ $carts->links() }}
  </div>
  @endif

@@ -9,7 +9,7 @@
     <div class="bg-white border border-orange-100 rounded-3xl p-6 sm:p-8 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <div class="flex items-center gap-2 mb-1">
-                <span class="text-xs font-black text-orange-600 uppercase tracking-wider">سوبرماركت وألبان التوحيد بالعامرية</span>
+                <span class="text-xs font-black text-primary-700 uppercase tracking-wider">كتالوج مؤسسة حورس</span>
             </div>
             <h1 class="text-2xl sm:text-3xl font-black text-gray-900">
                 كتالوج المنتجات والمخزون
@@ -122,7 +122,7 @@
 
                                     @if($product->is_weighted)
                                         <span class="px-2 py-0.5 rounded-md bg-orange-100 text-orange-800 text-[9px] font-black block w-fit">
-                                            كيلو / أوزان
+                                            بوحدات قياس
                                         </span>
                                     @endif
                                 </div>

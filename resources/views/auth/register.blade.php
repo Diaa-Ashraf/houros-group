@@ -4,26 +4,26 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <meta name="csrf-token" content="{{ csrf_token() }}">
- <title>{{ settings('site_name', 'Regalest Store') }} - {{ __('إنشاء حساب جديد') }}</title>
- 
+ <title>{{ settings('site_name', 'مؤسسة حورس للتوريدات والتشطيبات') }} - {{ __('إنشاء حساب جديد') }}</title>
+
  <!-- Fonts -->
  <link rel="preconnect" href="https://fonts.googleapis.com">
  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
- 
+
  <!-- Vite Assets -->
  @vite(['resources/css/app.css', 'resources/js/app.js'])
 
  <style>
  * { box-sizing: border-box; margin: 0; padding: 0; }
  body { font-family: 'Alexandria', 'Plus Jakarta Sans', sans-serif; }
- 
+
  .split-wrapper {
  display: flex;
  min-height: 100vh;
  width: 100%;
  }
- 
+
  .split-form-col {
  flex: 1 1 50%;
  width: 50%;
@@ -85,10 +85,10 @@
 <body class="bg-[#F8F9FA] text-[#18181B] antialiased">
 
  <div class="split-wrapper">
- 
+
  {{-- Right / Form Side in RTL (Left in LTR) --}}
  <div class="split-form-col">
- 
+
  {{-- Top Header --}}
  <div class="flex items-center justify-between mb-6">
  <a href="{{ route('site.home') }}" class="flex items-center gap-2 group">
@@ -97,7 +97,7 @@
  {{ settings('site_name', 'REGALEST') }}
  </span>
  </a>
- 
+
  <a href="{{ route('site.home') }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-[#C5A059] transition-colors">
  <span>{{ __('العودة للرئيسية') }}</span>
  <span class="rtl:rotate-180">&rarr;</span>
@@ -106,10 +106,10 @@
 
  {{-- Centered Form --}}
  <div class="max-w-md w-full mx-auto my-auto py-4">
- 
+
  <div class="mb-7 text-start">
  <h1 class="text-2xl sm:text-3xl font-extrabold text-[#18181B] tracking-tight">
- {{ __('إنشاء حساب جديد') }} 
+ {{ __('إنشاء حساب جديد') }}
  </h1>
  <p class="text-xs sm:text-sm text-gray-500 mt-2 leading-relaxed">
  {{ __('انضم إلى مجتمعنا لتجربة تسوق فريدة ومتابعة مشترياتك وهداياك بكل سهولة') }}
@@ -150,12 +150,12 @@
  {{ __('الاسم الكامل') }}
  </label>
  <div class="relative">
- <input type="text" 
- id="name" 
- name="name" 
- value="{{ old('name') }}" 
- required 
- autofocus 
+ <input type="text"
+ id="name"
+ name="name"
+ value="{{ old('name') }}"
+ required
+ autofocus
  placeholder="{{ __('أدخل اسمك الكريم') }}"
  class="w-full px-4 py-3 text-xs sm:text-sm rounded-2xl bg-[#F8F9FA] border border-gray-200 text-[#18181B] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#C5A059] focus:bg-white transition-all">
  <div class="absolute end-3.5 inset-y-0 flex items-center pointer-events-none text-gray-400">
@@ -170,11 +170,11 @@
  {{ __('البريد الإلكتروني') }}
  </label>
  <div class="relative">
- <input type="email" 
- id="email" 
- name="email" 
- value="{{ old('email') }}" 
- required 
+ <input type="email"
+ id="email"
+ name="email"
+ value="{{ old('email') }}"
+ required
  placeholder="name@example.com"
  class="w-full px-4 py-3 text-xs sm:text-sm rounded-2xl bg-[#F8F9FA] border border-gray-200 text-[#18181B] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#C5A059] focus:bg-white transition-all">
  <div class="absolute end-3.5 inset-y-0 flex items-center pointer-events-none text-gray-400">
@@ -190,10 +190,10 @@
  {{ __('كلمة المرور') }}
  </label>
  <div class="relative">
- <input type="password" 
- id="password" 
- name="password" 
- required 
+ <input type="password"
+ id="password"
+ name="password"
+ required
  placeholder="••••••••"
  class="w-full px-4 py-3 text-xs rounded-2xl bg-[#F8F9FA] border border-gray-200 text-[#18181B] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#C5A059] focus:bg-white transition-all">
  </div>
@@ -204,10 +204,10 @@
  {{ __('تأكيد كلمة المرور') }}
  </label>
  <div class="relative">
- <input type="password" 
- id="password_confirmation" 
- name="password_confirmation" 
- required 
+ <input type="password"
+ id="password_confirmation"
+ name="password_confirmation"
+ required
  placeholder="••••••••"
  class="w-full px-4 py-3 text-xs rounded-2xl bg-[#F8F9FA] border border-gray-200 text-[#18181B] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#C5A059] focus:bg-white transition-all">
  </div>
@@ -216,20 +216,20 @@
 
  {{-- Terms Checkbox --}}
  <div class="flex items-center gap-2 py-1">
- <input type="checkbox" 
- id="terms" 
- name="terms" 
- required 
+ <input type="checkbox"
+ id="terms"
+ name="terms"
+ required
  class="w-4 h-4 rounded text-[#C5A059] focus:ring-[#C5A059] border-gray-300">
  <label for="terms" class="text-xs text-gray-600">
- {{ __('أوافق على') }} 
+ {{ __('أوافق على') }}
  <a href="#" class="text-[#C5A059] hover:underline">{{ __('الشروط والأحكام') }}</a>
  {{ __('و سياسة الخصوصية') }}
  </label>
  </div>
 
  {{-- Submit Button --}}
- <button type="submit" 
+ <button type="submit"
  class="w-full py-3.5 rounded-full bg-[#18181B] hover:bg-[#C5A059] text-white text-xs sm:text-sm font-bold transition-all duration-300 shadow-md hover:shadow-lg active:scale-98 flex items-center justify-center gap-2">
  <span>{{ __('إنشاء الحساب') }}</span>
  <span>&larr;</span>
@@ -253,10 +253,10 @@
 
  {{-- Left / Image Showcase Side in RTL (Right in LTR) --}}
  <div class="split-image-col">
- <img src="{{ asset('assets/site/img/auth/luxury-showcase.jpg') }}" 
- alt="Regalest Showcase" 
+ <img src="{{ asset('assets/site/img/auth/luxury-showcase.jpg') }}"
+ alt="مؤسسة حورس للتوريدات والتشطيبات"
  class="split-image-bg">
- 
+
  <div class="split-overlay"></div>
 
  <div class="relative z-10 max-w-lg p-8 sm:p-10 rounded-3xl bg-black/40 backdrop-blur-md border border-white/20 text-white shadow-2xl">
@@ -264,11 +264,11 @@
  <span></span>
  <span>{{ __('انضم إلى عملاء النخبة') }}</span>
  </div>
- 
+
  <h2 class="font-royal text-2xl sm:text-3xl font-extrabold leading-snug mb-3">
  {{ __('وجهتك الاستثنائية للهدايا والمقتنيات الفاخرة') }}
  </h2>
- 
+
  <p class="text-xs sm:text-sm text-gray-200 leading-relaxed font-normal">
  {{ __('أنشئ حسابك خلال ثوانٍ واحصل على تجربة تسوق مخصصة، عروض حصرية للأعضاء، وسرعة وسهولة في إتمام الطلبات.') }}
  </p>

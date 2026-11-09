@@ -1,7 +1,7 @@
 {{-- resources/views/storefront/account/addresses.blade.php --}}
 @extends('storefront.account.layout')
 
-@section('title', 'العناوين المحفوظة | ألبان وسوبرماركت التوحيد')
+@section('title', 'عناوينك المحفوظة | مؤسسة حورس')
 @section('page_title', 'العناوين المحفوظة')
 
 @section('account_content')
@@ -10,7 +10,7 @@
  <!-- Addresses Header & Add Button -->
  <div class="bg-white rounded-3xl p-6 sm:p-8 border border-cream shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
  <div>
- <h1 class="text-base sm:text-lg font-black text-charcoal-heading">عناوين التوصيل بالعامرية</h1>
+ <h1 class="text-base sm:text-lg font-black text-charcoal-heading">عناوين التوصيل المحفوظة</h1>
  <p class="text-xs text-charcoal-muted">العناوين المحفوظة لتسهيل وسرعة توصيل طلباتك القادمة</p>
  </div>
 
@@ -54,7 +54,7 @@
 
  <div>
  <label for="address_text" class="font-bold text-charcoal-heading block mb-1">
- تفاصيل العنوان بالعامرية <span class="text-rose-600">*</span>
+ تفاصيل العنوان <span class="text-rose-600">*</span>
  </label>
  <textarea id="address_text" 
  name="address" 
@@ -134,7 +134,7 @@
  <span class="text-4xl block"></span>
  <h3 class="text-base font-bold text-charcoal-heading">لا توجد عناوين محفوظة حتى الآن</h3>
  <p class="text-xs text-charcoal-muted max-w-sm mx-auto">
- أضف عنوان منزلك أو مكان عملك بالعامرية ليتم ملؤه تلقائياً عند تأكيد أي طلب قادم.
+ أضف عنوانك ليتم ملؤه تلقائياً عند تأكيد أي طلب قادم.
  </p>
  <div class="pt-2">
  <button type="button" 

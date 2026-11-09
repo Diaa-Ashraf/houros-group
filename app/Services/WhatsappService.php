@@ -51,7 +51,7 @@ class WhatsappService
     public function buildCartWhatsappUrl(array $cartItems, array $totals, ?User $user = null): string
     {
         $phone = $this->getStoreWhatsappNumber();
-        $storeName = settings('site_name', 'Regalest Store');
+        $storeName = settings('site_name', 'مؤسسة حورس للتوريدات والتشطيبات');
         $currency = get_active_currency();
 
         $msg = "👑 *طلب وتأكيد مقتنيات السلة | {$storeName}*\n";
@@ -91,7 +91,7 @@ class WhatsappService
     public function buildProductInquiryUrl(string $productName, float $price, ?string $imageUrl = null, ?User $user = null): string
     {
         $phone = $this->getStoreWhatsappNumber();
-        $storeName = settings('site_name', 'Regalest Store');
+        $storeName = settings('site_name', 'مؤسسة حورس للتوريدات والتشطيبات');
 
         $message = "👑 *{$storeName} | استفسار عن منتج*\n";
         $message .= "━━━━━━━━━━━━━━━━━━━━\n";
@@ -114,7 +114,7 @@ class WhatsappService
      */
     public function formatOrderMessage(Order $order, array $cartItems, array $customerData): string
     {
-        $storeName = settings('site_name', 'Regalest Store');
+        $storeName = settings('site_name', 'مؤسسة حورس للتوريدات والتشطيبات');
         $currency = $order->currency ?? get_active_currency();
 
         $msg = "👑 *طلب جديد من متجر {$storeName}*\n";
@@ -186,7 +186,7 @@ class WhatsappService
      */
     protected function getStoreWhatsappNumber(): string
     {
-        $raw = settings('whatsapp_number', '+963987654321');
+        $raw = settings('store_whatsapp', '201002527072');
         // Remove all non-numeric characters except leading plus if any
         return preg_replace('/[^0-9]/', '', $raw);
     }

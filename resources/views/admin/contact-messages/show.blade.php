@@ -4,9 +4,9 @@
 
 @section('content')
 <div class="max-w-3xl mx-auto space-y-6">
- 
+
  <!-- Top Header -->
- <div class="bg-white border border-[border-orange-100] rounded-2xl p-6 sm:p-8 shadow-sm flex items-center justify-between gap-4">
+ <div class="bg-white border border-orange-100 rounded-2xl p-6 sm:p-8 shadow-sm flex items-center justify-between gap-4">
  <div>
  <div class="flex items-center gap-2 mb-1">
  <a href="{{ route('admin.contact-messages.index') }}" class="text-xs font-bold text-[#DC2626] hover:underline">
@@ -29,9 +29,9 @@
  </div>
 
  <!-- Message Content Box -->
- <div class="bg-white border border-[border-orange-100] rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
+ <div class="bg-white border border-orange-100 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
  <!-- Sender Details Strip -->
- <div class="p-4 rounded-xl bg-[bg-canvas-base] border border-[border-orange-100] grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+ <div class="p-4 rounded-xl bg-canvas-base border border-orange-100 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
  <div>
  <span class="block text-gray-500 text-[11px] mb-1">اسم العميل</span>
  <strong class="text-sm text-[#1F2937]">{{ $message->name }}</strong>
@@ -57,27 +57,27 @@
  </div>
 
  <!-- Reply CTAs & Actions -->
- <div class="pt-4 border-t border-[border-orange-100] flex flex-wrap items-center justify-between gap-3">
+ <div class="pt-4 border-t border-orange-100 flex flex-wrap items-center justify-between gap-3">
  <div class="flex items-center gap-3">
  @if($message->phone)
- <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $message->phone) }}?text={{ urlencode('مرحباً أستاذ ' . $message->name . '، رداً على رسالتكم لألبان التوحيد...') }}" 
- target="_blank" 
- rel="noopener noreferrer" 
+ <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $message->phone) }}?text={{ urlencode('مرحباً أستاذ ' . $message->name . '، رداً على رسالتكم لمؤسسة حورس...') }}"
+ target="_blank"
+ rel="noopener noreferrer"
  class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-colors flex items-center gap-2 shadow-sm">
  <span></span>
  <span>رد فوري عبر واتساب</span>
  </a>
 
- <a href="tel:{{ $message->phone }}" 
- class="px-4 py-2.5 rounded-xl border border-[border-orange-100] bg-[bg-canvas-base] hover:bg-[border-orange-100] text-[#1F2937] font-bold text-xs transition-colors flex items-center gap-2" dir="ltr">
+ <a href="tel:{{ $message->phone }}"
+ class="px-4 py-2.5 rounded-xl border border-orange-100 bg-canvas-base hover:bg-orange-50 text-[#1F2937] font-bold text-xs transition-colors flex items-center gap-2" dir="ltr">
  <span></span>
  <span>اتصال بالعميل</span>
  </a>
  @endif
 
  @if($message->email)
- <a href="mailto:{{ $message->email }}?subject={{ urlencode('رد على استفسارك: ' . $message->subject) }}" 
- class="px-4 py-2.5 rounded-xl border border-[border-orange-100] bg-[bg-canvas-base] hover:bg-[border-orange-100] text-[#1F2937] font-bold text-xs transition-colors flex items-center gap-2">
+ <a href="mailto:{{ $message->email }}?subject={{ urlencode('رد على استفسارك: ' . $message->subject) }}"
+ class="px-4 py-2.5 rounded-xl border border-orange-100 bg-canvas-base hover:bg-orange-50 text-[#1F2937] font-bold text-xs transition-colors flex items-center gap-2">
  <span></span>
  <span>إرسال إيميل</span>
  </a>

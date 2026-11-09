@@ -1,14 +1,14 @@
 {{-- resources/views/components/storefront/layout/footer.blade.php --}}
 @php
-    $siteName = settings('site_name', 'ألبان وسوبرماركت التوحيد');
-    $siteTagline = settings('site_tagline', 'أصالة الطعم البلدي وجودة السوبرماركت');
-    $storePhone = settings('store_phone', '01000000000');
-    $storePhoneSecondary = settings('store_phone_secondary', '');
-    $storeWhatsApp = settings('store_whatsapp', '201000000000');
-    $storeEmail = settings('store_email', 'info@altawheed-dairy.com');
-    $address = settings('address', 'العامرية - الإسكندرية (4 فروع في خدمتك)');
-    $workingHours = settings('working_hours', 'يومياً: من 8:00 صباحاً حتى 2:00 بعد منتصف الليل');
-    $aboutShort = settings('about_us_short', 'من أكبر مراكز الألبان والسوبرماركت في منطقة العامرية والإسكندرية. نوفر أجود منتجات الألبان الطازجة، الأجبان الطبيعية، والسلع الغذائية بأسعار الجملة والتجزئة وخدمة توصيل سريعة حتى باب بيتك.');
+    $siteName = 'مؤسسة حورس للتوريدات والتشطيبات';
+    $siteTagline = 'حلول متكاملة للتشطيب والديكور';
+    $storePhone = settings('store_phone', '01002527072');
+    $storePhoneSecondary = null;
+    $storeEmail = settings('store_email', 'تواصل معنا عبر واتساب');
+    $storeWhatsApp = settings('store_whatsapp', '201002527072');
+    $address = '٢٢ع حدائق الأهرام، بوابة حورس';
+    $workingHours = settings('working_hours', 'تواصل معنا لمعرفة مواعيد العمل');
+    $aboutShort = 'نوفر خامات التشطيب والديكور، دهانات SCIB، أدوات ومستلزمات البناء، وحلولاً عملية من التأسيس حتى اللمسة الأخيرة.';
     
     $facebookLink = settings('facebook_link');
     $instagramLink = settings('instagram_link');
@@ -28,15 +28,7 @@
             <!-- Column 1: Brand & Bio -->
             <div class="space-y-4">
                 <div class="flex items-center gap-3">
-                    @if(get_site_logo())
-                    <div class="w-10 h-10 rounded-xl bg-white p-1 flex items-center justify-center shadow-lg shrink-0">
-                        <img src="{{ get_site_logo() }}" alt="{{ $siteName }}" class="max-h-full max-w-full object-contain">
-                    </div>
-                    @else
-                    <div class="w-10 h-10 rounded-xl bg-primary-800 text-white flex items-center justify-center font-black text-xl shadow-lg shrink-0">
-                        ت
-                    </div>
-                    @endif
+                    <div class="horus-brand-mark w-10 h-10 rounded-xl text-white flex items-center justify-center font-black text-xl shadow-lg shrink-0" aria-hidden="true">ح</div>
                     <div>
                         <h3 class="text-base font-bold text-white tracking-tight">{{ $siteName }}</h3>
                         <p class="text-xs text-accent-400 font-medium">{{ $siteTagline }}</p>
@@ -99,8 +91,8 @@
                     <li><a href="{{ route('site.home') }}" class="hover:text-accent-400 transition-colors">الرئيسية</a></li>
                     <li><a href="{{ route('site.products') }}" class="hover:text-accent-400 transition-colors">تصفح كل المنتجات</a></li>
                     <li><a href="{{ route('offers.index') }}" class="hover:text-accent-400 transition-colors">مجلة عروض التوفير</a></li>
-                    <li><a href="{{ route('branches.index') }}" class="hover:text-accent-400 transition-colors">فروع ألبان التوحيد بالعامرية</a></li>
-                    <li><a href="{{ route('pages.about') }}" class="hover:text-accent-400 transition-colors">عن التوحيد وتاريخنا</a></li>
+                    <li><a href="{{ route('branches.index') }}" class="hover:text-accent-400 transition-colors">موقعنا في حدائق الأهرام</a></li>
+                    <li><a href="{{ route('pages.about') }}" class="hover:text-accent-400 transition-colors">عن مؤسسة حورس</a></li>
                     <li><a href="{{ route('careers.index') }}" class="hover:text-accent-400 transition-colors">فرص العمل والتوظيف</a></li>
                 </ul>
             </div>
@@ -199,7 +191,7 @@
         <!-- Bottom Copyright -->
         <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/60">
             <p>
-                جميع الحقوق محفوظة © {{ date('Y') }} — <strong class="text-white">{{ $siteName }}</strong> (العامرية، الإسكندرية)
+                جميع الحقوق محفوظة © {{ date('Y') }} — <strong class="text-white">{{ $siteName }}</strong>
             </p>
             <div class="flex flex-wrap items-center gap-3 text-[11px]">
                 <a href="{{ route('pages.terms') }}" class="hover:text-white transition-colors">الشروط والأحكام</a>

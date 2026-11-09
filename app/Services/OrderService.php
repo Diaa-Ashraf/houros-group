@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Bundle;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -20,6 +21,7 @@ class OrderService
             $currency = function_exists('get_active_currency') ? get_active_currency() : 'EGP';
             $exchangeRate = function_exists('get_exchange_rate') ? get_exchange_rate() : 1.0;
             $customerName = trim($customerData['name'] ?? '') ?: ($user?->name ?? __('عميل مباشر'));
+            $validatedBundles = [];
 
             // 1. Validate stock availability before making any changes
             foreach ($cartItems as $item) {
@@ -28,6 +30,12 @@ class OrderService
                     if (!$product) {
                         throw new Exception(__('المنتج المطلوب لم يعد متوفراً.'));
                     }
+                    if (!$product->is_active || !$product->is_available) {
+                        throw new Exception(__('المنتج ":product" لم يعد متاحاً للطلب. حدّث السلة وحاول مرة أخرى.', [
+                            'product' => $product->name,
+                        ]));
+                    }
+                    $this->assertCartPriceIsCurrent($product, $item);
                     if ($product->available_stock <= 5 && $item['quantity'] > 1) {
                         throw new Exception(__('المنتج ":product" ذو كمية محدودة بالمخزون (5 قطع أو أقل)، الحد الأقصى المسموح به هو قطعة واحدة فقط.', [
                             'product' => $product->name,
@@ -40,12 +48,19 @@ class OrderService
                         ]));
                     }
                 } elseif (($item['type'] ?? '') === 'bundle') {
-                    if (isset($item['products']) && is_array($item['products'])) {
-                        foreach ($item['products'] as $bundleProduct) {
-                            $product = Product::lockForUpdate()->find($bundleProduct['id']);
-                            if (!$product || $product->stock_quantity < $item['quantity']) {
-                                throw new Exception(__('أحد منتجات العرض الترويجي غير متوفر بالكمية المطلوبة.'));
-                            }
+                    $bundle = Bundle::active()->with('products')->find($item['id']);
+                    if (!$bundle || !$bundle->is_valid) {
+                        throw new Exception(__('هذا العرض المجمع لم يعد متاحاً. حدّث السلة وحاول مرة أخرى.'));
+                    }
+                    if ($bundle->products->isEmpty()) {
+                        throw new Exception(__('العرض المجمع لا يحتوي على منتجات متاحة.'));
+                    }
+                    $validatedBundles[$bundle->id] = $bundle;
+                    foreach ($bundle->products as $bundleProduct) {
+                        $product = Product::lockForUpdate()->find($bundleProduct->id);
+                        $requiredStock = (int) $bundleProduct->pivot->quantity * (int) $item['quantity'];
+                        if (!$product || !$product->is_active || !$product->is_available || $product->available_stock < $requiredStock) {
+                            throw new Exception(__('أحد منتجات العرض الترويجي غير متوفر بالكمية المطلوبة.'));
                         }
                     }
                 }
@@ -58,7 +73,7 @@ class OrderService
                     ? Order::PAYMENT_METHOD_BRANCH
                     : Order::PAYMENT_METHOD_CASH;
             }
-            $initialStatus = ($paymentMethod === Order::PAYMENT_METHOD_INSTAPAY)
+            $initialStatus = in_array($paymentMethod, [Order::PAYMENT_METHOD_INSTAPAY, Order::PAYMENT_METHOD_VODAFONE_CASH], true)
                 ? Order::STATUS_UNDER_REVIEW
                 : Order::STATUS_PENDING;
 
@@ -98,26 +113,46 @@ class OrderService
                         'notes' => $item['notes'] ?? null,
                     ]);
 
-                    // Deduct stock
+                    // Reserve the selected stock units for both whole items and measured portions.
                     $product = Product::lockForUpdate()->find($item['id']);
                     if ($product) {
-                        $newStock = max(0, $product->stock_quantity - $item['quantity']);
-                        $product->update([
-                            'stock_quantity' => $newStock,
-                            'is_available' => $newStock > 0,
-                        ]);
+                        $newStock = max(0, $product->available_stock - $item['quantity']);
+                        $this->saveStock($product, $newStock);
                     }
                 } elseif (($item['type'] ?? '') === 'bundle') {
-                    if (isset($item['products']) && is_array($item['products'])) {
-                        foreach ($item['products'] as $bundleProduct) {
-                            $product = Product::lockForUpdate()->find($bundleProduct['id']);
-                            if ($product) {
-                                $newStock = max(0, $product->stock_quantity - $item['quantity']);
-                                $product->update([
-                                    'stock_quantity' => $newStock,
-                                    'is_available' => $newStock > 0,
-                                ]);
+                    $bundle = $validatedBundles[$item['id']] ?? null;
+                    if ($bundle) {
+                        $bundleCount = (int) $item['quantity'];
+                        $originalTotal = (float) $bundle->original_total;
+                        $bundleTotal = round((float) $bundle->bundle_price * $bundleCount, 2);
+                        $allocatedTotal = 0.0;
+                        $products = $bundle->products->values();
+
+                        foreach ($products as $index => $bundleProduct) {
+                            $product = Product::lockForUpdate()->find($bundleProduct->id);
+                            if (!$product) {
+                                throw new Exception(__('أحد منتجات العرض الترويجي لم يعد متاحاً.'));
                             }
+
+                            $perBundleQuantity = (int) ($bundleProduct->pivot->quantity ?? 1);
+                            $lineQuantity = $perBundleQuantity * $bundleCount;
+                            $weight = (float) $product->price * $perBundleQuantity;
+                            $lineTotal = $index === $products->count() - 1
+                                ? round($bundleTotal - $allocatedTotal, 2)
+                                : round($bundleTotal * ($originalTotal > 0 ? $weight / $originalTotal : 1 / $products->count()), 2);
+                            $allocatedTotal += $lineTotal;
+
+                            $order->orderItems()->create([
+                                'product_id' => $product->id,
+                                'price' => round($lineTotal / max(1, $lineQuantity), 2),
+                                'total_price' => $lineTotal,
+                                'quantity' => $lineQuantity,
+                                'portion_type' => 'bundle',
+                                'portion_label' => __('ضمن عرض: :name', ['name' => $bundle->name]),
+                            ]);
+
+                            $newStock = max(0, $product->available_stock - $lineQuantity);
+                            $this->saveStock($product, $newStock);
                         }
                     }
                 }
@@ -238,11 +273,8 @@ class OrderService
             if ($item->product_id) {
                 $product = Product::lockForUpdate()->find($item->product_id);
                 if ($product) {
-                    $newStock = $product->stock_quantity + $item->quantity;
-                    $product->update([
-                        'stock_quantity' => $newStock,
-                        'is_available' => true,
-                    ]);
+                    $newStock = $product->available_stock + $item->quantity;
+                    $this->saveStock($product, $newStock);
                 }
             }
         }
@@ -259,13 +291,45 @@ class OrderService
             if ($item->product_id) {
                 $product = Product::lockForUpdate()->find($item->product_id);
                 if ($product) {
-                    $newStock = max(0, $product->stock_quantity - $item->quantity);
-                    $product->update([
-                        'stock_quantity' => $newStock,
-                        'is_available' => $newStock > 0,
-                    ]);
+                    if ($product->available_stock < $item->quantity) {
+                        throw new Exception(__('لا يمكن إعادة تفعيل الطلب لأن مخزون ":product" لم يعد كافياً.', [
+                            'product' => $product->name,
+                        ]));
+                    }
+
+                    $newStock = $product->available_stock - $item->quantity;
+                    $this->saveStock($product, $newStock);
                 }
             }
+        }
+    }
+
+    private function saveStock(Product $product, int $stock): void
+    {
+        $product->update([
+            'stock_quantity' => $stock,
+            'quantity' => $stock,
+            'is_available' => $stock > 0,
+        ]);
+    }
+
+    private function assertCartPriceIsCurrent(Product $product, array $item): void
+    {
+        $portion = $item['portion_type'] ?? 'piece';
+        $basePrice = (float) $product->final_price;
+        $expectedPrice = match ($portion) {
+            '125g' => round($basePrice * 0.125, 2),
+            '250g' => round($basePrice * 0.25, 2),
+            '500g' => round($basePrice * 0.5, 2),
+            '1000g', '1kg', 'piece' => $basePrice,
+            'custom_price' => (float) ($item['custom_amount'] ?? 0),
+            default => throw new Exception(__('تفاصيل أحد المنتجات في السلة غير صالحة. حدّث السلة وحاول مرة أخرى.')),
+        };
+
+        if (abs($expectedPrice - (float) ($item['price'] ?? 0)) > 0.01) {
+            throw new Exception(__('تغير سعر المنتج ":product" منذ إضافته للسلة. حدّث السلة قبل تأكيد الطلب.', [
+                'product' => $product->name,
+            ]));
         }
     }
 
@@ -274,7 +338,7 @@ class OrderService
      */
     public function generateOrderNumber(): string
     {
-        $prefix = 'TWH-' . date('Ymd') . '-';
+        $prefix = 'HOR-' . date('Ymd') . '-';
         do {
             $number = $prefix . strtoupper(Str::random(4));
         } while (Order::where('order_number', $number)->exists());
@@ -283,11 +347,11 @@ class OrderService
     }
 
     /**
-     * Generate unique public order ID (e.g. TWH-20260926-XXXX)
+     * Generate unique public order ID (e.g. HOR-20260926-XXXX)
      */
     public function generatePublicOrderId(): string
     {
-        $prefix = 'TWH-' . date('Ymd') . '-';
+        $prefix = 'HOR-' . date('Ymd') . '-';
         do {
             $candidate = $prefix . strtoupper(Str::random(4));
         } while (Order::where('public_order_id', $candidate)->exists());

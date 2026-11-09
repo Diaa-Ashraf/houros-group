@@ -1,7 +1,7 @@
 {{-- resources/views/storefront/orders/show.blade.php --}}
 @extends('storefront.account.layout')
 
-@section('title', 'تفاصيل الطلب: ' . $order->public_order_id . ' | ألبان وسوبرماركت التوحيد')
+@section('title', 'تفاصيل الطلب: ' . $order->public_order_id . ' | مؤسسة حورس')
 @section('page_title', 'تفاصيل الطلب')
 
 @php
@@ -100,7 +100,7 @@
                             2
                         </div>
                         <span class="text-[10px] sm:text-xs font-bold {{ $currentStep >= 2 ? 'text-primary-800' : 'text-charcoal-muted' }}">
-                            {{ $order->payment_method === 'instapay' ? 'مراجعة الدفع' : 'تم التأكيد' }}
+                            {{ in_array($order->payment_method, ['instapay', 'vodafone_cash'], true) ? 'مراجعة الدفع' : 'تم التأكيد' }}
                         </span>
                     </div>
 
@@ -168,7 +168,7 @@
                                 </h4>
                                 @if($item->notes)
                                     <p class="text-[10px] text-amber-800 bg-amber-50 px-2 py-0.5 rounded mt-0.5 inline-block">
-                                        ملاحظة التقطيع/الطلب: {{ $item->notes }}
+                                        ملاحظة الطلب: {{ $item->notes }}
                                     </p>
                                 @endif
                                 <span class="text-[11px] text-charcoal-muted block mt-0.5">{{ number_format($item->price, 2) }} ج.م × {{ $item->quantity }}</span>
@@ -191,7 +191,7 @@
 
                 <div class="flex items-center justify-between text-charcoal-muted">
                     <span>طريقة الدفع</span>
-                    <span class="font-bold text-charcoal">{{ $order->payment_method === 'instapay' ? 'تحويل إنستاباي' : 'الدفع نقداً عند الاستلام' }}</span>
+                    <span class="font-bold text-charcoal">{{ $order->payment_method_label }}</span>
                 </div>
 
                 <div class="border-t border-cream pt-3 flex items-center justify-between text-sm font-black text-charcoal-heading">
@@ -220,7 +220,7 @@
 
                 @if($order->delivery_type === 'pickup')
                     <div class="space-y-1">
-                        <span class="text-[10px] text-charcoal-muted block">فرع الاستلام بالعامرية:</span>
+                        <span class="text-[10px] text-charcoal-muted block">موقع الاستلام:</span>
                         <span class="font-bold text-emerald-800 block">{{ $order->branch?->name ?: 'الفرع الرئيسي' }}</span>
                         <span class="text-charcoal-muted text-[11px] block">{{ $order->branch?->address }}</span>
                     </div>
@@ -241,8 +241,8 @@
 
             <!-- WhatsApp Direct Help -->
             @php
-                $msg = urlencode("مرحباً ألبان التوحيد، أستفسر بخصوص طلبي رقم: {$order->public_order_id}");
-                $storePhone = preg_replace('/[^0-9]/', '', settings('store_whatsapp', '201000000000'));
+                $msg = urlencode("مرحباً مؤسسة حورس، أستفسر بخصوص طلبي رقم: {$order->public_order_id}");
+                $storePhone = preg_replace('/[^0-9]/', '', settings('store_whatsapp', '201002527072'));
             @endphp
             <a href="https://wa.me/{{ $storePhone }}?text={{ $msg }}" 
                target="_blank" 

@@ -28,13 +28,13 @@
  </h3>
  <span class="inline-flex items-center gap-1.5 text-xs text-emerald-700 font-semibold mt-0.5">
  <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
- مفتوح الآن لاستقبالكم
+ تواصل معنا لمعرفة مواعيد الزيارة
  </span>
  </div>
  </div>
 
  <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-primary-50 text-primary-900 border border-primary-200">
- العامرية
+ حدائق الأهرام
  </span>
  </div>
 

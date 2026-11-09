@@ -7,8 +7,8 @@
         $cartCount = session('cart') ? count(session('cart')) : 0;
     }
 
-    $navCategories = \Illuminate\Support\Facades\Cache::remember('nav_categories_cache', 3600, function () {
-        return \App\Models\Category::select('id', 'name', 'slug')->take(8)->get();
+    $navCategories = \Illuminate\Support\Facades\Cache::remember('horus_nav_categories_v1', 3600, function () {
+        return \App\Models\Category::select('id', 'name', 'slug')->whereIn('slug', ['scib-paints', 'gypsum-board', 'fyutec-cornices', 'wall-panels', 'construction-tools', 'finishing-materials', 'doors', 'decor'])->take(8)->get();
     });
 @endphp
 
@@ -16,11 +16,11 @@
     <!-- Main Header Bar -->
     <div class="container mx-auto px-3 sm:px-4 py-2.5 sm:py-3 md:py-4">
         <div class="flex items-center justify-between gap-2 sm:gap-4 md:gap-8">
-            
+
             <!-- Right Side: Hamburger + Logo -->
             <div class="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
                 <!-- Mobile Menu Toggle Button -->
-                <button type="button" 
+                <button type="button"
                         @click="$dispatch('open-mobile-menu')"
                         class="lg:hidden p-1.5 text-charcoal-secondary hover:text-red-600 hover:bg-red-50 rounded-xl focus:outline-none transition-colors shrink-0"
                         aria-label="القائمة الرئيسية">
@@ -31,24 +31,16 @@
 
                 <!-- Brand Logo & Name -->
                 <a href="{{ route('site.home') }}" class="flex items-center gap-2 sm:gap-3 group min-w-0">
-                    @if(get_site_logo())
-                        <div class="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-xl sm:rounded-2xl bg-white p-0.5 sm:p-1 flex items-center justify-center shadow-lg shadow-red-500/10 group-hover:scale-105 transition-all duration-300 border-2 border-orange-200 overflow-hidden shrink-0">
-                            <img src="{{ get_site_logo() }}" alt="{{ settings('site_name', 'ألبان التوحيد') }}" class="w-full h-full object-contain">
-                        </div>
-                    @else
-                        <div class="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-red-700 via-red-600 to-orange-500 text-white flex items-center justify-center shadow-lg shadow-red-500/25 group-hover:scale-105 transition-all duration-300 border-2 border-orange-200 shrink-0">
-                            <span class="text-lg sm:text-2xl font-black font-sans">🥛</span>
-                        </div>
-                    @endif
+                    <img src="{{ asset('assets/site/img/horus-mark.png') }}" alt="" class="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-xl group-hover:scale-105 transition-all shrink-0" aria-hidden="true">
                     <div class="flex flex-col min-w-0">
                         <div class="flex items-center gap-1 sm:gap-1.5">
-                            <span class="text-sm sm:text-xl md:text-2xl font-black text-red-600 tracking-tight font-sans truncate">
-                                {{ settings('site_name', 'ألبان التوحيد') }}
+                            <span class="text-sm sm:text-xl md:text-2xl font-black text-primary-800 tracking-tight font-sans truncate">
+                                مؤسسة حورس
                             </span>
-                            <span class="hidden sm:inline px-1.5 py-0.5 rounded text-[9px] font-black bg-orange-500 text-white uppercase tracking-wider shrink-0">ماركت</span>
+                            <span class="hidden sm:inline px-1.5 py-0.5 rounded text-[9px] font-black bg-accent-500 text-white uppercase tracking-wider shrink-0">للتشطيبات</span>
                         </div>
                         <span class="hidden sm:block text-[11px] text-gray-500 font-bold truncate">
-                            {{ settings('site_slogan', 'ماركت وألبان بلدية • 4 فروع بالعامرية') }}
+                            توريدات • تشطيبات • ديكور
                         </span>
                     </div>
                 </a>
@@ -82,12 +74,12 @@
                  }"
                  @click.outside="open = false">
                 <form action="{{ route('search.index') }}" method="GET" class="w-full relative">
-                    <input type="text" 
-                           name="q" 
+                    <input type="text"
+                           name="q"
                            x-model="query"
                            @input.debounce.250ms="fetchResults()"
                            @focus="if(results.length > 0) open = true"
-                           placeholder="ابحث عن ألبان، جبن، بقالة، لحوم، منظفات..." 
+                           placeholder="ابحث عن دهانات، أدوات تشطيب، ديكور..."
                            autocomplete="off"
                            class="w-full bg-canvas-base border border-cream hover:border-red-300 focus:border-red-600 focus:ring-2 focus:ring-red-100 rounded-full py-2.5 pr-11 pl-10 text-base sm:text-sm text-charcoal placeholder-charcoal-muted/70 transition-all outline-none" />
                     <button type="submit" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-charcoal-muted hover:text-primary-700 transition-colors" aria-label="بحث">
@@ -103,9 +95,9 @@
                     </div>
 
                     <!-- Live Autocomplete Dropdown -->
-                    <div x-show="open" 
-                         x-cloak 
-                         x-transition 
+                    <div x-show="open"
+                         x-cloak
+                         x-transition
                          class="absolute top-full right-0 left-0 mt-2 bg-white rounded-2xl shadow-xl border border-cream overflow-hidden z-50 divide-y divide-cream/60">
                         <template x-for="item in results" :key="item.id">
                             <a :href="item.url" class="flex items-center gap-3 p-3 hover:bg-canvas-subtle transition-colors group">
@@ -129,7 +121,7 @@
             <!-- Left Side: Action Icons -->
             <div class="flex items-center gap-0.5 sm:gap-1.5 shrink-0">
                 <!-- Mobile Search Toggle -->
-                <button type="button" 
+                <button type="button"
                         @click="mobileSearchOpen = !mobileSearchOpen"
                         class="md:hidden p-2 text-charcoal-secondary hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
                         aria-label="بحث في المنتجات">
@@ -139,7 +131,7 @@
                 </button>
 
                 <!-- Wishlist -->
-                <a href="{{ route('wishlist.index') }}" 
+                <a href="{{ route('wishlist.index') }}"
                    class="hidden sm:flex relative p-2 text-charcoal-secondary hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
                    title="قائمة المفضلة">
                     <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -148,7 +140,7 @@
                 </a>
 
                 <!-- Cart Action Button -->
-                <button type="button" 
+                <button type="button"
                         @click.prevent="$dispatch('open-cart-drawer')"
                         class="relative flex items-center gap-1.5 py-1.5 px-2.5 sm:py-2 sm:px-3.5 bg-red-50 hover:bg-red-100 text-red-700 rounded-full border border-red-200 transition-all group cursor-pointer"
                         title="سلة المشتريات">
@@ -156,7 +148,7 @@
                         <svg class="w-5 h-5 text-red-600 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                         </svg>
-                        <span id="cart-badge-count" 
+                        <span id="cart-badge-count"
                               class="absolute -top-2 -right-2 bg-accent-600 text-white font-bold text-[10px] min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center shadow">
                             {{ $cartCount }}
                         </span>
@@ -167,7 +159,7 @@
                 <!-- User Account -->
                 @auth
                     <div class="relative" x-data="{ userMenuOpen: false }" @click.outside="userMenuOpen = false">
-                        <button type="button" 
+                        <button type="button"
                                 @click="userMenuOpen = !userMenuOpen"
                                 class="p-2 text-charcoal-secondary hover:text-red-600 hover:bg-red-50 rounded-full transition-colors flex items-center gap-1 cursor-pointer"
                                 title="حسابي">
@@ -176,9 +168,9 @@
                             </svg>
                         </button>
 
-                        <div x-show="userMenuOpen" 
-                             x-cloak 
-                             x-transition 
+                        <div x-show="userMenuOpen"
+                             x-cloak
+                             x-transition
                              class="absolute left-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-cream py-2 z-50 divide-y divide-cream/60 text-xs">
                             <div class="px-4 py-2">
                                 <div class="font-bold text-charcoal truncate">{{ auth()->user()->name }}</div>
@@ -211,7 +203,7 @@
                         </div>
                     </div>
                 @else
-                    <a href="{{ route('login') }}" 
+                    <a href="{{ route('login') }}"
                        class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-charcoal-secondary hover:text-primary-700 px-3 py-2 rounded-lg hover:bg-canvas-subtle transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
@@ -223,9 +215,9 @@
         </div>
 
         <!-- Mobile Search Dropdown Bar -->
-        <div x-show="mobileSearchOpen" 
-             x-cloak 
-             x-transition 
+        <div x-show="mobileSearchOpen"
+             x-cloak
+             x-transition
              class="mt-3 md:hidden pt-2 border-t border-cream"
              x-data="{
                 mobileQuery: '{{ request('q', request('search')) }}',
@@ -252,11 +244,11 @@
                 }
              }">
             <form action="{{ route('search.index') }}" method="GET" class="relative">
-                <input type="text" 
-                       name="q" 
+                <input type="text"
+                       name="q"
                        x-model="mobileQuery"
                        @input.debounce.250ms="fetchMobileResults()"
-                       placeholder="ابحث عن ألبان، جبن، بقالة، لحوم..." 
+                       placeholder="ابحث عن دهانات، جبسون بورد، أدوات تشطيب..."
                        autocomplete="off"
                        class="w-full bg-canvas-base border border-cream focus:border-red-600 focus:ring-2 focus:ring-red-100 rounded-full py-2.5 pr-11 pl-10 text-base text-charcoal outline-none shadow-2xs" />
                 <button type="submit" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-charcoal-muted hover:text-red-600" aria-label="بحث">
@@ -272,9 +264,9 @@
                 </div>
 
                 <!-- Mobile Autocomplete Dropdown -->
-                <div x-show="mobileDropdownOpen" 
-                     x-cloak 
-                     x-transition 
+                <div x-show="mobileDropdownOpen"
+                     x-cloak
+                     x-transition
                      class="absolute top-full right-0 left-0 mt-2 bg-white rounded-2xl shadow-2xl border border-cream overflow-hidden z-50 divide-y divide-cream/60">
                     <template x-for="item in mobileResults" :key="item.id">
                         <a :href="item.url" class="flex items-center gap-3 p-3 hover:bg-canvas-subtle transition-colors">
@@ -302,8 +294,8 @@
             <div class="flex items-center gap-1">
                 <!-- All Categories Dropdown Menu -->
                 <div class="relative py-2.5" x-data="{ open: false }" @click.outside="open = false">
-                    <button @click="open = !open" 
-                            type="button" 
+                    <button @click="open = !open"
+                            type="button"
                             class="flex items-center gap-2 px-3.5 py-1.5 bg-primary-800 text-white rounded-lg hover:bg-primary-900 transition-colors shadow-sm">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
@@ -314,8 +306,8 @@
                         </svg>
                     </button>
 
-                    <div x-show="open" 
-                         x-cloak 
+                    <div x-show="open"
+                         x-cloak
                          x-transition:enter="transition ease-out duration-150"
                          x-transition:enter-start="opacity-0 translate-y-1"
                          x-transition:enter-end="opacity-100 translate-y-0"
@@ -324,7 +316,7 @@
                          x-transition:leave-end="opacity-0 translate-y-1"
                          class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-cream py-2 z-50">
                         @foreach($navCategories as $cat)
-                            <a href="{{ route('category.product', $cat->id) }}" 
+                            <a href="{{ route('category.product', $cat->id) }}"
                                class="flex items-center justify-between px-4 py-2 text-charcoal hover:bg-canvas-subtle hover:text-primary-800 transition-colors">
                                 <span>{{ $cat->name }}</span>
                                 <svg class="w-3.5 h-3.5 text-charcoal-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -340,48 +332,48 @@
                 </div>
 
                 <!-- Nav Links -->
-                <a href="{{ route('site.home') }}" 
+                <a href="{{ route('site.home') }}"
                    class="px-3.5 py-3 transition-colors {{ request()->routeIs('site.home') ? 'text-primary-800 border-b-2 border-primary-700 font-bold' : 'text-charcoal hover:text-primary-700' }}">
                     الرئيسية
                 </a>
 
-                <a href="{{ route('site.products') }}" 
+                <a href="{{ route('site.products') }}"
                    class="px-3.5 py-3 transition-colors {{ request()->routeIs('site.products') ? 'text-primary-800 border-b-2 border-primary-700 font-bold' : 'text-charcoal hover:text-primary-700' }}">
                     كل المنتجات
                 </a>
 
-                <a href="{{ route('shop') }}" 
+                <a href="{{ route('shop') }}"
                    class="px-3.5 py-3 transition-colors {{ request()->routeIs('shop') || request()->routeIs('product.shop') ? 'text-primary-800 border-b-2 border-primary-700 font-bold' : 'text-charcoal hover:text-primary-700' }}">
                     المتجر
                 </a>
 
-                <a href="{{ route('offers.index') }}" 
+                <a href="{{ route('offers.index') }}"
                    class="px-3.5 py-3 transition-colors {{ request()->routeIs('offers.index') ? 'text-primary-800 border-b-2 border-primary-700 font-bold' : 'text-red-600 hover:text-red-700 font-bold' }} flex items-center gap-1">
                     <span>مجلة العروض</span>
                     <span class="px-1.5 py-0.2 rounded-full bg-red-600 text-white text-[9px] font-black animate-pulse">جديد</span>
                 </a>
 
-                <a href="{{ Route::has('branches.index') ? route('branches.index') : url('/branches') }}" 
+                <a href="{{ Route::has('branches.index') ? route('branches.index') : url('/branches') }}"
                    class="px-3.5 py-3 transition-colors {{ request()->is('branches*') ? 'text-primary-800 border-b-2 border-primary-700 font-bold' : 'text-charcoal hover:text-primary-700' }}">
-                    فروعنا (4 فروع)
+                    موقعنا
                 </a>
 
-                <a href="{{ route('orders.track') }}" 
+                <a href="{{ route('orders.track') }}"
                    class="px-3.5 py-3 transition-colors {{ request()->routeIs('orders.track') ? 'text-primary-800 border-b-2 border-primary-700 font-bold' : 'text-charcoal hover:text-primary-700' }}">
                     تتبع طلبك
                 </a>
 
-                <a href="{{ Route::has('about') ? route('about') : url('/about') }}" 
+                <a href="{{ Route::has('about') ? route('about') : url('/about') }}"
                    class="px-3.5 py-3 transition-colors {{ request()->is('about*') ? 'text-primary-800 border-b-2 border-primary-700 font-bold' : 'text-charcoal hover:text-primary-700' }}">
-                    عن التوحيد
+                    عن حورس
                 </a>
 
-                <a href="{{ Route::has('careers.index') ? route('careers.index') : url('/careers') }}" 
+                <a href="{{ Route::has('careers.index') ? route('careers.index') : url('/careers') }}"
                    class="px-3.5 py-3 transition-colors {{ request()->is('careers*') ? 'text-primary-800 border-b-2 border-primary-700 font-bold' : 'text-charcoal hover:text-primary-700' }}">
                     انضم لفريقنا
                 </a>
 
-                <a href="{{ route('contact') }}" 
+                <a href="{{ route('contact') }}"
                    class="px-3.5 py-3 transition-colors {{ request()->routeIs('contact') ? 'text-primary-800 border-b-2 border-primary-700 font-bold' : 'text-charcoal hover:text-primary-700' }}">
                     تواصل معنا
                 </a>
@@ -390,7 +382,7 @@
             <!-- Quick Hotline Callout -->
             <div class="flex items-center gap-2 text-primary-800 font-bold">
                 <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>خدمة التوصيل السريع بالعامرية</span>
+                <span>حدائق الأهرام • بوابة حورس</span>
             </div>
         </div>
     </nav>

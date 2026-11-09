@@ -88,7 +88,7 @@ if (!function_exists('get_og_image')) {
     {
         $ogImage = settings('og_image');
         if (empty($ogImage)) {
-            return asset('assets/site/img/og-cover.png');
+            return asset('assets/site/img/horus-cover.svg');
         }
 
         if (str_starts_with($ogImage, 'http://') || str_starts_with($ogImage, 'https://') || str_starts_with($ogImage, '//')) {

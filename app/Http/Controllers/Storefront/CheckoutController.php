@@ -40,7 +40,21 @@ class CheckoutController extends Controller
         $branches = Branch::select(['id', 'name', 'address', 'phone', 'working_hours'])->active()->ordered()->get();
         $user = auth()->user();
 
-        return view('storefront.checkout', compact('items', 'totals', 'branches', 'user', 'deliveryType'));
+        $paymentMethods = [
+            'enable_cod' => settings('enable_cod', '1') == '1',
+            'enable_instapay' => settings('enable_instapay', '1') == '1',
+            'enable_vodafone_cash' => settings('enable_vodafone_cash', '1') == '1',
+        ];
+        $paymentDetails = [
+            'instapay_username' => settings('instapay_username'),
+            'instapay_number' => settings('instapay_number'),
+            'instapay_name' => settings('instapay_name'),
+            'instapay_instructions' => settings('instapay_instructions'),
+            'vodafone_cash_number' => settings('vodafone_cash_number'),
+            'vodafone_cash_instructions' => settings('vodafone_cash_instructions'),
+        ];
+
+        return view('storefront.checkout', compact('items', 'totals', 'branches', 'user', 'deliveryType', 'paymentMethods', 'paymentDetails'));
     }
 
     /**
@@ -61,6 +75,15 @@ class CheckoutController extends Controller
         }
 
         $customerData = $request->validated();
+        $paymentEnabled = match ($customerData['payment_method'] ?? '') {
+            'cash', 'cod', Order::PAYMENT_METHOD_CASH, Order::PAYMENT_METHOD_BRANCH => settings('enable_cod', '1') == '1',
+            Order::PAYMENT_METHOD_INSTAPAY => settings('enable_instapay', '1') == '1',
+            Order::PAYMENT_METHOD_VODAFONE_CASH => settings('enable_vodafone_cash', '1') == '1',
+            default => false,
+        };
+        if (!$paymentEnabled) {
+            return back()->withInput()->withErrors(['payment_method' => 'طريقة الدفع دي مش متاحة حالياً، اختار وسيلة دفع متاحة.']);
+        }
         $deliveryType = $customerData['delivery_type'] ?? 'delivery';
         $totals = $this->cartService->getTotals($deliveryType);
 

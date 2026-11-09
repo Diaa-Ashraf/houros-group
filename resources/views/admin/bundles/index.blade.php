@@ -6,7 +6,7 @@
 <div class="space-y-6">
  
  <!-- Top Header -->
- <div class="bg-white border border-[border-orange-100] rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+ <div class="bg-white border border-orange-100 rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
  <div>
  <div class="flex items-center gap-2 mb-1">
  <span class="text-xs font-bold text-[#DC2626] uppercase tracking-wider"> Bundles & Multi-Deals</span>
@@ -26,10 +26,10 @@
     </div>
 
  <!-- Bundles Table -->
- <div class="bg-white border border-[border-orange-100] rounded-2xl shadow-sm overflow-hidden">
+ <div class="bg-white border border-orange-100 rounded-2xl shadow-sm overflow-hidden">
  <div class="overflow-x-auto">
  <table class="w-full text-start text-xs">
- <thead class="bg-[bg-canvas-base] text-gray-500 uppercase text-[11px] border-b border-[border-orange-100]">
+ <thead class="bg-canvas-base text-gray-500 uppercase text-[11px] border-b border-orange-100">
  <tr>
  <th class="py-3.5 px-6 text-start font-semibold">{{ __('العرض') }}</th>
  <th class="py-3.5 px-4 text-start font-semibold">{{ __('المنتجات المشمولة') }}</th>
@@ -40,11 +40,11 @@
  <th class="py-3.5 px-6 text-end font-semibold">{{ __('إجراءات') }}</th>
  </tr>
  </thead>
- <tbody class="divide-y divide-[border-orange-100]">
+ <tbody class="divide-y divide-orange-100">
  @forelse($bundles as $bundle)
- <tr class="hover:bg-[bg-canvas-base]/50 transition-colors">
+ <tr class="hover:bg-canvas-base/50 transition-colors">
  <td class="py-4 px-6 flex items-center gap-3">
- <div class="w-12 h-12 rounded-xl bg-[bg-canvas-base] border border-[border-orange-100] p-1 flex-shrink-0 flex items-center justify-center overflow-hidden">
+ <div class="w-12 h-12 rounded-xl bg-canvas-base border border-orange-100 p-1 flex-shrink-0 flex items-center justify-center overflow-hidden">
  @if($bundle->image_url)
  <img src="{{ $bundle->image_url }}" alt="" class="w-full h-full object-cover rounded-lg">
  @else
@@ -57,7 +57,7 @@
  </div>
  </td>
  <td class="py-4 px-4">
- <span class="px-2.5 py-1 rounded-full bg-[bg-canvas-base] border border-[border-orange-100] text-[11px] font-semibold text-[#1F2937]">
+ <span class="px-2.5 py-1 rounded-full bg-canvas-base border border-orange-100 text-[11px] font-semibold text-[#1F2937]">
  {{ $bundle->products_count ?? $bundle->products->count() }} {{ __('منتجات') }}
  </span>
  </td>
@@ -97,7 +97,7 @@
  </td>
  <td class="py-4 px-6 text-end">
  <div class="flex items-center justify-end gap-2">
- <a href="{{ route('admin.bundles.edit', $bundle->id) }}" class="px-3 py-1.5 rounded-lg border border-[border-orange-100] bg-[bg-canvas-base] hover:bg-[border-orange-100] text-[#1F2937] font-semibold text-xs transition-colors">
+ <a href="{{ route('admin.bundles.edit', $bundle->id) }}" class="px-3 py-1.5 rounded-lg border border-orange-100 bg-canvas-base hover:bg-orange-50 text-[#1F2937] font-semibold text-xs transition-colors">
  {{ __('تعديل') }}
  </a>
  <form action="{{ route('admin.bundles.destroy', $bundle->id) }}" method="POST" data-confirm-message="{{ __('هل أنت متأكد من رغبتك في حذف العرض المجمع: ') . $bundle->name . '؟' }}">

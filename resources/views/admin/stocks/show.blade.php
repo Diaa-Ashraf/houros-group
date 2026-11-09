@@ -11,6 +11,7 @@
             <h4>{{ __('stock_details') }}</h4>
         </div>
         <div class="card-body">
+            <div class="overflow-x-auto">
             <table class="table table-bordered">
                 <tr>
                     <th>{{ __('stock_name') }}</th>
@@ -37,6 +38,7 @@
                     <td>{{ $stock->updated_at->format('Y-m-d H:i') }}</td>
                 </tr>
             </table>
+            </div>
 
             <a href="{{ route('stocks.edit', $stock->id) }}" class="btn btn-warning">{{ __('buttons_edit') }}</a>
             <a href="{{ route('stocks.index') }}" class="btn btn-secondary">{{ __('buttons_back') }}</a>

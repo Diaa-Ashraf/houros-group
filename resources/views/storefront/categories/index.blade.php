@@ -1,7 +1,7 @@
 {{-- resources/views/storefront/categories/index.blade.php --}}
 @extends('layouts.storefront')
 
-@section('title', 'جميع أقسام المتجر | ألبان وسوبرماركت التوحيد')
+@section('title', 'أقسام مؤسسة حورس للتوريدات والتشطيبات')
 
 @section('content')
 <div class="py-8 bg-canvas-base min-h-screen">
@@ -18,10 +18,10 @@
  <div class="bg-white rounded-3xl p-6 sm:p-10 border border-cream shadow-sm text-center max-w-2xl mx-auto space-y-2">
  <span class="inline-block text-3xl mb-1"></span>
  <h1 class="text-2xl sm:text-3xl font-black text-charcoal-heading">
- أقسام ألبان وسوبرماركت التوحيد
+ أقسام مؤسسة حورس
  </h1>
  <p class="text-xs sm:text-sm text-charcoal-muted leading-relaxed">
- تصفح أقسامنا المتنوعة من الألبان البلدية الطبيعية، الجبن، البقالة والتموين، والمنظفات وكل مستلزمات منزلك بالعامرية.
+ تصفح أقسام دهانات SCIB، الجبسون بورد، كرانيش الفيوتك، أدوات البناء وخامات التشطيب والديكور.
  </p>
  </div>
 

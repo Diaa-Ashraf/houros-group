@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Order;
+use App\Models\Bundle;
 use App\Services\OrderService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -80,6 +81,8 @@ class OrderServiceTest extends TestCase
         // Stock should be deducted from 15 to 12
         $product->refresh();
         $this->assertEquals(12, $product->stock_quantity);
+        $this->assertEquals(12, $product->quantity);
+        $this->assertEquals(12, $product->available_stock);
     }
 
     public function test_restores_stock_when_order_is_cancelled(): void
@@ -123,6 +126,80 @@ class OrderServiceTest extends TestCase
 
         $product->refresh();
         $this->assertEquals(10, $product->stock_quantity);
+        $this->assertEquals(10, $product->quantity);
+        $this->assertEquals(10, $product->available_stock);
         $this->assertEquals(Order::STATUS_CANCELLED, $order->fresh()->status);
+
+        $this->orderService->updateStatus($order, Order::STATUS_PENDING);
+        $product->refresh();
+        $this->assertEquals(6, $product->stock_quantity);
+        $this->assertEquals(6, $product->quantity);
+        $this->assertEquals(6, $product->available_stock);
+    }
+
+    public function test_rejects_inactive_product_still_present_in_cart(): void
+    {
+        $product = Product::create([
+            'name' => 'منتج متوقف', 'slug' => 'inactive-item', 'category_id' => $this->category->id,
+            'price' => 20, 'stock_quantity' => 8, 'quantity' => 8,
+            'is_active' => false, 'is_available' => true,
+        ]);
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('لم يعد متاحاً');
+
+        $this->orderService->createOrder(['phone' => '01012345678'], [[
+            'type' => 'product', 'id' => $product->id, 'price' => 20, 'quantity' => 1, 'total' => 20,
+        ]], ['grand_total' => 20]);
+    }
+
+    public function test_rejects_price_changed_since_product_was_added_to_cart(): void
+    {
+        $product = Product::create([
+            'name' => 'منتج تغير سعره', 'slug' => 'changed-price-item', 'category_id' => $this->category->id,
+            'price' => 25, 'stock_quantity' => 8, 'quantity' => 8,
+            'is_active' => true, 'is_available' => true,
+        ]);
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('تغير سعر المنتج');
+
+        $this->orderService->createOrder(['phone' => '01012345678'], [[
+            'type' => 'product', 'id' => $product->id, 'price' => 20, 'quantity' => 1, 'total' => 20,
+        ]], ['grand_total' => 20]);
+    }
+
+    public function test_bundle_components_are_saved_on_order_and_reserved_by_component_quantity(): void
+    {
+        $first = Product::create([
+            'name' => 'مكون أول', 'slug' => 'bundle-component-one', 'category_id' => $this->category->id,
+            'price' => 30, 'stock_quantity' => 10, 'quantity' => 10, 'is_active' => true, 'is_available' => true,
+        ]);
+        $second = Product::create([
+            'name' => 'مكون ثان', 'slug' => 'bundle-component-two', 'category_id' => $this->category->id,
+            'price' => 20, 'stock_quantity' => 10, 'quantity' => 10, 'is_active' => true, 'is_available' => true,
+        ]);
+        $bundle = Bundle::create([
+            'name' => 'عرض تشطيب', 'original_total' => 50, 'bundle_price' => 45, 'is_active' => true,
+        ]);
+        $bundle->products()->attach([
+            $first->id => ['quantity' => 2],
+            $second->id => ['quantity' => 1],
+        ]);
+
+        $order = $this->orderService->createOrder(
+            ['name' => 'عميل العرض', 'phone' => '01012345678'],
+            [[
+                'type' => 'bundle', 'id' => $bundle->id, 'name' => $bundle->name,
+                'price' => 45, 'quantity' => 1, 'total' => 45,
+            ]],
+            ['grand_total' => 45]
+        );
+
+        $this->assertCount(2, $order->orderItems()->get());
+        $this->assertEquals(2, $order->orderItems()->where('product_id', $first->id)->value('quantity'));
+        $this->assertEquals(8, $first->fresh()->available_stock);
+        $this->assertEquals(9, $second->fresh()->available_stock);
+        $this->assertEquals(45, (float) $order->orderItems()->sum('total_price'));
     }
 }

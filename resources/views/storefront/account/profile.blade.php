@@ -1,7 +1,7 @@
 {{-- resources/views/storefront/account/profile.blade.php --}}
 @extends('storefront.account.layout')
 
-@section('title', 'الملف الشخصي | ألبان وسوبرماركت التوحيد')
+@section('title', 'الملف الشخصي | مؤسسة حورس')
 @section('page_title', 'الملف الشخصي')
 
 @section('account_content')

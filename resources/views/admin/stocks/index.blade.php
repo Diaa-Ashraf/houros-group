@@ -10,6 +10,7 @@
 
  <div class="card">
  <div class="card-body">
+ <div class="overflow-x-auto">
  <table class="table table-hover">
  <thead class="thead-dark">
  <tr>
@@ -44,6 +45,7 @@
  @endforeach
  </tbody>
  </table>
+ </div>
 
  <!-- روابط الصفحات لو فيه pagination -->
  <div class="mt-3">

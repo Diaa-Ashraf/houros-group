@@ -1,12 +1,12 @@
 {{-- resources/views/storefront/search.blade.php --}}
 @extends('layouts.storefront')
 
-@section('title', 'نتائج البحث عن: ' . ($queryText ?: 'كل المنتجات') . ' | ألبان وسوبرماركت التوحيد')
+@section('title', 'نتائج البحث عن: ' . ($queryText ?: 'كل المنتجات') . ' | حورس للتوريدات والتشطيبات')
 
 @section('content')
 <div class="py-8 bg-canvas-base min-h-screen">
  <div class="container mx-auto px-4 space-y-6">
- 
+
  <!-- Breadcrumb -->
  <nav class="flex items-center gap-2 text-xs text-charcoal-muted">
  <a href="{{ route('site.home') }}" class="hover:text-primary-800 transition-colors">الرئيسية</a>
@@ -20,16 +20,16 @@
  @if($queryText)
  نتائج البحث عن: <span class="text-primary-800">"{{ $queryText }}"</span>
  @else
- البحث في منتجات ألبان وسوبرماركت التوحيد
+ البحث في منتجات حورس للتوريدات والتشطيبات
  @endif
  </h1>
 
  <!-- Inline Search Form -->
  <form action="{{ route('search.index') }}" method="GET" class="relative max-w-xl mx-auto">
- <input type="text" 
- name="q" 
+ <input type="text"
+ name="q"
  value="{{ $queryText }}"
- placeholder="ابحث عن ألبان، جبن، بقالة، سلع غذائية..." 
+ placeholder="ابحث عن دهانات، أدوات تشطيب، ديكور..."
  class="w-full bg-canvas-base border border-cream focus:border-primary-600 focus:ring-2 focus:ring-primary-100 rounded-full py-3 pr-12 pl-4 text-xs sm:text-sm text-charcoal outline-none">
  <button type="submit" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-charcoal-muted hover:text-primary-700" aria-label="بحث">
  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

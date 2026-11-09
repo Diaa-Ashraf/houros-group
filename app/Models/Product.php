@@ -88,7 +88,7 @@ class Product extends Model
             return asset($this->image);
         }
 
-        return asset('storage/' . ltrim($this->image, '/'));
+        return asset('assets/site/img/horus-product-placeholder.svg');
     }
 
     public function category(): BelongsTo
@@ -213,11 +213,19 @@ class Product extends Model
 
     public function getFormattedPriceAttribute(): string
     {
+        if ((float) $this->price <= 0) {
+            return 'السعر عند الاستفسار';
+        }
+
         return number_format($this->price, 2) . ' ج.م';
     }
 
     public function getFormattedFinalPriceAttribute(): string
     {
+        if ((float) $this->final_price <= 0) {
+            return 'السعر عند الاستفسار';
+        }
+
         return number_format($this->final_price, 2) . ' ج.م';
     }
 

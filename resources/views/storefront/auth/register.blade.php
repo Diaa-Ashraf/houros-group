@@ -1,7 +1,7 @@
 {{-- resources/views/storefront/auth/register.blade.php --}}
 @extends('layouts.storefront')
 
-@section('title', 'إنشاء حساب جديد | ألبان وسوبرماركت التوحيد')
+@section('title', 'إنشاء حساب | مؤسسة حورس')
 
 @section('content')
 <div class="py-12 bg-canvas-base min-h-[85vh] flex items-center justify-center">
@@ -18,7 +18,7 @@
  إنشاء حساب جديد
  </h1>
  <p class="text-xs text-charcoal-muted">
- انضم لعملاء ألبان وسوبرماركت التوحيد بالعامرية واستمتع بتوصيل فوري وعروض حصرية
+ أنشئ حساباً لمتابعة طلباتك والتواصل مع مؤسسة حورس
  </p>
  </div>
 
@@ -86,13 +86,13 @@
  <!-- Initial Address -->
  <div>
  <label for="address" class="font-bold text-charcoal-heading block mb-1.5">
- عنوان التوصيل الافتراضي بالعامرية <span class="text-charcoal-muted font-normal">(اختياري)</span>
+ عنوان التوصيل الافتراضي <span class="text-charcoal-muted font-normal">(اختياري)</span>
  </label>
  <input type="text" 
  id="address" 
  name="address" 
  value="{{ old('address') }}" 
- placeholder="العامرية، الشارع الرئيسي، رقم العمارة..."
+ placeholder="المنطقة، الشارع، ورقم المبنى..."
  class="w-full bg-canvas-base border border-cream rounded-xl px-3.5 py-2.5 text-xs text-charcoal outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-100">
  </div>
 

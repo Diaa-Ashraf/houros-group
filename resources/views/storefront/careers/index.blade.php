@@ -1,7 +1,7 @@
 {{-- resources/views/storefront/careers/index.blade.php --}}
 @extends('layouts.storefront')
 
-@section('title', 'وظائف ألبان وسوبرماركت التوحيد | انضم لفريقنا في العامرية')
+@section('title', 'فرص العمل | مؤسسة حورس للتوريدات والتشطيبات')
 
 @section('content')
 <div class="bg-gray-50/50 min-h-screen py-8">
@@ -11,7 +11,7 @@
  <nav class="flex items-center gap-2 text-xs font-medium text-charcoal-muted" aria-label="Breadcrumb">
  <a href="{{ route('site.home') }}" class="hover:text-primary-800 transition-colors">الرئيسية</a>
  <span>/</span>
- <span class="text-charcoal-heading font-bold">وظائف التوحيد</span>
+ <span class="text-charcoal-heading font-bold">فرص العمل في حورس</span>
  </nav>
 
  <!-- Hero Section -->
@@ -24,10 +24,10 @@
  <span>بيئة عمل محفزة ومستقرة</span>
  </div>
  <h1 class="text-2xl sm:text-4xl font-black leading-tight tracking-tight">
- انضم إلى عائلة ألبان وسوبرماركت التوحيد بالعامرية
+ انضم إلى فريق مؤسسة حورس للتوريدات والتشطيبات
  </h1>
  <p class="text-xs sm:text-sm text-cream-muted leading-relaxed">
- نبحث دائماً عن الكفاءات الطموحة والمخلصة للانضمام لفريقنا في فروعنا بالعامرية. نوفر فرص عمل واعدة، رواتب مجزية، بيئة عمل قائمة على الاحترام والتطوير المهني المستمر.
+ نرحب بطلبات المهتمين بالعمل في مجال التوريدات والتشطيبات والديكور. أرسل بياناتك وخبراتك وسنتواصل معك عند توفر فرصة مناسبة.
  </p>
  <div class="pt-2">
  <a href="#apply-form" class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-accent-500 hover:bg-accent-600 text-primary-950 text-xs font-black transition-all shadow-md">
@@ -210,7 +210,7 @@
  id="position" 
  value="{{ old('position') }}"
  required
- placeholder="مثال: كاشير / بائع ألبان"
+ placeholder="مثال: فني تشطيبات / مندوب مبيعات"
  class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-xs text-charcoal focus:border-primary-800 focus:ring-1 focus:ring-primary-800 transition-colors">
  </div>
  </div>
@@ -218,10 +218,10 @@
  <!-- Preferred Branch -->
  <div class="space-y-1.5">
  <label for="branch_id" class="block text-xs font-bold text-charcoal-heading">
- الفرع المفضل للعمل به بالعامرية <span class="text-charcoal-muted font-normal">(اختياري)</span>
+ موقع العمل المفضل <span class="text-charcoal-muted font-normal">(اختياري)</span>
  </label>
  <select name="branch_id" id="branch_id" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-xs text-charcoal bg-white focus:border-primary-800 focus:ring-1 focus:ring-primary-800 transition-colors">
- <option value="">أي فرع متاح بالعامرية</option>
+ <option value="">أي موقع متاح</option>
  @foreach($branches as $branch)
  <option value="{{ $branch->id }}" {{ old('branch_id') == $branch->id ? 'selected' : '' }}>
  {{ $branch->name }}
@@ -263,7 +263,7 @@
  <textarea name="message" 
  id="message" 
  rows="3" 
- placeholder="اذكر بإيجاز خبراتك السابقة وسنوات العمل في السوبرماركت أو المحلات..."
+ placeholder="اذكر بإيجاز خبراتك السابقة في مجال العمل أو التشطيبات..."
  class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-xs text-charcoal focus:border-primary-800 focus:ring-1 focus:ring-primary-800 transition-colors">{{ old('message') }}</textarea>
  </div>
 

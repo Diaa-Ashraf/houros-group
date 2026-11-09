@@ -6,7 +6,7 @@
 <div class="space-y-6">
  
  <!-- Top Header -->
- <div class="bg-white border border-[border-orange-100] rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+ <div class="bg-white border border-orange-100 rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
  <div>
  <div class="flex items-center gap-2 mb-1">
  <span class="text-xs font-bold text-[#DC2626] uppercase tracking-wider"> Recruitment & Careers</span>
@@ -15,41 +15,41 @@
  {{ __('طلبات التوظيف والتقديم') }}
  </h1>
  <p class="text-xs sm:text-sm text-gray-500 mt-1">
- {{ __('استعراض ومراجعة طلبات التوظيف المقدمة للعمل في فروع ألبان وسوبرماركت التوحيد.') }}
+ {{ __('استعراض طلبات المهتمين بالعمل في مؤسسة حورس للتوريدات والتشطيبات.') }}
  </p>
  </div>
  </div>
 
  <!-- Filter Bar -->
- <div class="bg-white border border-[border-orange-100] rounded-2xl p-4 shadow-sm">
+ <div class="bg-white border border-orange-100 rounded-2xl p-4 shadow-sm">
  <form method="GET" action="{{ route('admin.job-applications.index') }}" class="flex flex-wrap items-center gap-3">
  <!-- Filter by Status -->
  <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
  <a href="{{ route('admin.job-applications.index', array_merge(request()->except('status', 'page'))) }}" 
- class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all {{ !request('status') ? 'bg-[#1F2937] text-white shadow-sm' : 'bg-[bg-canvas-base] text-gray-500 hover:bg-[border-orange-100]' }}">
+ class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all {{ !request('status') ? 'bg-[#1F2937] text-white shadow-sm' : 'bg-canvas-base text-gray-500 hover:bg-orange-50' }}">
  الكل
  </a>
  <a href="{{ route('admin.job-applications.index', array_merge(request()->except('page'), ['status' => 'pending'])) }}" 
- class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all {{ request('status') === 'pending' ? 'bg-amber-600 text-white shadow-sm' : 'bg-[bg-canvas-base] text-gray-500 hover:bg-[border-orange-100]' }}">
+ class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all {{ request('status') === 'pending' ? 'bg-amber-600 text-white shadow-sm' : 'bg-canvas-base text-gray-500 hover:bg-orange-50' }}">
  قيد المراجعة
  </a>
  <a href="{{ route('admin.job-applications.index', array_merge(request()->except('page'), ['status' => 'reviewed'])) }}" 
- class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all {{ request('status') === 'reviewed' ? 'bg-blue-600 text-white shadow-sm' : 'bg-[bg-canvas-base] text-gray-500 hover:bg-[border-orange-100]' }}">
+ class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all {{ request('status') === 'reviewed' ? 'bg-blue-600 text-white shadow-sm' : 'bg-canvas-base text-gray-500 hover:bg-orange-50' }}">
  تمت المراجعة
  </a>
  <a href="{{ route('admin.job-applications.index', array_merge(request()->except('page'), ['status' => 'accepted'])) }}" 
- class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all {{ request('status') === 'accepted' ? 'bg-emerald-600 text-white shadow-sm' : 'bg-[bg-canvas-base] text-gray-500 hover:bg-[border-orange-100]' }}">
+ class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all {{ request('status') === 'accepted' ? 'bg-emerald-600 text-white shadow-sm' : 'bg-canvas-base text-gray-500 hover:bg-orange-50' }}">
  مقبول
  </a>
  <a href="{{ route('admin.job-applications.index', array_merge(request()->except('page'), ['status' => 'rejected'])) }}" 
- class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all {{ request('status') === 'rejected' ? 'bg-red-600 text-white shadow-sm' : 'bg-[bg-canvas-base] text-gray-500 hover:bg-[border-orange-100]' }}">
+ class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all {{ request('status') === 'rejected' ? 'bg-red-600 text-white shadow-sm' : 'bg-canvas-base text-gray-500 hover:bg-orange-50' }}">
  مرفوض
  </a>
  </div>
 
  <!-- Filter by Branch -->
  <div class="ms-auto flex items-center gap-2">
- <select name="branch_id" onchange="this.form.submit()" class="bg-[bg-canvas-base] border border-[border-orange-100] rounded-xl px-3 py-1.5 text-xs text-[#1F2937] focus:outline-none">
+ <select name="branch_id" onchange="this.form.submit()" class="bg-canvas-base border border-orange-100 rounded-xl px-3 py-1.5 text-xs text-[#1F2937] focus:outline-none">
  <option value="">{{ __('جميع الفروع') }}</option>
  @foreach($branches as $b)
  <option value="{{ $b->id }}" {{ request('branch_id') == $b->id ? 'selected' : '' }}>
@@ -67,10 +67,10 @@
  </div>
 
  <!-- Table -->
- <div class="bg-white border border-[border-orange-100] rounded-2xl shadow-sm overflow-hidden">
+ <div class="bg-white border border-orange-100 rounded-2xl shadow-sm overflow-hidden">
  <div class="overflow-x-auto">
  <table class="w-full text-start text-xs">
- <thead class="bg-[bg-canvas-base] text-gray-500 uppercase text-[11px] border-b border-[border-orange-100]">
+ <thead class="bg-canvas-base text-gray-500 uppercase text-[11px] border-b border-orange-100">
  <tr>
  <th class="py-3.5 px-6 text-start font-semibold" style="width: 60px;">#</th>
  <th class="py-3.5 px-6 text-start font-semibold">{{ __('المتقدم') }}</th>
@@ -82,9 +82,9 @@
  <th class="py-3.5 px-6 text-end font-semibold">{{ __('إجراءات') }}</th>
  </tr>
  </thead>
- <tbody class="divide-y divide-[border-orange-100]">
+ <tbody class="divide-y divide-orange-100">
  @forelse($applications as $app)
- <tr class="hover:bg-[bg-canvas-base]/50 transition-colors">
+ <tr class="hover:bg-canvas-base/50 transition-colors">
  <td class="py-4 px-6 font-bold text-gray-500">
  {{ $loop->iteration }}
  </td>
@@ -138,7 +138,7 @@
  </td>
  <td class="py-4 px-6 text-end">
  <div class="flex items-center justify-end gap-2">
- <a href="{{ route('admin.job-applications.show', $app->id) }}" class="px-3 py-1.5 rounded-lg border border-[border-orange-100] bg-[bg-canvas-base] hover:bg-[border-orange-100] text-[#1F2937] font-semibold text-xs transition-colors">
+ <a href="{{ route('admin.job-applications.show', $app->id) }}" class="px-3 py-1.5 rounded-lg border border-orange-100 bg-canvas-base hover:bg-orange-50 text-[#1F2937] font-semibold text-xs transition-colors">
  {{ __('التفاصيل') }}
  </a>
  <form action="{{ route('admin.job-applications.destroy', $app->id) }}" method="POST" data-confirm-message="{{ __('هل أنت متأكد من حذف طلب التوظيف للمتقدم: ') . $app->name . '؟' }}">
@@ -164,7 +164,7 @@
  </div>
 
  @if($applications->hasPages())
- <div class="p-4 border-t border-[border-orange-100]">
+ <div class="p-4 border-t border-orange-100">
  {{ $applications->links() }}
  </div>
  @endif

@@ -4,7 +4,7 @@
         items: [],
         totals: { formatted_subtotal: '0.00 ج.م', formatted_total: '0.00 ج.م', total: 0, subtotal: 0, count: 0 },
         loading: false,
-        freeDeliveryThreshold: {{ (float) settings('free_delivery_threshold', 300) }},
+        freeDeliveryThreshold: {{ (float) settings('free_delivery_threshold', 0) }},
 
         get progressPercent() {
             const sub = parseFloat(this.totals.subtotal) || 0;
@@ -119,7 +119,7 @@
                 </div>
                 <div>
                     <h3 class="font-black text-sm sm:text-base">سلة طلباتك السريعة</h3>
-                    <p class="text-[10px] text-amber-200">ألبان وسوبرماركت التوحيد • العامرية</p>
+                    <p class="text-[10px] text-amber-200">مؤسسة حورس • حدائق الأهرام</p>
                 </div>
             </div>
 
@@ -132,14 +132,15 @@
             </button>
         </div>
 
-        <!-- Dynamic Free Delivery Progress Bar -->
+        <!-- Delivery policy -->
+        @if((float) settings('free_delivery_threshold', 0) > 0)
         <div class="p-3.5 bg-gradient-to-br from-amber-50 to-orange-50 border-b border-orange-100 text-xs space-y-1.5">
             <div class="flex items-center justify-between font-bold">
                 <span class="text-gray-900" x-show="remainingForFreeDelivery > 0">
                     أضف بقيمة <strong class="text-red-600 tabular-nums" x-text="remainingForFreeDelivery.toFixed(1) + ' ج.م'"></strong> لتحصل على <strong>توصيل مجاني</strong>
                 </span>
                 <span class="text-emerald-700 font-black flex items-center gap-1" x-show="remainingForFreeDelivery <= 0">
-                    <span>مبروك! حصلت على توصيل مجاني بالعامرية</span>
+                    <span>تم تطبيق خصم التوصيل للطلب</span>
                 </span>
                 <span class="text-[10px] text-gray-500 font-bold tabular-nums" x-text="progressPercent + '%'"></span>
             </div>
@@ -149,6 +150,11 @@
                      :style="'width: ' + progressPercent + '%'"></div>
             </div>
         </div>
+        @else
+        <div class="p-3.5 bg-primary-50 border-b border-primary-100 text-xs text-primary-900 font-semibold">
+            تكلفة التوصيل تُحدد مع الفرع قبل التحصيل.
+        </div>
+        @endif
 
         <!-- Items Scroll Area -->
         <div class="flex-1 overflow-y-auto p-4 divide-y divide-gray-100">
@@ -227,7 +233,7 @@
                         </svg>
                     </div>
                     <h4 class="font-black text-sm text-gray-900">سلة التسوق فارغة</h4>
-                    <p class="text-xs text-gray-500 max-w-xs mx-auto">تصفح منتجات الألبان والأجبان الطازجة وأضف طلباتك الآن!</p>
+                    <p class="text-xs text-gray-500 max-w-xs mx-auto">تصفح خامات التشطيب والديكور وأضف المنتجات إلى سلتك.</p>
                 </div>
             </template>
         </div>

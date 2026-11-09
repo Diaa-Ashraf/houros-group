@@ -16,9 +16,11 @@ class CategoryController extends Controller
      */
     public function index(): View
     {
-        $categories = Cache::remember('storefront_all_categories_page_' . request('page', 1), 1800, function () {
+        $horusSlugs = ['scib-paints', 'gypsum-board', 'fyutec-cornices', 'wall-panels', 'construction-tools', 'finishing-materials', 'doors', 'decor'];
+        $categories = Cache::remember('horus_storefront_categories_page_v1_' . request('page', 1), 1800, function () use ($horusSlugs) {
             return Category::select(['id', 'name', 'slug', 'image', 'description'])
                 ->active()
+                ->whereIn('slug', $horusSlugs)
                 ->withCount(['products' => function ($q) {
                     $q->active();
                 }])
@@ -35,9 +37,11 @@ class CategoryController extends Controller
     public function show(Request $request, int|string $id): View
     {
         // Find by ID or Slug
+        $horusSlugs = ['scib-paints', 'gypsum-board', 'fyutec-cornices', 'wall-panels', 'construction-tools', 'finishing-materials', 'doors', 'decor'];
+        $categoryQuery = Category::whereIn('slug', $horusSlugs);
         $category = is_numeric($id)
-            ? Category::findOrFail($id)
-            : Category::where('slug', $id)->firstOrFail();
+            ? $categoryQuery->whereKey($id)->firstOrFail()
+            : $categoryQuery->where('slug', $id)->firstOrFail();
 
         $query = Product::select([
             'id',
@@ -87,9 +91,10 @@ class CategoryController extends Controller
         $products = $query->paginate(16)->withQueryString();
 
         // Other categories for sidebar (cached for 1 hour)
-        $otherCategories = Cache::remember('storefront_sidebar_categories', 3600, function () {
+        $otherCategories = Cache::remember('horus_storefront_sidebar_categories_v1', 3600, function () use ($horusSlugs) {
             return Category::select(['id', 'name', 'slug'])
                 ->active()
+                ->whereIn('slug', $horusSlugs)
                 ->withCount(['products' => fn($q) => $q->active()])
                 ->ordered()
                 ->get();

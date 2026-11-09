@@ -12,7 +12,7 @@
 
  {{-- 3 Summary Cards --}}
  <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
- <div class="bg-white border border-[border-orange-100] rounded-2xl p-6 shadow-sm flex items-center justify-between">
+ <div class="bg-white border border-orange-100 rounded-2xl p-6 shadow-sm flex items-center justify-between">
  <div>
  <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider block">إجمالي نقرات واتساب</span>
  <h3 class="text-3xl font-black text-[#1F2937] mt-1">{{ number_format($metrics['total_whatsapp_clicks'] ?? 0) }}</h3>
@@ -21,16 +21,16 @@
  جميع التفاعلات المسجلة
  </span>
  </div>
- <div class="w-12 h-12 rounded-xl bg-[bg-canvas-base] border border-[border-orange-100] text-[#DC2626] flex items-center justify-center text-xl">
+ <div class="w-12 h-12 rounded-xl bg-canvas-base border border-orange-100 text-[#DC2626] flex items-center justify-center text-xl">
  
  </div>
  </div>
 
- <div class="bg-white border border-[border-orange-100] rounded-2xl p-6 shadow-sm flex items-center justify-between">
+ <div class="bg-white border border-orange-100 rounded-2xl p-6 shadow-sm flex items-center justify-between">
  <div>
  <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider block">إتمام الطلب (Checkout)</span>
  <h3 class="text-3xl font-black text-emerald-600 mt-1">{{ number_format($metrics['checkout_clicks'] ?? 0) }}</h3>
- <span class="inline-flex items-center gap-1.5 mt-2 text-xs font-medium text-gray-500 bg-[bg-canvas-base] border border-[border-orange-100] px-2 py-0.5 rounded-full">
+ <span class="inline-flex items-center gap-1.5 mt-2 text-xs font-medium text-gray-500 bg-canvas-base border border-orange-100 px-2 py-0.5 rounded-full">
  زبائن بطلب معبأ للسلة
  </span>
  </div>
@@ -39,7 +39,7 @@
  </div>
  </div>
 
- <div class="bg-white border border-[border-orange-100] rounded-2xl p-6 shadow-sm flex items-center justify-between">
+ <div class="bg-white border border-orange-100 rounded-2xl p-6 shadow-sm flex items-center justify-between">
  <div>
  <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider block">نقرات اليوم</span>
  <h3 class="text-3xl font-black text-[#DC2626] mt-1">{{ number_format($metrics['today_whatsapp_clicks'] ?? 0) }}</h3>
@@ -54,7 +54,7 @@
  </div>
 
  {{-- Table of Recent Clicks with Bulk Selection & Delete Actions --}}
- <div class="bg-white border border-[border-orange-100] rounded-2xl shadow-sm overflow-hidden"
+ <div class="bg-white border border-orange-100 rounded-2xl shadow-sm overflow-hidden"
  x-data="{
  selected: [],
  selectAll: false,
@@ -66,7 +66,7 @@
  }
  }
  }">
- <div class="p-4 sm:p-5 border-b border-[border-orange-100] flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#FAF8F5]">
+ <div class="p-4 sm:p-5 border-b border-orange-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#FAF8F5]">
  <div class="flex items-center gap-3">
  <h3 class="font-bold text-[#1F2937] text-base flex items-center gap-2">
  <span></span>
@@ -108,12 +108,12 @@
  <div class="overflow-x-auto">
  <table class="w-full text-right border-collapse">
  <thead>
- <tr class="border-b border-[border-orange-100] bg-[bg-canvas-base]/70 text-gray-500 text-xs uppercase font-semibold">
+ <tr class="border-b border-orange-100 bg-canvas-base/70 text-gray-500 text-xs uppercase font-semibold">
  <th class="py-3.5 px-4 w-10 text-center">
  <input type="checkbox" 
  x-model="selectAll" 
  @change="toggleSelectAll()" 
- class="w-4 h-4 rounded text-[#DC2626] focus:ring-[#DC2626] border-gray-300 cursor-pointer">
+ class="w-4 h-4 rounded text-[#DC2626] focus:ring-primary-700 border-gray-300 cursor-pointer">
  </th>
  <th class="py-3.5 px-4">النوع</th>
  <th class="py-3.5 px-4">بيانات العميل والتواصل</th>
@@ -133,12 +133,12 @@
  $orderNumber = $orderInfo['order_number'] ?? null;
  $totalAmount = $orderInfo['total'] ?? null;
  @endphp
- <tr class="hover:bg-[bg-canvas-base]/40 transition-colors" :class="selected.includes('{{ $click->id }}') ? 'bg-[#FAF8F5]' : ''">
+ <tr class="hover:bg-canvas-base/40 transition-colors" :class="selected.includes('{{ $click->id }}') ? 'bg-[#FAF8F5]' : ''">
  <td class="py-4 px-4 align-top text-center">
  <input type="checkbox" 
  value="{{ $click->id }}" 
  x-model="selected" 
- class="click-checkbox w-4 h-4 rounded text-[#DC2626] focus:ring-[#DC2626] border-gray-300 cursor-pointer">
+ class="click-checkbox w-4 h-4 rounded text-[#DC2626] focus:ring-primary-700 border-gray-300 cursor-pointer">
  </td>
  <td class="py-4 px-4 align-top">
  @if($click->click_type === 'checkout')
@@ -153,7 +153,7 @@
  استفسار منتج
  </span>
  @else
- <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-[bg-canvas-base] text-gray-500 border border-[border-orange-100]">
+ <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-canvas-base text-gray-500 border border-orange-100">
  تواصل عام
  </span>
  @endif
@@ -181,7 +181,7 @@
  @if(!empty($orderInfo['items']))
  <div class="space-y-1">
  @foreach($orderInfo['items'] as $it)
- <div class="flex items-center justify-between gap-2 text-[11px] bg-white border border-[border-orange-100]/60 px-2 py-1 rounded-lg">
+ <div class="flex items-center justify-between gap-2 text-[11px] bg-white border border-orange-100/60 px-2 py-1 rounded-lg">
  <span class="font-medium text-[#1F2937] truncate max-w-[180px]">{{ $it['name'] }}</span>
  <span class="font-bold text-gray-500">×{{ $it['quantity'] }}</span>
  </div>
@@ -230,7 +230,7 @@
  </div>
 
  @if(method_exists($recentClicks, 'hasPages') && $recentClicks->hasPages())
- <div class="p-4 border-t border-[border-orange-100] bg-[bg-canvas-base]/30">
+ <div class="p-4 border-t border-orange-100 bg-canvas-base/30">
  {{ $recentClicks->links() }}
  </div>
  @endif

@@ -52,9 +52,11 @@ class ProductController extends Controller
 
         // Filter: Price range
         if ($request->filled('min_price')) {
+            $query->where('price', '>', 0);
             $query->where('price', '>=', (float) $request->min_price);
         }
         if ($request->filled('max_price')) {
+            $query->where('price', '>', 0);
             $query->where('price', '<=', (float) $request->max_price);
         }
 
@@ -80,6 +82,7 @@ class ProductController extends Controller
 
         $categories = Category::select(['id', 'name', 'slug'])
             ->active()
+            ->whereIn('slug', ['scib-paints', 'gypsum-board', 'fyutec-cornices', 'wall-panels', 'construction-tools', 'finishing-materials', 'doors', 'decor'])
             ->withCount(['products' => fn($q) => $q->active()])
             ->ordered()
             ->get();
@@ -93,8 +96,8 @@ class ProductController extends Controller
     public function show(int|string $id): View
     {
         $product = is_numeric($id)
-            ? Product::with(['category', 'images', 'reviews' => fn($q) => $q->approved()->latest()->with('user:id,name')])->findOrFail($id)
-            : Product::with(['category', 'images', 'reviews' => fn($q) => $q->approved()->latest()->with('user:id,name')])->where('slug', $id)->firstOrFail();
+            ? Product::active()->with(['category', 'images', 'reviews' => fn($q) => $q->approved()->latest()->with('user:id,name')])->findOrFail($id)
+            : Product::active()->with(['category', 'images', 'reviews' => fn($q) => $q->approved()->latest()->with('user:id,name')])->where('slug', $id)->firstOrFail();
 
         // Related products from the same category
         $relatedProducts = Product::select([

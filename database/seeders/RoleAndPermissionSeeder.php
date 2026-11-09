@@ -22,7 +22,7 @@ class RoleAndPermissionSeeder extends Seeder
 
             // 2. Catalog & Products
             ['name' => 'manage-products', 'display_name' => 'إدارة المنتجات والأصناف والأسعار', 'table' => 'products'],
-            ['name' => 'manage-categories', 'display_name' => 'إدارة أقسام وتصنيفات السوبرماركت', 'table' => 'categories'],
+            ['name' => 'manage-categories', 'display_name' => 'إدارة أقسام وتصنيفات المنتجات', 'table' => 'categories'],
             ['name' => 'manage-stocks', 'display_name' => 'إدارة المخزون والكميات والجرد', 'table' => 'stocks'],
 
             // 3. Orders & Carts

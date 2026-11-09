@@ -1,7 +1,7 @@
 {{-- resources/views/storefront/cart.blade.php --}}
 @extends('layouts.storefront')
 
-@section('title', 'سلة المشتريات | ألبان وسوبرماركت التوحيد')
+@section('title', 'سلة مشترياتك | مؤسسة حورس')
 
 @section('content')
 <div class="py-8 bg-gradient-to-b from-orange-50/30 via-canvas-base to-canvas-base min-h-screen" 
@@ -46,7 +46,7 @@
          },
 
          removeItem(key) {
-             window.tawheedConfirm('حذف المنتج', 'هل تريد بالتأكيد إزالة هذا الصنف من سلة المشتريات؟', () => {
+             window.horusConfirm('حذف المنتج', 'هل تريد بالتأكيد إزالة هذا الصنف من سلة المشتريات؟', () => {
                  this.updating = true;
                  fetch('{{ route('removefromcart') }}', {
                      method: 'POST',
@@ -63,7 +63,7 @@
                      this.items = this.items.filter(i => i.key !== key);
                      this.totals = data.totals;
                      window.dispatchEvent(new CustomEvent('cart-updated', { detail: { count: data.cart_count } }));
-                     toastr.success('تم حذف الصنف من السلة');
+                     toastr.success(data.message || 'تم حذف الصنف من السلة');
                  })
                  .catch(() => {
                      this.updating = false;
@@ -73,7 +73,7 @@
          },
 
          clearAll() {
-             window.tawheedConfirm('تفريغ السلة', 'هل أنت متأكد من تفريغ سلة المشتريات بالكامل؟', () => {
+             window.horusConfirm('تفريغ السلة', 'هل أنت متأكد من تفريغ سلة المشتريات بالكامل؟', () => {
                  this.updating = true;
                  fetch('{{ route('clearcart') }}', {
                      method: 'POST',
@@ -187,7 +187,7 @@
                         (<span x-text="items.length"></span> أصناف)
                     </span>
                 </h1>
-                <p class="text-xs text-gray-500 mt-1">منتجات ألبان وبقالة طازجة من فروع التوحيد بالعامرية</p>
+                <p class="text-xs text-gray-500 mt-1">خامات وأدوات التشطيب من مؤسسة حورس</p>
             </div>
 
             <template x-if="items.length > 0">
@@ -345,7 +345,7 @@
 
                         <!-- Pickup Notice -->
                         <div x-show="deliveryType === 'pickup'" class="text-[11px] text-emerald-800 bg-emerald-50 p-2.5 rounded-xl border border-emerald-200 font-bold">
-                            الاستلام من أي فرع بالعامرية مجاني تماماً وبدون أي رسوم توصيل!
+                            خيارات الاستلام والتوصيل متاحة حسب موقعك.
                         </div>
                     </div>
 
@@ -428,6 +428,9 @@
                                 <span>الإجمالي النهائي</span>
                                 <span class="text-xl text-red-600 tabular-nums" x-text="totals.formatted_total"></span>
                             </div>
+                            @if((float) settings('delivery_fee', 0) <= 0)
+                                <p class="text-[10px] text-gray-500 leading-relaxed">تكلفة التوصيل غير مضافة للإجمالي، ويؤكدها الفرع معك قبل التحصيل.</p>
+                            @endif
                         </div>
 
                         <!-- Proceed to Checkout Button -->
@@ -461,7 +464,7 @@
                 <div class="space-y-1.5">
                     <h2 class="text-xl sm:text-2xl font-black text-gray-900">سلة المشتريات فارغة</h2>
                     <p class="text-xs sm:text-sm text-gray-500 leading-relaxed">
-                        لم تقم بإضافة أي منتجات إلى سلتك حتى الآن. استكشف أجود منتجات الألبان والأجبان البلدية والسلع الغذائية الآن!
+                        سلتك فارغة حالياً. تصفح أقسام التشطيب والديكور وأضف المنتجات التي تحتاجها.
                     </p>
                 </div>
 

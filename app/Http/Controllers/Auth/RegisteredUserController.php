@@ -51,6 +51,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('site.home')->with('success', __('مرحباً بك في متجر Regalest! تم إنشاء حسابك بنجاح.'));
+        return redirect()->route('site.home')->with('success', __('أهلاً بك في مؤسسة حورس! تم إنشاء حسابك بنجاح.'));
     }
 }

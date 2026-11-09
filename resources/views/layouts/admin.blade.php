@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'لوحة التحكم') | {{ settings('site_name', 'ألبان وسوبرماركت التوحيد') }}</title>
+    <title>@yield('title', 'لوحة التحكم') | {{ settings('site_name', 'مؤسسة حورس للتوريدات والتشطيبات') }}</title>
 
     @php
         $siteFavicon = get_site_favicon();
@@ -45,13 +45,13 @@
 
     @stack('styles')
 </head>
-<body class="bg-canvas-base text-charcoal antialiased overflow-hidden"
+<body class="horus-admin-shell bg-canvas-base text-charcoal antialiased overflow-hidden"
       x-data="{
-          sidebarCollapsed: localStorage.getItem('tawheed_admin_sidebar_collapsed') === 'true',
+          sidebarCollapsed: localStorage.getItem('horus_admin_sidebar_collapsed') === 'true',
           mobileSidebarOpen: false,
           toggleSidebar() {
               this.sidebarCollapsed = !this.sidebarCollapsed;
-              localStorage.setItem('tawheed_admin_sidebar_collapsed', this.sidebarCollapsed);
+              localStorage.setItem('horus_admin_sidebar_collapsed', this.sidebarCollapsed);
           }
       }">
 
@@ -84,19 +84,19 @@
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 overflow-hidden group">
                     @if(get_site_logo())
                         <div class="w-10 h-10 rounded-2xl bg-white p-1 flex items-center justify-center shadow-md shrink-0 border border-orange-200 overflow-hidden group-hover:scale-105 transition-transform">
-                            <img src="{{ get_site_logo() }}" alt="{{ settings('site_name', 'ألبان التوحيد') }}" class="w-full h-full object-contain">
+                            <img src="{{ asset('assets/site/img/horus-mark.png') }}" alt="{{ settings('site_name', 'مؤسسة حورس') }}" class="w-full h-full object-contain">
                         </div>
                     @else
-                        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-red-700 via-red-600 to-orange-500 text-white flex items-center justify-center font-black text-xl shadow-md shrink-0 border border-orange-200">
-                            🥛
+                        <div class="horus-brand-mark w-10 h-10 rounded-2xl text-white flex items-center justify-center font-black text-xl shadow-md shrink-0 border border-primary-200">
+                            ح
                         </div>
                     @endif
                     <div x-show="!sidebarCollapsed" x-transition.opacity.duration.200ms class="min-w-0">
                         <div class="flex items-center gap-1.5">
-                            <h1 class="font-black text-sm text-red-600 leading-tight truncate">
-                                {{ settings('site_name', 'ألبان التوحيد') }}
+                            <h1 class="font-black text-sm text-primary-800 leading-tight truncate">
+                                {{ settings('site_name', 'مؤسسة حورس') }}
                             </h1>
-                            <span class="px-1.5 py-0.2 rounded text-[8px] font-black bg-orange-500 text-white uppercase tracking-wider">ماركت</span>
+                            <span class="px-1.5 py-0.2 rounded text-[8px] font-black bg-accent-500 text-white uppercase tracking-wider">تشطيبات</span>
                         </div>
                         <span class="text-[10px] text-gray-500 block truncate font-bold">لوحة الإدارة والتحكم</span>
                     </div>
@@ -105,7 +105,7 @@
                 <!-- Desktop Collapse Button inside Sidebar Header -->
                 <button type="button" 
                         @click="toggleSidebar()" 
-                        class="hidden lg:flex w-8 h-8 rounded-lg bg-orange-50 hover:bg-orange-100 text-orange-700 items-center justify-center transition-colors shrink-0 cursor-pointer"
+                        class="hidden lg:flex w-8 h-8 rounded-lg bg-orange-50 hover:bg-accent-100 text-orange-700 items-center justify-center transition-colors shrink-0 cursor-pointer"
                         :title="sidebarCollapsed ? 'توسيع القائمة' : 'تصغير القائمة'">
                     <svg class="w-4 h-4 transition-transform duration-300 rtl:rotate-180" 
                          :class="{ 'rotate-180 rtl:rotate-0': sidebarCollapsed }" 
@@ -129,7 +129,7 @@
                 
                 {{-- 1. Dashboard --}}
                 <a href="{{ route('admin.dashboard') }}" 
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.dashboard') || request()->routeIs('admin.index') ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-md shadow-red-500/20' : 'text-gray-700 hover:bg-orange-50 hover:text-red-700' }}"
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.dashboard') || request()->routeIs('admin.index') ? 'bg-gradient-to-r from-primary-700 to-primary-900 text-white shadow-md shadow-primary-900/20' : 'text-gray-700 hover:bg-accent-50 hover:text-primary-900' }}"
                    :class="sidebarCollapsed ? 'justify-center px-2' : ''"
                    title="الرئيسية والإحصائيات">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -140,18 +140,18 @@
 
                 {{-- 2. Orders --}}
                 <a href="{{ route('admin.orders.index') }}" 
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.orders.*') || request()->routeIs('orders.*') ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-md shadow-red-500/20' : 'text-gray-700 hover:bg-orange-50 hover:text-red-700' }}"
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.orders.*') || request()->routeIs('orders.*') ? 'bg-gradient-to-r from-primary-700 to-primary-900 text-white shadow-md shadow-primary-900/20' : 'text-gray-700 hover:bg-accent-50 hover:text-primary-900' }}"
                    :class="sidebarCollapsed ? 'justify-center px-2' : ''"
                    title="إدارة الطلبات والتوصيل">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
                     </svg>
-                    <span x-show="!sidebarCollapsed" x-transition.opacity.duration.200ms class="truncate">طلبات العامرية والتوصيل</span>
+                    <span x-show="!sidebarCollapsed" x-transition.opacity.duration.200ms class="truncate">الطلبات والتوصيل</span>
                 </a>
 
                 {{-- 3. Products & Portions --}}
                 <a href="{{ route('admin.products.index') }}" 
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.products.*') ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-md shadow-red-500/20' : 'text-gray-700 hover:bg-orange-50 hover:text-red-700' }}"
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.products.*') ? 'bg-gradient-to-r from-primary-700 to-primary-900 text-white shadow-md shadow-primary-900/20' : 'text-gray-700 hover:bg-accent-50 hover:text-primary-900' }}"
                    :class="sidebarCollapsed ? 'justify-center px-2' : ''"
                    title="المنتجات والأوزان">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -162,32 +162,32 @@
 
                 {{-- 4. Categories --}}
                 <a href="{{ route('admin.categories.index') }}" 
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.categories.*') ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-md shadow-red-500/20' : 'text-gray-700 hover:bg-orange-50 hover:text-red-700' }}"
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.categories.*') ? 'bg-gradient-to-r from-primary-700 to-primary-900 text-white shadow-md shadow-primary-900/20' : 'text-gray-700 hover:bg-accent-50 hover:text-primary-900' }}"
                    :class="sidebarCollapsed ? 'justify-center px-2' : ''"
-                   title="أقسام السوبرماركت">
+                   title="أقسام التوريدات والتشطيبات">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
                     </svg>
-                    <span x-show="!sidebarCollapsed" x-transition.opacity.duration.200ms class="truncate">أقسام السوبرماركت</span>
+                    <span x-show="!sidebarCollapsed" x-transition.opacity.duration.200ms class="truncate">أقسام التوريدات والتشطيبات</span>
                 </a>
 
                 {{-- 5. Branches (4 Ameriya Branches) --}}
                 <a href="{{ route('admin.branches.index') }}" 
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.branches.*') ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-md shadow-red-500/20' : 'text-gray-700 hover:bg-orange-50 hover:text-red-700' }}"
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.branches.*') ? 'bg-gradient-to-r from-primary-700 to-primary-900 text-white shadow-md shadow-primary-900/20' : 'text-gray-700 hover:bg-accent-50 hover:text-primary-900' }}"
                    :class="sidebarCollapsed ? 'justify-center px-2' : ''"
-                   title="فروع العامرية">
+                   title="موقع المؤسسة">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                     </svg>
-                    <span x-show="!sidebarCollapsed" x-transition.opacity.duration.200ms class="truncate">فروع العامرية (4 فروع)</span>
+                    <span x-show="!sidebarCollapsed" x-transition.opacity.duration.200ms class="truncate">موقع المؤسسة</span>
                 </a>
 
                 {{-- 6. Weekly Offers Magazine Editions (Phase 7) --}}
                 <a href="{{ route('admin.magazines.index') }}" 
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.magazines.*') ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-md shadow-red-500/20' : 'text-red-700 hover:bg-red-50 font-black' }}"
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.magazines.*') ? 'bg-gradient-to-r from-primary-700 to-primary-900 text-white shadow-md shadow-primary-900/20' : 'text-primary-900 hover:bg-primary-50 font-black' }}"
                    :class="sidebarCollapsed ? 'justify-center px-2' : ''"
                    title="مجلات العروض الأسبوعية">
-                    <svg class="w-4 h-4 shrink-0 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4 shrink-0 text-primary-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
                     </svg>
                     <span x-show="!sidebarCollapsed" x-transition.opacity.duration.200ms class="truncate">مجلات العروض الأسبوعية</span>
@@ -195,7 +195,7 @@
 
                 {{-- 7. Deals & Discounts (مجلة العروض) --}}
                 <a href="{{ route('admin.deals.index') }}" 
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.deals.*') ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-md shadow-red-500/20' : 'text-gray-700 hover:bg-orange-50 hover:text-red-700' }}"
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.deals.*') ? 'bg-gradient-to-r from-primary-700 to-primary-900 text-white shadow-md shadow-primary-900/20' : 'text-gray-700 hover:bg-accent-50 hover:text-primary-900' }}"
                    :class="sidebarCollapsed ? 'justify-center px-2' : ''"
                    title="تخفيضات ومجلة العروض">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -206,7 +206,7 @@
 
                 {{-- 7. Bundles --}}
                 <a href="{{ route('admin.bundles.index') }}" 
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.bundles.*') ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-md shadow-red-500/20' : 'text-gray-700 hover:bg-orange-50 hover:text-red-700' }}"
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.bundles.*') ? 'bg-gradient-to-r from-primary-700 to-primary-900 text-white shadow-md shadow-primary-900/20' : 'text-gray-700 hover:bg-accent-50 hover:text-primary-900' }}"
                    :class="sidebarCollapsed ? 'justify-center px-2' : ''"
                    title="عروض التوفير المجمعة (Bundles)">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -217,7 +217,7 @@
 
                 {{-- 8. Coupons & Promo Codes --}}
                 <a href="{{ route('admin.coupons.index') }}" 
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.coupons.*') ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-md shadow-red-500/20' : 'text-gray-700 hover:bg-orange-50 hover:text-red-700' }}"
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.coupons.*') ? 'bg-gradient-to-r from-primary-700 to-primary-900 text-white shadow-md shadow-primary-900/20' : 'text-gray-700 hover:bg-accent-50 hover:text-primary-900' }}"
                    :class="sidebarCollapsed ? 'justify-center px-2' : ''"
                    title="كوبونات وقسائم الخصم">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -228,7 +228,7 @@
 
                 {{-- 8. Comprehensive Reports & Performance --}}
                 <a href="{{ route('admin.reports.index') }}" 
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.reports.*') ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-md shadow-red-500/20' : 'text-gray-700 hover:bg-orange-50 hover:text-red-700' }}"
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.reports.*') ? 'bg-gradient-to-r from-primary-700 to-primary-900 text-white shadow-md shadow-primary-900/20' : 'text-gray-700 hover:bg-accent-50 hover:text-primary-900' }}"
                    :class="sidebarCollapsed ? 'justify-center px-2' : ''"
                    title="التقارير الشاملة">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -239,7 +239,7 @@
 
                 {{-- 9. Banners --}}
                 <a href="{{ route('admin.banners.index') }}" 
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.banners.*') ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-md shadow-red-500/20' : 'text-gray-700 hover:bg-orange-50 hover:text-red-700' }}"
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.banners.*') ? 'bg-gradient-to-r from-primary-700 to-primary-900 text-white shadow-md shadow-primary-900/20' : 'text-gray-700 hover:bg-accent-50 hover:text-primary-900' }}"
                    :class="sidebarCollapsed ? 'justify-center px-2' : ''"
                    title="بانرات الواجهة">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -250,7 +250,7 @@
 
                 {{-- 12. Job Applications --}}
                 <a href="{{ route('admin.job-applications.index') }}" 
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.job-applications.*') ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-md shadow-red-500/20' : 'text-gray-700 hover:bg-orange-50 hover:text-red-700' }}"
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.job-applications.*') ? 'bg-gradient-to-r from-primary-700 to-primary-900 text-white shadow-md shadow-primary-900/20' : 'text-gray-700 hover:bg-accent-50 hover:text-primary-900' }}"
                    :class="sidebarCollapsed ? 'justify-center px-2' : ''"
                    title="طلبات التوظيف">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -261,7 +261,7 @@
 
                 {{-- 13. Contact Messages --}}
                 <a href="{{ route('admin.contact-messages.index') }}" 
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.contact-messages.*') ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-md shadow-red-500/20' : 'text-gray-700 hover:bg-orange-50 hover:text-red-700' }}"
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.contact-messages.*') ? 'bg-gradient-to-r from-primary-700 to-primary-900 text-white shadow-md shadow-primary-900/20' : 'text-gray-700 hover:bg-accent-50 hover:text-primary-900' }}"
                    :class="sidebarCollapsed ? 'justify-center px-2' : ''"
                    title="رسائل واستفسارات العملاء">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -272,7 +272,7 @@
 
                 {{-- 14. Notifications Center --}}
                 <a href="{{ route('admin.notifications.index') }}" 
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.notifications.*') ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-md shadow-red-500/20' : 'text-gray-700 hover:bg-orange-50 hover:text-red-700' }}"
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.notifications.*') ? 'bg-gradient-to-r from-primary-700 to-primary-900 text-white shadow-md shadow-primary-900/20' : 'text-gray-700 hover:bg-accent-50 hover:text-primary-900' }}"
                    :class="sidebarCollapsed ? 'justify-center px-2' : ''"
                    title="مركز وتاريخ الإشعارات">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -285,7 +285,7 @@
 
                 {{-- 15. Users --}}
                 <a href="{{ route('admin.users.index') }}" 
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.users.*') ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-md shadow-red-500/20' : 'text-gray-700 hover:bg-orange-50 hover:text-red-700' }}"
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.users.*') ? 'bg-gradient-to-r from-primary-700 to-primary-900 text-white shadow-md shadow-primary-900/20' : 'text-gray-700 hover:bg-accent-50 hover:text-primary-900' }}"
                    :class="sidebarCollapsed ? 'justify-center px-2' : ''"
                    title="المستخدمين والمشرفين">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -296,7 +296,7 @@
 
                 {{-- 15. Settings --}}
                 <a href="{{ route('admin.settings.index') }}" 
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.settings.*') ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-md shadow-red-500/20' : 'text-gray-700 hover:bg-orange-50 hover:text-red-700' }}"
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.settings.*') ? 'bg-gradient-to-r from-primary-700 to-primary-900 text-white shadow-md shadow-primary-900/20' : 'text-gray-700 hover:bg-accent-50 hover:text-primary-900' }}"
                    :class="sidebarCollapsed ? 'justify-center px-2' : ''"
                    title="إعدادات المتجر">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -310,7 +310,7 @@
                 <div class="pt-2">
                     <a href="{{ route('site.home') }}" 
                        target="_blank" 
-                       class="flex items-center gap-2 w-full py-2.5 px-3 rounded-xl bg-orange-50 hover:bg-orange-100 text-red-700 text-xs font-bold border border-orange-200 transition-all justify-center"
+                       class="flex items-center gap-2 w-full py-2.5 px-3 rounded-xl bg-orange-50 hover:bg-accent-100 text-primary-900 text-xs font-bold border border-orange-200 transition-all justify-center"
                        title="معاينة المتجر المباشر">
                         <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
@@ -324,16 +324,16 @@
             <!-- Bottom Profile / Logout -->
             <div class="p-3 sm:p-4 border-t border-orange-100 bg-canvas-base/60">
                 <div class="flex items-center gap-3" :class="sidebarCollapsed ? 'justify-center' : ''">
-                    <div class="w-8 h-8 rounded-xl bg-red-600 text-white flex items-center justify-center font-black text-xs shrink-0 shadow-sm">
+                    <div class="w-8 h-8 rounded-xl bg-primary-700 text-white flex items-center justify-center font-black text-xs shrink-0 shadow-sm">
                         {{ substr(auth()->user()->name ?? 'T', 0, 1) }}
                     </div>
                     <div x-show="!sidebarCollapsed" x-transition.opacity.duration.200ms class="min-w-0 flex-1">
-                        <p class="text-xs font-bold text-charcoal truncate">{{ auth()->user()->name ?? 'مدير التوحيد' }}</p>
+                        <p class="text-xs font-bold text-charcoal truncate">{{ auth()->user()->name ?? 'مدير حورس' }}</p>
                         <span class="text-[10px] text-orange-600 block truncate font-medium">مشرف عام المتجر</span>
                     </div>
                     <form x-show="!sidebarCollapsed" action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button type="submit" class="text-red-500 hover:text-red-700 p-1 cursor-pointer" title="تسجيل الخروج">
+                        <button type="submit" class="text-red-500 hover:text-primary-900 p-1 cursor-pointer" title="تسجيل الخروج">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                             </svg>
@@ -354,7 +354,7 @@
                 <div class="flex items-center gap-3 sm:gap-4 flex-1 max-w-xl">
                     <button type="button" 
                             @click="if (window.innerWidth >= 1024) { toggleSidebar(); } else { mobileSidebarOpen = !mobileSidebarOpen; }"
-                            class="w-10 h-10 rounded-xl border border-orange-200 bg-orange-50/50 hover:bg-orange-100 text-red-600 flex items-center justify-center transition-all shadow-xs shrink-0 cursor-pointer"
+                            class="w-10 h-10 rounded-xl border border-orange-200 bg-orange-50/50 hover:bg-accent-100 text-primary-800 flex items-center justify-center transition-all shadow-xs shrink-0 cursor-pointer"
                             title="تبديل إظهار / إخفاء القائمة الجانبية">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
@@ -383,7 +383,7 @@
                     <div class="relative" x-data="{ open: false }" @click.outside="open = false">
                         <button type="button" 
                                 @click="open = !open" 
-                                class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600 text-white text-xs font-black shadow-md shadow-red-500/20 transition-all flex items-center gap-1.5 cursor-pointer">
+                                class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-primary-700 to-primary-900 hover:from-red-700 hover:to-orange-600 text-white text-xs font-black shadow-md shadow-primary-900/20 transition-all flex items-center gap-1.5 cursor-pointer">
                             <svg class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-45': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
                             </svg>
@@ -408,38 +408,38 @@
                             </div>
 
                             <div class="py-1">
-                                <a href="{{ route('admin.orders.create') }}" class="flex items-center gap-2.5 px-3.5 py-2 text-red-700 bg-red-50/50 hover:bg-red-50 hover:text-red-800 transition-colors">
-                                    <span class="w-6 h-6 rounded-lg bg-red-100 text-red-700 flex items-center justify-center text-xs">📝</span>
+                                <a href="{{ route('admin.orders.create') }}" class="flex items-center gap-2.5 px-3.5 py-2 text-primary-900 bg-primary-50/50 hover:bg-primary-50 hover:text-primary-900 transition-colors">
+                                    <span class="w-6 h-6 rounded-lg bg-primary-100 text-primary-900 flex items-center justify-center text-xs">📝</span>
                                     <span>تسجيل طلب يدوي (واتساب / فرع)</span>
                                 </a>
-                                <a href="{{ route('admin.products.create') }}" class="flex items-center gap-2.5 px-3.5 py-2 text-gray-700 hover:bg-orange-50 hover:text-red-700 transition-colors">
-                                    <span class="w-6 h-6 rounded-lg bg-red-50 text-red-600 flex items-center justify-center text-xs">🥛</span>
+                                <a href="{{ route('admin.products.create') }}" class="flex items-center gap-2.5 px-3.5 py-2 text-gray-700 hover:bg-accent-50 hover:text-primary-900 transition-colors">
+                                    <span class="w-6 h-6 rounded-lg bg-primary-50 text-primary-800 flex items-center justify-center text-xs">🥛</span>
                                     <span>إضافة صنف / منتج جديد</span>
                                 </a>
-                                <a href="{{ route('admin.categories.create') }}" class="flex items-center gap-2.5 px-3.5 py-2 text-gray-700 hover:bg-orange-50 hover:text-red-700 transition-colors">
+                                <a href="{{ route('admin.categories.create') }}" class="flex items-center gap-2.5 px-3.5 py-2 text-gray-700 hover:bg-accent-50 hover:text-primary-900 transition-colors">
                                     <span class="w-6 h-6 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center text-xs">🏷️</span>
                                     <span>إضافة قسم / تصنيف</span>
                                 </a>
-                                <a href="{{ route('deals.create') }}" class="flex items-center gap-2.5 px-3.5 py-2 text-gray-700 hover:bg-orange-50 hover:text-red-700 transition-colors">
+                                <a href="{{ route('deals.create') }}" class="flex items-center gap-2.5 px-3.5 py-2 text-gray-700 hover:bg-accent-50 hover:text-primary-900 transition-colors">
                                     <span class="w-6 h-6 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-xs">🔥</span>
                                     <span>إضافة عرض وتخفيض</span>
                                 </a>
-                                <a href="{{ route('admin.bundles.create') }}" class="flex items-center gap-2.5 px-3.5 py-2 text-gray-700 hover:bg-orange-50 hover:text-red-700 transition-colors">
+                                <a href="{{ route('admin.bundles.create') }}" class="flex items-center gap-2.5 px-3.5 py-2 text-gray-700 hover:bg-accent-50 hover:text-primary-900 transition-colors">
                                     <span class="w-6 h-6 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center text-xs">📦</span>
                                     <span>إنشاء عرض مجمع (Bundle)</span>
                                 </a>
                             </div>
 
                             <div class="py-1">
-                                <a href="{{ route('admin.branches.create') }}" class="flex items-center gap-2.5 px-3.5 py-2 text-gray-700 hover:bg-orange-50 hover:text-red-700 transition-colors">
+                                <a href="{{ route('admin.branches.create') }}" class="flex items-center gap-2.5 px-3.5 py-2 text-gray-700 hover:bg-accent-50 hover:text-primary-900 transition-colors">
                                     <span class="w-6 h-6 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs">🏪</span>
                                     <span>إضافة فرع جديد</span>
                                 </a>
-                                <a href="{{ route('banners.create') }}" class="flex items-center gap-2.5 px-3.5 py-2 text-gray-700 hover:bg-orange-50 hover:text-red-700 transition-colors">
+                                <a href="{{ route('banners.create') }}" class="flex items-center gap-2.5 px-3.5 py-2 text-gray-700 hover:bg-accent-50 hover:text-primary-900 transition-colors">
                                     <span class="w-6 h-6 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs">🖼️</span>
                                     <span>إضافة بانر وإعلان</span>
                                 </a>
-                                <a href="{{ route('users.create') }}" class="flex items-center gap-2.5 px-3.5 py-2 text-gray-700 hover:bg-orange-50 hover:text-red-700 transition-colors">
+                                <a href="{{ route('users.create') }}" class="flex items-center gap-2.5 px-3.5 py-2 text-gray-700 hover:bg-accent-50 hover:text-primary-900 transition-colors">
                                     <span class="w-6 h-6 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center text-xs">👤</span>
                                     <span>إنشاء حساب مشرف</span>
                                 </a>
@@ -447,14 +447,14 @@
                         </div>
                     </div>
 
-                    <a href="{{ route('site.home') }}" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-orange-50 hover:bg-orange-100 border border-orange-200 text-xs font-bold text-red-700 transition-colors">
+                    <a href="{{ route('site.home') }}" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-orange-50 hover:bg-accent-100 border border-orange-200 text-xs font-bold text-primary-900 transition-colors">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
                         </svg>
                         <span>معاينة المتجر</span>
                     </a>
 
-                    <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-red-50 border border-red-200 text-red-700 font-bold text-xs">
+                    <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-primary-50 border border-red-200 text-primary-900 font-bold text-xs">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                         <span class="hidden md:inline">مدير المتجر</span>
                     </div>
@@ -491,7 +491,7 @@
                 <button type="button" onclick="closeDeleteModal()" class="px-5 py-2.5 rounded-xl border border-gray-200 bg-gray-50 hover:bg-gray-100 text-charcoal text-xs sm:text-sm font-bold transition-colors flex-1 cursor-pointer">
                     إلغاء
                 </button>
-                <button type="button" id="deleteModalConfirmBtn" class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-bold shadow-sm transition-all flex-1 cursor-pointer">
+                <button type="button" id="deleteModalConfirmBtn" class="px-5 py-2.5 rounded-xl bg-primary-700 hover:bg-primary-800 text-white text-xs sm:text-sm font-bold shadow-sm transition-all flex-1 cursor-pointer">
                     نعم، احذف
                 </button>
             </div>

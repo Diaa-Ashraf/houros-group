@@ -22,7 +22,7 @@ class HomeController extends Controller
         $cacheTtl = 1800; // 30 minutes
 
         // 1. Hero Banners
-        $banners = Cache::remember('storefront_home_banners', $cacheTtl, function () {
+        $banners = Cache::remember('horus_storefront_home_banners_v1', $cacheTtl, function () {
             return Banner::select(['id', 'title', 'description', 'image', 'url', 'position'])
                 ->where('status', true)
                 ->latest('id')
@@ -31,9 +31,10 @@ class HomeController extends Controller
         });
 
         // 2. Active Categories with products count
-        $categories = Cache::remember('storefront_home_categories', $cacheTtl, function () {
+        $categories = Cache::remember('horus_storefront_home_categories_v1', $cacheTtl, function () {
             return Category::select(['id', 'name', 'slug', 'image'])
                 ->active()
+                ->whereIn('slug', ['scib-paints', 'gypsum-board', 'fyutec-cornices', 'wall-panels', 'construction-tools', 'finishing-materials', 'doors', 'decor'])
                 ->withCount(['products' => function ($q) {
                     $q->active();
                 }])
@@ -43,7 +44,7 @@ class HomeController extends Controller
         });
 
         // 3. Today's Deals
-        $deals = Cache::remember('storefront_home_deals', $cacheTtl, function () {
+        $deals = Cache::remember('horus_storefront_home_deals_v1', $cacheTtl, function () {
             return Deal::select(['id', 'product_id', 'discount_percent', 'original_price', 'deal_price', 'badge_text', 'starts_at', 'ends_at'])
                 ->active()
                 ->with(['product' => function ($q) {
@@ -55,8 +56,8 @@ class HomeController extends Controller
                 ->get();
         });
 
-        // 4. Featured Dairy & Groceries
-        $featuredProducts = Cache::remember('storefront_home_featured_products', $cacheTtl, function () {
+        // 4. Featured Horus catalog items
+        $featuredProducts = Cache::remember('horus_storefront_home_featured_products_v1', $cacheTtl, function () {
             return Product::select(['id', 'name', 'slug', 'image', 'price', 'discount_price', 'featured', 'is_available', 'stock_quantity', 'quantity', 'category_id'])
                 ->active()
                 ->featured()
@@ -67,7 +68,7 @@ class HomeController extends Controller
         });
 
         // 5. Latest Fresh Additions
-        $latestProducts = Cache::remember('storefront_home_latest_products', $cacheTtl, function () {
+        $latestProducts = Cache::remember('horus_storefront_home_latest_products_v1', $cacheTtl, function () {
             return Product::select(['id', 'name', 'slug', 'image', 'price', 'discount_price', 'featured', 'is_available', 'stock_quantity', 'quantity', 'category_id'])
                 ->active()
                 ->with(['category:id,name'])
@@ -77,7 +78,7 @@ class HomeController extends Controller
         });
 
         // 6. Active Bundles
-        $bundles = Cache::remember('storefront_home_bundles', $cacheTtl, function () {
+        $bundles = Cache::remember('horus_storefront_home_bundles_v1', $cacheTtl, function () {
             return Bundle::select(['id', 'name', 'description', 'image', 'original_total', 'bundle_price', 'discount_percent'])
                 ->active()
                 ->with(['products' => function ($q) {
@@ -89,7 +90,7 @@ class HomeController extends Controller
         });
 
         // 7. Ameriya Branches
-        $branches = Cache::remember('storefront_home_branches', $cacheTtl, function () {
+        $branches = Cache::remember('horus_storefront_home_branches_v1', $cacheTtl, function () {
             return Branch::select(['id', 'name', 'address', 'phone', 'whatsapp', 'working_hours', 'google_maps_url', 'image'])
                 ->active()
                 ->ordered()

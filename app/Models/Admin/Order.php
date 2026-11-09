@@ -34,6 +34,7 @@ class Order extends Model
     // Payment Methods
     public const PAYMENT_METHOD_CASH = 'cash_on_delivery';
     public const PAYMENT_METHOD_INSTAPAY = 'instapay';
+    public const PAYMENT_METHOD_VODAFONE_CASH = 'vodafone_cash';
     public const PAYMENT_METHOD_BRANCH = 'cash_in_branch';
 
     protected $fillable = [
@@ -177,6 +178,7 @@ class Order extends Model
     {
         return match ($this->payment_method) {
             self::PAYMENT_METHOD_INSTAPAY => 'تحويل إنستاباي (InstaPay)',
+            self::PAYMENT_METHOD_VODAFONE_CASH => 'فودافون كاش',
             self::PAYMENT_METHOD_BRANCH => 'دفع في الفرع عند الاستلام',
             'whatsapp_checkout' => 'طلب واتساب',
             default => 'الدفع عند الاستلام (كاش)',

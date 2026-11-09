@@ -30,11 +30,9 @@ class SettingsService
      */
     public function all(): array
     {
-        return Cache::remember(self::CACHE_KEY, self::CACHE_TTL, function () {
-            return Setting::all()->mapWithKeys(function ($item) {
-                return [$item->key => $item->formatted_value];
-            })->toArray();
-        });
+        return Setting::all()->mapWithKeys(function ($item) {
+            return [$item->key => $item->formatted_value];
+        })->toArray();
     }
 
     /**

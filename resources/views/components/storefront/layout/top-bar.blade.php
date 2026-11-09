@@ -1,12 +1,12 @@
 {{-- resources/views/components/storefront/layout/top-bar.blade.php --}}
 @php
-    $storePhone = settings('store_phone', '01000000000');
-    $storeWhatsApp = settings('store_whatsapp', '201000000000');
-    $freeDeliveryThreshold = settings('free_delivery_threshold', 300);
+    $storePhone = settings('store_phone', '01002527072');
+    $storeWhatsApp = settings('store_whatsapp', '201002527072');
+    $freeDeliveryThreshold = null;
     $announcementEnabled = settings('announcement_bar_enabled', '1') == '1';
-    $announcementText = settings('announcement_bar_text', 'التوصيل السريع متاح لجميع مناطق العامرية وقرى مريوط والإسكندرية');
+    $announcementText = 'كل احتياجات التشطيب والديكور في مكان واحد • زورونا في حدائق الأهرام، بوابة حورس';
     $announcementLink = settings('announcement_bar_link', '');
-    $workingHours = settings('working_hours', 'يومياً: من 8:00 صباحاً حتى 2:00 بعد منتصف الليل');
+    $workingHours = settings('working_hours', 'تواصل معنا لمعرفة مواعيد العمل');
 @endphp
 
 @if($announcementEnabled)

@@ -6,7 +6,7 @@
 <div class="max-w-5xl mx-auto space-y-6">
     
     <!-- Header -->
-    <div class="bg-white border border-[border-orange-100] rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="bg-white border border-orange-100 rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
             <div class="flex items-center gap-2 mb-1">
                 <a href="{{ route('admin.orders.index') }}" class="text-xs font-bold text-[#DC2626] hover:underline flex items-center gap-1">
@@ -58,15 +58,15 @@
         <div class="md:col-span-2 space-y-6">
             
             <!-- Delivery & Payment Summary Card -->
-            <div class="bg-white border border-[border-orange-100] rounded-2xl p-6 shadow-sm space-y-4">
-                <h3 class="text-sm font-bold text-[#1F2937] flex items-center gap-2 border-b border-[border-orange-100] pb-3">
+            <div class="bg-white border border-orange-100 rounded-2xl p-6 shadow-sm space-y-4">
+                <h3 class="text-sm font-bold text-[#1F2937] flex items-center gap-2 border-b border-orange-100 pb-3">
                     <svg class="w-4 h-4 text-[#DC2626]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     <span>{{ __('طريقة الاستلام والدفع') }}</span>
                 </h3>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                     <!-- Delivery Type -->
-                    <div class="p-3.5 rounded-xl bg-[bg-canvas-base] border border-[border-orange-100] space-y-1">
+                    <div class="p-3.5 rounded-xl bg-canvas-base border border-orange-100 space-y-1">
                         <span class="text-gray-500 text-[11px] block">نوع الاستلام:</span>
                         @if($order->delivery_type === 'pickup')
                             <div class="font-bold text-amber-900 flex items-center gap-1.5">
@@ -84,25 +84,25 @@
                         @else
                             <div class="font-bold text-blue-900 flex items-center gap-1.5">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                                <span>توصيل للمنزل (مندوب ألبان التوحيد)</span>
+                                <span>توصيل للعميل</span>
                             </div>
                             <p class="text-[11px] text-gray-500 mt-1">
-                                التوصيل متاح لمنطقة العامرية والإسكندرية
+                                يتم تأكيد نطاق التوصيل مع العميل
                             </p>
                         @endif
                     </div>
 
                     <!-- Payment Method -->
-                    <div class="p-3.5 rounded-xl bg-[bg-canvas-base] border border-[border-orange-100] space-y-1">
+                    <div class="p-3.5 rounded-xl bg-canvas-base border border-orange-100 space-y-1">
                         <span class="text-gray-500 text-[11px] block">طريقة الدفع:</span>
-                        @if($order->payment_method === 'instapay')
+                        @if(in_array($order->payment_method, ['instapay', 'vodafone_cash'], true))
                             <div class="font-bold text-rose-700 flex items-center gap-1.5">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-                                <span>تحويل إنستاباي (InstaPay)</span>
+                                <span>{{ $order->payment_method_label }}</span>
                             </div>
                             @if($order->instapay_reference)
                                 <p class="text-[11px] font-mono text-[#1F2937] mt-1">
-                                    مرجع التحويل: <strong>{{ $order->instapay_reference }}</strong>
+                                    مرجع الدفع: <strong>{{ $order->instapay_reference }}</strong>
                                 </p>
                             @endif
                         @else
@@ -116,8 +116,8 @@
             </div>
 
             <!-- Customer Details Card -->
-            <div class="bg-white border border-[border-orange-100] rounded-2xl p-6 shadow-sm space-y-4">
-                <h3 class="text-sm font-bold text-[#1F2937] flex items-center gap-2 border-b border-[border-orange-100] pb-3">
+            <div class="bg-white border border-orange-100 rounded-2xl p-6 shadow-sm space-y-4">
+                <h3 class="text-sm font-bold text-[#1F2937] flex items-center gap-2 border-b border-orange-100 pb-3">
                     <svg class="w-4 h-4 text-[#DC2626]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                     <span>{{ __('بيانات العميل') }}</span>
                 </h3>
@@ -141,7 +141,7 @@
                     @if($order->delivery_type !== 'pickup')
                         <div class="sm:col-span-2">
                             <span class="text-gray-500 block mb-1">{{ __('عنوان التوصيل:') }}</span>
-                            <span class="font-medium text-[#1F2937] leading-relaxed bg-[bg-canvas-base] p-3 rounded-xl block border border-[border-orange-100]">
+                            <span class="font-medium text-[#1F2937] leading-relaxed bg-canvas-base p-3 rounded-xl block border border-orange-100">
                                 {{ $order->address ?: __('غير محدد') }}
                             </span>
                         </div>
@@ -159,17 +159,17 @@
             </div>
 
             <!-- Ordered Items Card -->
-            <div class="bg-white border border-[border-orange-100] rounded-2xl p-6 shadow-sm space-y-4">
-                <h3 class="text-sm font-bold text-[#1F2937] flex items-center gap-2 border-b border-[border-orange-100] pb-3">
+            <div class="bg-white border border-orange-100 rounded-2xl p-6 shadow-sm space-y-4">
+                <h3 class="text-sm font-bold text-[#1F2937] flex items-center gap-2 border-b border-orange-100 pb-3">
                     <svg class="w-4 h-4 text-[#DC2626]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
                     <span>{{ __('المنتجات المطلوبة') }} ({{ $order->orderItems->count() }})</span>
                 </h3>
 
-                <div class="divide-y divide-[border-orange-100]">
+                <div class="divide-y divide-orange-100">
                     @foreach($order->orderItems as $item)
                         <div class="py-3.5 first:pt-0 last:pb-0 flex items-center justify-between gap-4">
                             <div class="flex items-center gap-3">
-                                <div class="w-12 h-12 rounded-xl bg-[bg-canvas-base] border border-[border-orange-100] overflow-hidden flex items-center justify-center shrink-0">
+                                <div class="w-12 h-12 rounded-xl bg-canvas-base border border-orange-100 overflow-hidden flex items-center justify-center shrink-0">
                                     @if($item->product && $item->product->primary_image_url)
                                         <img src="{{ $item->product->primary_image_url }}" alt="" class="w-full h-full object-cover">
                                     @else
@@ -187,7 +187,7 @@
                                     </h4>
                                     @if($item->notes)
                                         <p class="text-[10px] text-amber-800 bg-amber-50 px-2 py-0.5 rounded mt-0.5 inline-block">
-                                            ملاحظة التقطيع/الطلب: {{ $item->notes }}
+                                            ملاحظة الطلب: {{ $item->notes }}
                                         </p>
                                     @endif
                                     <span class="text-[11px] text-gray-500 block mt-0.5">
@@ -205,7 +205,7 @@
                     @endforeach
                 </div>
 
-                <div class="border-t border-[border-orange-100] pt-4 flex items-center justify-between text-xs">
+                <div class="border-t border-orange-100 pt-4 flex items-center justify-between text-xs">
                     <span class="font-bold text-[#1F2937] text-sm">{{ __('الإجمالي النهائي:') }}</span>
                     <span class="font-sans text-lg font-black text-primary-800 tabular-nums">
                         {{ format_currency($order->total_price ?? 0) }}
@@ -218,8 +218,8 @@
         <!-- Right 1 Col: Status & Actions -->
         <div class="space-y-6">
             
-            <div class="bg-white border border-[border-orange-100] rounded-2xl p-6 shadow-sm space-y-4">
-                <h3 class="text-sm font-bold text-[#1F2937] flex items-center gap-2 border-b border-[border-orange-100] pb-3">
+            <div class="bg-white border border-orange-100 rounded-2xl p-6 shadow-sm space-y-4">
+                <h3 class="text-sm font-bold text-[#1F2937] flex items-center gap-2 border-b border-orange-100 pb-3">
                     <svg class="w-4 h-4 text-[#DC2626]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     <span>{{ __('إدارة حالة الطلب والمخزون') }}</span>
                 </h3>
@@ -273,7 +273,7 @@
 
                     <div>
                         <label class="block text-[11px] font-bold text-gray-700 mb-1">{{ __('تحديث الحالة:') }}</label>
-                        <select name="status" class="w-full px-3 py-2 text-xs rounded-xl bg-[bg-canvas-base] border border-[border-orange-100] text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-[#DC2626]">
+                        <select name="status" class="w-full px-3 py-2 text-xs rounded-xl bg-canvas-base border border-orange-100 text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-primary-700">
                             <option value="under_review" {{ $order->status === 'under_review' ? 'selected' : '' }}>قيد المراجعة</option>
                             <option value="pending" {{ $order->status === 'pending' ? 'selected' : '' }}>قيد الانتظار</option>
                             <option value="confirmed" {{ $order->status === 'confirmed' ? 'selected' : '' }}>تم التأكيد</option>
@@ -290,7 +290,7 @@
 
                     <div>
                         <label class="block text-[11px] font-bold text-gray-700 mb-1">{{ __('سبب الإلغاء / ملاحظة الإدارة (اختياري):') }}</label>
-                        <textarea name="cancel_reason" rows="2" class="w-full p-2.5 text-xs rounded-xl bg-[bg-canvas-base] border border-[border-orange-100] text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-[#DC2626]" placeholder="{{ __('مثال: لم يرد العميل، طلب الإلغاء...') }}">{{ $order->cancel_reason }}</textarea>
+                        <textarea name="cancel_reason" rows="2" class="w-full p-2.5 text-xs rounded-xl bg-canvas-base border border-orange-100 text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-primary-700" placeholder="{{ __('مثال: لم يرد العميل، طلب الإلغاء...') }}">{{ $order->cancel_reason }}</textarea>
                     </div>
 
                     <button type="submit" class="w-full py-2.5 rounded-xl bg-[#1F2937] hover:bg-[#DC2626] text-white text-xs font-bold transition-all shadow-sm cursor-pointer">
@@ -299,7 +299,7 @@
                 </form>
             </div>
 
-            <div class="bg-white border border-[border-orange-100] rounded-2xl p-6 shadow-sm space-y-3">
+            <div class="bg-white border border-orange-100 rounded-2xl p-6 shadow-sm space-y-3">
                 <h4 class="text-xs font-bold text-rose-600">{{ __('حذف الطلب:') }}</h4>
                 <p class="text-[11px] text-gray-500 leading-relaxed">
                     {{ __('عند حذف الطلب سيتم استرجاع المخزون تلقائياً للمنتجات إذا لم يكن ملغياً بالفعل.') }}
@@ -352,9 +352,9 @@
     </style>
 
     <div style="text-align: center; border-bottom: 1px dashed #000; padding-bottom: 8px; margin-bottom: 8px;">
-        <h2 style="font-size: 16px; font-weight: 900; margin: 0 0 4px 0;">ألبان وسوبرماركت التوحيد</h2>
-        <p style="font-size: 10px; margin: 0;">العامرية - الإسكندرية</p>
-        <p style="font-size: 10px; margin: 2px 0 0 0;">خدمة التوصيل: 01000000000</p>
+        <h2 style="font-size: 16px; font-weight: 900; margin: 0 0 4px 0;">مؤسسة حورس للتوريدات والتشطيبات</h2>
+        <p style="font-size: 10px; margin: 0;">٢٢ع حدائق الأهرام، بوابة حورس • 01002527072</p>
+        <p style="font-size: 10px; margin: 2px 0 0 0;">التواصل: 01002527072</p>
     </div>
 
     <div style="font-size: 11px; margin-bottom: 8px; border-bottom: 1px dashed #000; padding-bottom: 6px;">
@@ -368,7 +368,7 @@
             <div><strong>الاستلام:</strong> توصيل للمنزل</div>
             <div><strong>العنوان:</strong> {{ $order->address ?: '-' }}</div>
         @endif
-        <div><strong>الدفع:</strong> {{ $order->payment_method === 'instapay' ? 'إنستاباي' : 'نقداً عند الاستلام' }}</div>
+        <div><strong>الدفع:</strong> {{ $order->payment_method_label }}</div>
     </div>
 
     <div style="margin-bottom: 8px; border-bottom: 1px dashed #000; padding-bottom: 6px;">
@@ -408,7 +408,7 @@
     </div>
 
     <div style="text-align: center; font-size: 10px;">
-        <p style="margin: 0;">شكراً لتسوقكم من ألبان وسوبرماركت التوحيد</p>
+        <p style="margin: 0;">شكراً لتعاملكم مع مؤسسة حورس</p>
         <p style="margin: 2px 0 0 0;">طازج من مزارعنا لمائدتكم يومياً</p>
     </div>
 </div>

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', __('إعدادات متجر ألبان التوحيد'))
+@section('title', __('إعدادات مؤسسة حورس'))
 
 @section('content')
 <div class="max-w-7xl mx-auto space-y-6" x-data="{ 
@@ -89,7 +89,7 @@
                     :class="activeTab === 'payments' ? 'bg-primary-800 text-white font-bold shadow-xs' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'"
                     class="px-4 py-2.5 text-xs rounded-xl transition-all flex items-center gap-2 cursor-pointer">
                     <span>💳</span>
-                    <span>{{ __('الدفع وإنستاباي') }}</span>
+                    <span>{{ __('الدفع ووسائل التحويل') }}</span>
                 </button>
 
                 <!-- Tab 4: Shipping -->
@@ -176,8 +176,8 @@
                     <label class="block text-xs font-bold text-gray-800 mb-2">
                         {{ __('اسم المتجر الرسمي') }} <span class="text-rose-500">*</span>
                     </label>
-                    <input type="text" name="settings[site_name]" value="{{ $settings['site_name'] ?? 'ألبان وسوبرماركت التوحيد' }}" required
-                        placeholder="ألبان وسوبرماركت التوحيد"
+                    <input type="text" name="settings[site_name]" value="{{ $settings['site_name'] ?? 'مؤسسة حورس للتوريدات والتشطيبات' }}" required
+                        placeholder="مؤسسة حورس للتوريدات والتشطيبات"
                         class="w-full px-4 py-3 text-xs rounded-2xl bg-gray-50 border border-gray-200 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-700 focus:bg-white transition-all">
                     <span class="text-[11px] text-gray-400 mt-1 block">يظهر في ترويسة الموقع، الفواتير، ورسائل الواتساب.</span>
                 </div>
@@ -187,8 +187,8 @@
                     <label class="block text-xs font-bold text-gray-800 mb-2">
                         {{ __('الشعار اللفظي / السلوجان') }}
                     </label>
-                    <input type="text" name="settings[site_tagline]" value="{{ $settings['site_tagline'] ?? 'أصالة الطعم البلدي وجودة السوبرماركت في العامرية' }}"
-                        placeholder="أصالة الطعم البلدي وجودة السوبرماركت في العامرية"
+                    <input type="text" name="settings[site_tagline]" value="{{ $settings['site_tagline'] ?? 'حلول متكاملة للتشطيب والديكور' }}"
+                        placeholder="حلول متكاملة للتشطيب والديكور"
                         class="w-full px-4 py-3 text-xs rounded-2xl bg-gray-50 border border-gray-200 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-700 focus:bg-white transition-all">
                     <span class="text-[11px] text-gray-400 mt-1 block">يظهر أسفل الشعار وفي بطاقات المشاركة.</span>
                 </div>
@@ -277,7 +277,7 @@
             <div class="pb-4 border-b border-gray-100">
                 <h2 class="text-base font-black text-gray-900 flex items-center gap-2">
                     <span>📞</span>
-                    <span>{{ __('بيانات التواصل، فروع العامرية، ومواعيد العمل') }}</span>
+                    <span>{{ __('بيانات التواصل، العنوان، ومواعيد العمل') }}</span>
                 </h2>
                 <p class="text-xs text-gray-500 mt-1">تعديل أرقام الهواتف، الواتساب الموحد، البريد، وعناوين الفروع.</p>
             </div>
@@ -288,8 +288,8 @@
                     <label class="block text-xs font-bold text-gray-800 mb-2">
                         {{ __('رقم هاتف المتجر والشكاوى الرئيسي') }} <span class="text-rose-500">*</span>
                     </label>
-                    <input type="text" name="settings[store_phone]" value="{{ $settings['store_phone'] ?? '01000000000' }}" dir="ltr" required
-                        placeholder="01000000000"
+                    <input type="text" name="settings[store_phone]" value="{{ $settings['store_phone'] ?? '01002527072' }}" dir="ltr" required
+                        placeholder="01002527072"
                         class="w-full px-4 py-3 text-xs rounded-2xl bg-gray-50 border border-gray-200 text-gray-900 font-mono focus:outline-none focus:ring-2 focus:ring-primary-700 focus:bg-white transition-all">
                     <span class="text-[11px] text-gray-400 mt-1 block">يظهر في التوب بار والفوتر لزر الاتصال السريع.</span>
                 </div>
@@ -299,7 +299,7 @@
                     <label class="block text-xs font-bold text-gray-800 mb-2">
                         {{ __('رقم هاتف إضافي / خط أرضي') }}
                     </label>
-                    <input type="text" name="settings[store_phone_secondary]" value="{{ $settings['store_phone_secondary'] ?? '034400000' }}" dir="ltr"
+                    <input type="text" name="settings[store_phone_secondary]" value="{{ $settings['store_phone_secondary'] ?? '' }}" dir="ltr"
                         placeholder="034400000"
                         class="w-full px-4 py-3 text-xs rounded-2xl bg-gray-50 border border-gray-200 text-gray-900 font-mono focus:outline-none focus:ring-2 focus:ring-primary-700 focus:bg-white transition-all">
                 </div>
@@ -309,8 +309,8 @@
                     <label class="block text-xs font-bold text-gray-800 mb-2">
                         {{ __('رقم الواتساب الرسمي الموحد للطلبات') }} <span class="text-emerald-600 font-normal">(مع كود الدولة مثل 201...)</span>
                     </label>
-                    <input type="text" name="settings[store_whatsapp]" value="{{ $settings['store_whatsapp'] ?? '201000000000' }}" dir="ltr" required
-                        placeholder="201000000000"
+                    <input type="text" name="settings[store_whatsapp]" value="{{ $settings['store_whatsapp'] ?? '201002527072' }}" dir="ltr" required
+                        placeholder="201002527072"
                         class="w-full px-4 py-3 text-xs rounded-2xl bg-emerald-50/50 border border-emerald-300 text-emerald-900 font-mono font-bold focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white transition-all">
                     <span class="text-[11px] text-gray-400 mt-1 block">يرسل إليه العملاء طلباتهم الفورية وزر الواتساب العائم.</span>
                 </div>
@@ -320,8 +320,8 @@
                     <label class="block text-xs font-bold text-gray-800 mb-2">
                         {{ __('البريد الإلكتروني الرسمي للمتجر') }}
                     </label>
-                    <input type="email" name="settings[store_email]" value="{{ $settings['store_email'] ?? 'info@altawheed-dairy.com' }}" dir="ltr"
-                        placeholder="info@altawheed-dairy.com"
+                    <input type="email" name="settings[store_email]" value="{{ $settings['store_email'] ?? '' }}" dir="ltr"
+                        placeholder="البريد الإلكتروني"
                         class="w-full px-4 py-3 text-xs rounded-2xl bg-gray-50 border border-gray-200 text-gray-900 font-mono focus:outline-none focus:ring-2 focus:ring-primary-700 focus:bg-white transition-all">
                 </div>
 
@@ -350,8 +350,8 @@
                     <label class="block text-xs font-bold text-gray-800 mb-2">
                         {{ __('عنوان المقر الرئيسي / فرع الإدارة') }}
                     </label>
-                    <input type="text" name="settings[address]" value="{{ $settings['address'] ?? 'شارع المستشفى - بجوار الإسعاف، العامرية، الإسكندرية' }}"
-                        placeholder="شارع المستشفى - بجوار الإسعاف، العامرية، الإسكندرية"
+                    <input type="text" name="settings[address]" value="{{ $settings['address'] ?? '٢٢ع حدائق الأهرام، بوابة حورس' }}"
+                        placeholder="٢٢ع حدائق الأهرام، بوابة حورس"
                         class="w-full px-4 py-3 text-xs rounded-2xl bg-gray-50 border border-gray-200 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-700 focus:bg-white transition-all">
                 </div>
 
@@ -432,8 +432,8 @@
                         <label class="block text-xs font-bold text-gray-800 mb-1.5">
                             {{ __('عنوان الدفع اللحظي (IPA / Username)') }}
                         </label>
-                        <input type="text" name="settings[instapay_username]" value="{{ $settings['instapay_username'] ?? 'altawheed@instapay' }}" dir="ltr"
-                            placeholder="altawheed@instapay"
+                        <input type="text" name="settings[instapay_username]" value="{{ $settings['instapay_username'] ?? '' }}" dir="ltr"
+                            placeholder="horus.demo@instapay"
                             class="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white border border-rose-300 text-rose-900 font-mono font-bold focus:ring-2 focus:ring-rose-500">
                     </div>
 
@@ -441,7 +441,7 @@
                         <label class="block text-xs font-bold text-gray-800 mb-1.5">
                             {{ __('رقم هاتف حساب إنستاباي') }}
                         </label>
-                        <input type="text" name="settings[instapay_number]" value="{{ $settings['instapay_number'] ?? '01000000000' }}" dir="ltr"
+                        <input type="text" name="settings[instapay_number]" value="{{ $settings['instapay_number'] ?? '' }}" dir="ltr"
                             placeholder="01000000000"
                             class="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white border border-rose-300 text-rose-900 font-mono font-bold focus:ring-2 focus:ring-rose-500">
                     </div>
@@ -450,8 +450,8 @@
                         <label class="block text-xs font-bold text-gray-800 mb-1.5">
                             {{ __('اسم صاحب الحساب في تطبيق إنستاباي') }}
                         </label>
-                        <input type="text" name="settings[instapay_name]" value="{{ $settings['instapay_name'] ?? 'ألبان وسوبرماركت التوحيد' }}"
-                            placeholder="ألبان وسوبرماركت التوحيد"
+                        <input type="text" name="settings[instapay_name]" value="{{ $settings['instapay_name'] ?? 'مؤسسة حورس للتوريدات والتشطيبات (تجريبي)' }}"
+                        placeholder="مؤسسة حورس للتوريدات والتشطيبات"
                             class="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white border border-rose-300 text-gray-900 font-bold focus:ring-2 focus:ring-rose-500">
                     </div>
                 </div>
@@ -461,8 +461,9 @@
                         {{ __('تعليمات الدفع عبر إنستاباي للعميل') }}
                     </label>
                     <textarea name="settings[instapay_instructions]" rows="2"
-                        class="w-full p-3 text-xs rounded-xl bg-white border border-rose-300 text-gray-900 focus:ring-2 focus:ring-rose-500 leading-relaxed">{{ $settings['instapay_instructions'] ?? 'يرجى تحويل القيمة عبر تطبيق InstaPay ثم إرفاق صورة إشعار التحويل لتأكيد تجهيز الطلب فوراً.' }}</textarea>
+                        class="w-full p-3 text-xs rounded-xl bg-white border border-rose-300 text-gray-900 focus:ring-2 focus:ring-rose-500 leading-relaxed">{{ $settings['instapay_instructions'] ?? 'حوّل قيمة الطلب إلى حساب المؤسسة، ثم أرفق صورة الإيصال لمراجعة التحويل.' }}</textarea>
                 </div>
+                <p class="rounded-xl bg-amber-100 px-3 py-2 text-[11px] font-bold text-amber-900">الحساب الحالي تجريبي. غيّر عنوان IPA ورقم الهاتف والاسم والتعليمات إلى البيانات الرسمية قبل استقبال أي تحويل.</p>
             </div>
 
             <!-- Vodafone Cash Number -->
@@ -477,11 +478,16 @@
                         <label class="block text-xs font-bold text-gray-800 mb-1.5">
                             {{ __('رقم محفظة فودافون كاش الرسمية') }}
                         </label>
-                        <input type="text" name="settings[vodafone_cash_number]" value="{{ $settings['vodafone_cash_number'] ?? '01000000000' }}" dir="ltr"
+                        <input type="text" name="settings[vodafone_cash_number]" value="{{ $settings['vodafone_cash_number'] ?? '' }}" dir="ltr"
                             placeholder="01000000000"
                             class="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white border border-red-300 text-red-900 font-mono font-bold focus:ring-2 focus:ring-red-500">
                     </div>
                 </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-800 mb-1.5">تعليمات الدفع بفودافون كاش</label>
+                    <textarea name="settings[vodafone_cash_instructions]" rows="2" class="w-full p-3 text-xs rounded-xl bg-white border border-red-300 text-gray-900 focus:ring-2 focus:ring-red-500 leading-relaxed">{{ $settings['vodafone_cash_instructions'] ?? 'رقم تجريبي للعرض فقط: لا تحوّل أي مبالغ قبل تأكيد رقم المحفظة الرسمي من المؤسسة.' }}</textarea>
+                </div>
+                <p class="rounded-xl bg-amber-100 px-3 py-2 text-[11px] font-bold text-amber-900">رقم المحفظة الحالي تجريبي. استبدله برقم المؤسسة الرسمي قبل تفعيل استقبال المدفوعات.</p>
             </div>
 
         </div>
@@ -493,7 +499,7 @@
             <div class="pb-4 border-b border-gray-100">
                 <h2 class="text-base font-black text-gray-900 flex items-center gap-2">
                     <span>🚚</span>
-                    <span>{{ __('إعدادات الشحن، التوصيل بالعامرية، والحدود المالية') }}</span>
+                    <span>{{ __('إعدادات التوصيل والحدود المالية') }}</span>
                 </h2>
                 <p class="text-xs text-gray-500 mt-1">تحديد رسوم التوصيل، قيمة التوصيل المجاني، والحد الأدنى لإنشاء الطلب.</p>
             </div>
@@ -502,11 +508,11 @@
                 <!-- Delivery Fee -->
                 <div class="p-5 rounded-2xl border border-gray-200 bg-gray-50/50 space-y-2">
                     <label class="block text-xs font-bold text-gray-800">
-                        {{ __('رسوم التوصيل الافتراضية بالعامرية (ج.م)') }} <span class="text-rose-500">*</span>
+                        {{ __('رسوم التوصيل الافتراضية (ج.م)') }} <span class="text-rose-500">*</span>
                     </label>
-                    <input type="number" step="0.5" name="settings[delivery_fee]" value="{{ $settings['delivery_fee'] ?? '20' }}" required
+                    <input type="number" step="0.5" name="settings[delivery_fee]" value="{{ $settings['delivery_fee'] ?? '0' }}" required
                         class="w-full px-4 py-2.5 text-xs rounded-xl bg-white border border-gray-300 text-gray-900 font-mono font-bold focus:ring-2 focus:ring-primary-700">
-                    <span class="text-[10px] text-gray-400 block">تضاف تلقائياً للطلبات التي تختار التوصيل للمنزل.</span>
+                    <span class="text-[10px] text-gray-400 block">أدخل السعر المتفق عليه. عند ترك القيمة 0، تظهر للعميل «تحدد مع الفرع» ويؤكدها الفريق قبل التحصيل.</span>
                 </div>
 
                 <!-- Free Delivery Threshold -->
@@ -514,7 +520,7 @@
                     <label class="block text-xs font-bold text-emerald-950">
                         {{ __('الحد الأدنى للشحن المجاني (ج.م)') }} <span class="text-rose-500">*</span>
                     </label>
-                    <input type="number" step="1" name="settings[free_delivery_threshold]" value="{{ $settings['free_delivery_threshold'] ?? '300' }}" required
+                    <input type="number" step="1" name="settings[free_delivery_threshold]" value="{{ $settings['free_delivery_threshold'] ?? '0' }}" required
                         class="w-full px-4 py-2.5 text-xs rounded-xl bg-white border border-emerald-300 text-emerald-900 font-mono font-bold focus:ring-2 focus:ring-emerald-600">
                     <span class="text-[10px] text-emerald-700 block">يصبح التوصيل 0 ج.م تلقائياً عند وصول الطلب لهذه القيمة.</span>
                 </div>
@@ -524,7 +530,7 @@
                     <label class="block text-xs font-bold text-gray-800">
                         {{ __('الحد الأدنى لقيمة الطلب (ج.م)') }} <span class="text-rose-500">*</span>
                     </label>
-                    <input type="number" step="1" name="settings[min_order_amount]" value="{{ $settings['min_order_amount'] ?? '50' }}" required
+                    <input type="number" step="1" name="settings[min_order_amount]" value="{{ $settings['min_order_amount'] ?? '0' }}" required
                         class="w-full px-4 py-2.5 text-xs rounded-xl bg-white border border-gray-300 text-gray-900 font-mono font-bold focus:ring-2 focus:ring-primary-700">
                     <span class="text-[10px] text-gray-400 block">أقل مبلغ يسمح النظام بإنشاء الطلب به في السلة.</span>
                 </div>
@@ -555,10 +561,10 @@
                 <!-- Coverage Areas Note -->
                 <div class="md:col-span-2">
                     <label class="block text-xs font-bold text-gray-800 mb-2">
-                        {{ __('مناطق التغطية بالتوصيل الفوري بالعامرية') }}
+                        {{ __('مناطق التغطية بالتوصيل') }}
                     </label>
-                    <input type="text" name="settings[delivery_coverage_areas]" value="{{ $settings['delivery_coverage_areas'] ?? 'العامرية، كينج مريوط، شارع الإسعاف، النهضة، عبد القادر، وقرى مريوط' }}"
-                        placeholder="العامرية، كينج مريوط، شارع الإسعاف، النهضة، عبد القادر، وقرى مريوط"
+                    <input type="text" name="settings[delivery_coverage_areas]" value="{{ $settings['delivery_coverage_areas'] ?? 'حدائق الأهرام والمناطق القريبة، يرجى التواصل لتأكيد التغطية' }}"
+                        placeholder="حدائق الأهرام والمناطق القريبة، يرجى التواصل لتأكيد التغطية"
                         class="w-full px-4 py-3 text-xs rounded-2xl bg-gray-50 border border-gray-200 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-700 focus:bg-white transition-all">
                 </div>
             </div>
@@ -600,8 +606,8 @@
                     <label class="block text-xs font-bold text-gray-800 mb-2">
                         {{ __('نص الإعلان أو العرض الترويجي') }}
                     </label>
-                    <input type="text" name="settings[announcement_bar_text]" value="{{ $settings['announcement_bar_text'] ?? 'التوصيل السريع متاح لجميع مناطق العامرية وقرى مريوط والإسكندرية' }}"
-                        placeholder="التوصيل السريع متاح لجميع مناطق العامرية وقرى مريوط والإسكندرية"
+                    <input type="text" name="settings[announcement_bar_text]" value="{{ $settings['announcement_bar_text'] ?? 'كل احتياجات التشطيب والديكور في مكان واحد • حدائق الأهرام، بوابة حورس' }}"
+                        placeholder="كل احتياجات التشطيب والديكور في مكان واحد • حدائق الأهرام، بوابة حورس"
                         class="w-full px-4 py-3 text-xs rounded-2xl bg-gray-50 border border-gray-200 text-gray-900 font-bold focus:ring-2 focus:ring-primary-700">
                 </div>
             </div>
@@ -627,7 +633,7 @@
                         <span>{{ __('رابط صفحة فيسبوك') }}</span>
                     </label>
                     <input type="url" name="settings[facebook_link]" value="{{ $settings['facebook_link'] ?? '' }}" dir="ltr"
-                        placeholder="https://facebook.com/altawheed.dairy"
+                        placeholder="رابط صفحة فيسبوك"
                         class="w-full px-4 py-3 text-xs rounded-2xl bg-gray-50 border border-gray-200 text-gray-900 font-mono focus:ring-2 focus:ring-primary-700">
                 </div>
 
@@ -638,7 +644,7 @@
                         <span>{{ __('رابط حساب إنستغرام') }}</span>
                     </label>
                     <input type="url" name="settings[instagram_link]" value="{{ $settings['instagram_link'] ?? '' }}" dir="ltr"
-                        placeholder="https://instagram.com/altawheed.dairy"
+                        placeholder="رابط حساب إنستغرام"
                         class="w-full px-4 py-3 text-xs rounded-2xl bg-gray-50 border border-gray-200 text-gray-900 font-mono focus:ring-2 focus:ring-primary-700">
                 </div>
 
@@ -649,7 +655,7 @@
                         <span>{{ __('رابط حساب تيك توك') }}</span>
                     </label>
                     <input type="url" name="settings[tiktok_link]" value="{{ $settings['tiktok_link'] ?? '' }}" dir="ltr"
-                        placeholder="https://tiktok.com/@altawheed.dairy"
+                        placeholder="رابط حساب تيك توك"
                         class="w-full px-4 py-3 text-xs rounded-2xl bg-gray-50 border border-gray-200 text-gray-900 font-mono focus:ring-2 focus:ring-primary-700">
                 </div>
 
@@ -660,7 +666,7 @@
                         <span>{{ __('رابط قناة يوتيوب') }}</span>
                     </label>
                     <input type="url" name="settings[youtube_link]" value="{{ $settings['youtube_link'] ?? '' }}" dir="ltr"
-                        placeholder="https://youtube.com/@altawheed"
+                        placeholder="رابط قناة يوتيوب"
                         class="w-full px-4 py-3 text-xs rounded-2xl bg-gray-50 border border-gray-200 text-gray-900 font-mono focus:ring-2 focus:ring-primary-700">
                 </div>
             </div>
@@ -684,8 +690,8 @@
                     <label class="block text-xs font-bold text-gray-800 mb-2">
                         {{ __('عنوان المتجر الافتراضي في جوجل (Meta Title)') }}
                     </label>
-                    <input type="text" name="settings[meta_title]" value="{{ $settings['meta_title'] ?? 'ألبان وسوبرماركت التوحيد | العامرية - الإسكندرية' }}"
-                        placeholder="ألبان وسوبرماركت التوحيد | العامرية - الإسكندرية"
+                    <input type="text" name="settings[meta_title]" value="{{ $settings['meta_title'] ?? 'مؤسسة حورس للتوريدات والتشطيبات | حدائق الأهرام' }}"
+                        placeholder="مؤسسة حورس للتوريدات والتشطيبات | حدائق الأهرام"
                         class="w-full px-4 py-3 text-xs rounded-2xl bg-gray-50 border border-gray-200 text-gray-900 font-bold focus:ring-2 focus:ring-primary-700">
                 </div>
 
@@ -695,7 +701,7 @@
                         {{ __('الوصف الافتراضي للموقع في نتائج البحث (Meta Description)') }}
                     </label>
                     <textarea name="settings[meta_description]" rows="3"
-                        class="w-full p-4 text-xs rounded-2xl bg-gray-50 border border-gray-200 text-gray-900 focus:ring-2 focus:ring-primary-700 leading-relaxed">{{ $settings['meta_description'] ?? 'ألبان وسوبرماركت التوحيد في العامرية، الإسكندرية. أجود منتجات الألبان والأجبان الطبيعية والسلع الغذائية وخدمة توصيل فورية.' }}</textarea>
+                        class="w-full p-4 text-xs rounded-2xl bg-gray-50 border border-gray-200 text-gray-900 focus:ring-2 focus:ring-primary-700 leading-relaxed">{{ $settings['meta_description'] ?? 'خامات التشطيب والديكور، دهانات SCIB، أدوات البناء والجبسون بورد. مؤسسة حورس، حدائق الأهرام، بوابة حورس.' }}</textarea>
                 </div>
 
                 <!-- Meta Keywords -->
@@ -703,7 +709,7 @@
                     <label class="block text-xs font-bold text-gray-800 mb-2">
                         {{ __('الكلمات المفتاحية (Meta Keywords - مفصولة بفواصل)') }}
                     </label>
-                    <input type="text" name="settings[meta_keywords]" value="{{ $settings['meta_keywords'] ?? 'ألبان التوحيد, سوبرماركت التوحيد, جبن بلدي, ألبان العامرية, توصيل طلبات العامرية, سوبرماركت الإسكندرية, كينج مريوط' }}"
+                    <input type="text" name="settings[meta_keywords]" value="{{ $settings['meta_keywords'] ?? 'حورس للتوريدات والتشطيبات, دهانات SCIB, تشطيب, جبسون بورد, كرانيش فيوتك, دهانات, حدائق الأهرام' }}"
                         class="w-full px-4 py-3 text-xs rounded-2xl bg-gray-50 border border-gray-200 text-gray-900 focus:ring-2 focus:ring-primary-700">
                 </div>
 
@@ -770,10 +776,10 @@
                 <!-- About Us Full -->
                 <div>
                     <label class="block text-xs font-bold text-gray-800 mb-2">
-                        {{ __('قصة ورؤية ألبان وسوبرماركت التوحيد (صفحة من نحن)') }}
+                        {{ __('نبذة مؤسسة حورس (صفحة من نحن)') }}
                     </label>
                     <textarea name="settings[about_us_content]" rows="4"
-                        class="w-full p-4 text-xs rounded-2xl bg-gray-50 border border-gray-200 text-gray-900 focus:ring-2 focus:ring-primary-700 leading-relaxed">{{ $settings['about_us_content'] ?? 'ألبان وسوبرماركت التوحيد، الاسم الرائد في تقديم أجود منتجات الألبان البلدية الطبيعية والجبن الطازج والسلع الغذائية في العامرية والإسكندرية عبر 4 فروع وخدمة توصيل فورية.' }}</textarea>
+                        class="w-full p-4 text-xs rounded-2xl bg-gray-50 border border-gray-200 text-gray-900 focus:ring-2 focus:ring-primary-700 leading-relaxed">{{ $settings['about_us_content'] ?? 'مؤسسة حورس للتوريدات والتشطيبات. نوفر خامات الديكور والتشطيب، ودهانات SCIB، وأدوات ومستلزمات البناء. مقرنا ٢٢ع حدائق الأهرام، بوابة حورس. خبرة أكثر من 10 سنوات.' }}</textarea>
                 </div>
 
                 <!-- About Us Short (Footer) -->
@@ -782,7 +788,7 @@
                         {{ __('نبذة مختصرة لفوتر الموقع الرئيسي') }}
                     </label>
                     <textarea name="settings[about_us_short]" rows="2"
-                        class="w-full p-4 text-xs rounded-2xl bg-gray-50 border border-gray-200 text-gray-900 focus:ring-2 focus:ring-primary-700 leading-relaxed">{{ $settings['about_us_short'] ?? 'من أكبر مراكز الألبان والسوبرماركت في منطقة العامرية والإسكندرية. نوفر أجود منتجات الألبان الطازجة، الأجبان الطبيعية، والسلع الغذائية بأسعار الجملة والتجزئة وخدمة توصيل سريعة حتى باب بيتك.' }}</textarea>
+                        class="w-full p-4 text-xs rounded-2xl bg-gray-50 border border-gray-200 text-gray-900 focus:ring-2 focus:ring-primary-700 leading-relaxed">{{ $settings['about_us_short'] ?? 'نوفر خامات التشطيب والديكور، دهانات SCIB، أدوات ومستلزمات البناء، وحلولاً عملية من التأسيس حتى اللمسة الأخيرة.' }}</textarea>
                 </div>
 
                 <!-- Terms Custom -->
@@ -811,7 +817,7 @@
                         {{ __('نص إضافي / مخصص لسياسة الاستبدال والاسترجاع للمنتجات المبردة والجافة') }}
                     </label>
                     <textarea name="settings[return_policy_content]" rows="3"
-                        placeholder="شروط استبدال الجبن والألبان والسلع التموينية..."
+                        placeholder="شروط الاستبدال والاسترجاع الخاصة بالمنتجات..."
                         class="w-full p-4 text-xs rounded-2xl bg-gray-50 border border-gray-200 text-gray-900 focus:ring-2 focus:ring-primary-700 leading-relaxed">{{ $settings['return_policy_content'] ?? '' }}</textarea>
                 </div>
             </div>
@@ -994,8 +1000,8 @@
                         <label class="block text-xs font-bold text-gray-800 mb-1.5">
                             {{ __('العنوان الرئيسي للمجلة') }}
                         </label>
-                        <input type="text" name="settings[magazine_title]" value="{{ $settings['magazine_title'] ?? 'مجلة عروض ألبان وسوبرماركت التوحيد' }}"
-                            placeholder="مجلة عروض ألبان وسوبرماركت التوحيد"
+                        <input type="text" name="settings[magazine_title]" value="{{ $settings['magazine_title'] ?? 'عروض مؤسسة حورس' }}"
+                            placeholder="عروض مؤسسة حورس"
                             class="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white border border-gray-300 text-gray-900 font-bold focus:ring-2 focus:ring-primary-700">
                     </div>
 
@@ -1014,7 +1020,7 @@
                         <label class="block text-xs font-bold text-gray-800 mb-1.5">
                             {{ __('الوصف الترويجي أسفل العنوان') }}
                         </label>
-                        <input type="text" name="settings[magazine_subtitle]" value="{{ $settings['magazine_subtitle'] ?? 'تصفح كل عروض الأسبوع، كراتين التوفير، الخصومات الحصرية على الألبان الفلاحي الطازجة وسلع التموين بفروع العامرية الأربعة.' }}"
+                        <input type="text" name="settings[magazine_subtitle]" value="{{ $settings['magazine_subtitle'] ?? 'تابع أحدث عروض خامات التشطيب والديكور لدى مؤسسة حورس.' }}"
                             class="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white border border-gray-300 text-gray-900 font-medium focus:ring-2 focus:ring-primary-700">
                     </div>
 

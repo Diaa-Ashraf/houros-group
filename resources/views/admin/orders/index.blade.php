@@ -1,21 +1,21 @@
 @extends('layouts.admin')
 
-@section('title', __('إدارة ومتابعة طلبات التوحيد'))
+@section('title', __('إدارة ومتابعة طلبات مؤسسة حورس'))
 
 @section('content')
 <div class="space-y-6">
-    
+
     <!-- Top Header -->
-    <div class="bg-white border border-[border-orange-100] rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div class="bg-white border border-orange-100 rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <div class="flex items-center gap-2 mb-1">
-                <span class="text-xs font-bold text-[#DC2626] uppercase tracking-wider">⚡ Supermarket Orders Pipeline</span>
+                <span class="text-xs font-bold text-primary-700 uppercase tracking-wider">إدارة طلبات حورس</span>
             </div>
             <h1 class="font-sans text-2xl sm:text-3xl font-bold text-[#1F2937]">
                 {{ __('إدارة ومتابعة الطلبات') }}
             </h1>
             <p class="text-xs sm:text-sm text-gray-500 mt-1">
-                {{ __('متابعة طلبات التوصيل بالعامرية والاستلام من الفروع، تأكيد تحويلات إنستاباي وتحديث مراحل الطلب.') }}
+                {{ __('متابعة الطلبات، مراجعة التحويلات، وتحديث مراحل التجهيز والاستلام.') }}
             </p>
         </div>
 
@@ -52,18 +52,18 @@
     @endif
 
     <!-- Filters Card -->
-    <div class="bg-white border border-[border-orange-100] rounded-2xl p-4 sm:p-6 shadow-sm">
+    <div class="bg-white border border-orange-100 rounded-2xl p-4 sm:p-6 shadow-sm">
         <form method="GET" action="{{ route('admin.orders.index') }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-center">
             <!-- Search Input -->
             <div class="lg:col-span-4">
-                <input type="text" name="search" value="{{ request('search') }}" 
-                    placeholder="{{ __('بحث برقم الطلب (TWH-...)، اسم العميل، الهاتف، أو إيصال إنستاباي...') }}" 
-                    class="w-full px-4 py-2 text-xs rounded-xl bg-[bg-canvas-base] border border-[border-orange-100] text-[#1F2937] placeholder-[#71717A] focus:outline-none focus:ring-2 focus:ring-[#DC2626] focus:bg-white">
+                <input type="text" name="search" value="{{ request('search') }}"
+                    placeholder="{{ __('بحث برقم الطلب (HOR-...)، اسم العميل، الهاتف، أو مرجع الدفع...') }}"
+                    class="w-full px-4 py-2 text-xs rounded-xl bg-canvas-base border border-orange-100 text-[#1F2937] placeholder-[#71717A] focus:outline-none focus:ring-2 focus:ring-primary-700 focus:bg-white">
             </div>
 
             <!-- Status Filter -->
             <div class="lg:col-span-3">
-                <select name="status" class="w-full px-3 py-2 text-xs rounded-xl bg-[bg-canvas-base] border border-[border-orange-100] text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-[#DC2626] focus:bg-white">
+                <select name="status" class="w-full px-3 py-2 text-xs rounded-xl bg-canvas-base border border-orange-100 text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-primary-700 focus:bg-white">
                     <option value="">{{ __('-- جميع الحالات --') }}</option>
                     <option value="under_review" {{ request('status') == 'under_review' ? 'selected' : '' }}>⏳ قيد المراجعة (Under Review)</option>
                     <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>📦 قيد الانتظار (Pending)</option>
@@ -78,7 +78,7 @@
 
             <!-- Delivery Type Filter -->
             <div class="lg:col-span-2">
-                <select name="delivery_type" class="w-full px-3 py-2 text-xs rounded-xl bg-[bg-canvas-base] border border-[border-orange-100] text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-[#DC2626] focus:bg-white">
+                <select name="delivery_type" class="w-full px-3 py-2 text-xs rounded-xl bg-canvas-base border border-orange-100 text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-primary-700 focus:bg-white">
                     <option value="">{{ __('-- نوع الاستلام --') }}</option>
                     <option value="delivery" {{ request('delivery_type') == 'delivery' ? 'selected' : '' }}>🛵 توصيل منزلي</option>
                     <option value="pickup" {{ request('delivery_type') == 'pickup' ? 'selected' : '' }}>🏪 استلام من الفرع</option>
@@ -87,10 +87,11 @@
 
             <!-- Payment Method Filter -->
             <div class="lg:col-span-2">
-                <select name="payment_method" class="w-full px-3 py-2 text-xs rounded-xl bg-[bg-canvas-base] border border-[border-orange-100] text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-[#DC2626] focus:bg-white">
+                <select name="payment_method" class="w-full px-3 py-2 text-xs rounded-xl bg-canvas-base border border-orange-100 text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-primary-700 focus:bg-white">
                     <option value="">{{ __('-- طريقة الدفع --') }}</option>
                     <option value="cash_on_delivery" {{ request('payment_method') == 'cash_on_delivery' ? 'selected' : '' }}>💵 كاش عند الاستلام</option>
                     <option value="instapay" {{ request('payment_method') == 'instapay' ? 'selected' : '' }}>💳 إنستاباي</option>
+                    <option value="vodafone_cash" {{ request('payment_method') == 'vodafone_cash' ? 'selected' : '' }}>📲 فودافون كاش</option>
                 </select>
             </div>
 
@@ -100,7 +101,7 @@
                     تصفية
                 </button>
                 @if(request()->hasAny(['search', 'status', 'delivery_type', 'payment_method']))
-                <a href="{{ route('admin.orders.index') }}" class="p-2 rounded-xl bg-[bg-canvas-base] border border-[border-orange-100] text-red-600 hover:bg-red-50 text-xs font-bold transition-colors shrink-0" title="{{ __('إلغاء') }}">
+                <a href="{{ route('admin.orders.index') }}" class="p-2 rounded-xl bg-canvas-base border border-orange-100 text-red-600 hover:bg-red-50 text-xs font-bold transition-colors shrink-0" title="{{ __('إلغاء') }}">
                     ✕
                 </a>
                 @endif
@@ -109,10 +110,10 @@
     </div>
 
     <!-- Orders Table -->
-    <div class="bg-white border border-[border-orange-100] rounded-2xl shadow-sm overflow-hidden">
+    <div class="bg-white border border-orange-100 rounded-2xl shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-start text-xs">
-                <thead class="bg-[bg-canvas-base] text-gray-500 uppercase text-[11px] border-b border-[border-orange-100]">
+                <thead class="bg-canvas-base text-gray-500 uppercase text-[11px] border-b border-orange-100">
                     <tr>
                         <th class="py-3.5 px-6 text-start font-semibold">{{ __('رقم الطلب') }}</th>
                         <th class="py-3.5 px-4 text-start font-semibold">{{ __('العميل والهاتف') }}</th>
@@ -123,9 +124,9 @@
                         <th class="py-3.5 px-6 text-end font-semibold">{{ __('التاريخ') }}</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-[border-orange-100]">
+                <tbody class="divide-y divide-orange-100">
                     @forelse($orders as $order)
-                    <tr class="hover:bg-[bg-canvas-base]/50 transition-colors" id="order_row_{{ $order->id }}">
+                    <tr class="hover:bg-canvas-base/50 transition-colors" id="order_row_{{ $order->id }}">
                         <!-- Order Number & Code -->
                         <td class="py-4 px-6 font-bold text-[#1F2937]">
                             <a href="{{ route('orders.show', $order->id) }}" class="hover:text-primary-700 transition-colors block font-mono text-sm font-bold">
@@ -185,13 +186,13 @@
                                 {{ format_currency($order->total_price ?? 0) }}
                             </div>
                             <div class="mt-1 flex items-center gap-1.5 flex-wrap">
-                                @if($order->payment_method === 'instapay')
+                                @if(in_array($order->payment_method, ['instapay', 'vodafone_cash'], true))
                                     <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-rose-50 text-rose-700 border border-rose-200">
                                         <span>💳</span>
-                                        <span>إنستاباي</span>
+                                        <span>{{ $order->payment_method_label }}</span>
                                     </span>
                                     @if($order->payment_proof_image)
-                                        <button type="button" 
+                                        <button type="button"
                                             onclick="window.previewReceipt('{{ asset('storage/' . $order->payment_proof_image) }}', '{{ $order->public_order_id }}', '{{ $order->instapay_reference }}')"
                                             class="text-[10px] text-blue-700 bg-blue-50 hover:bg-blue-100 px-1.5 py-0.5 rounded border border-blue-200 font-bold transition-colors cursor-pointer"
                                             title="معاينة إشعار التحويل">
@@ -243,12 +244,12 @@
                         <!-- Change Status Select Dropdown (AJAX instant update) -->
                         <td class="py-4 px-4">
                             <div class="inline-flex items-center gap-2">
-                                <select name="status" 
+                                <select name="status"
                                     id="order_select_{{ $order->id }}"
                                     data-prev-status="{{ $order->status }}"
                                     data-update-url="{{ route('admin.orders.update-status', $order->id) }}"
                                     onchange="window.handleStatusChange(this, '{{ $order->id }}', '{{ $order->public_order_id ?? $order->order_number ?? '#' . $order->id }}', '{{ addslashes($order->customer_display_name) }}')"
-                                    class="text-[11px] py-1 ps-2 pe-6 rounded-lg bg-[bg-canvas-base] border border-[border-orange-100] text-[#1F2937] focus:outline-none focus:ring-1 focus:ring-[#DC2626] cursor-pointer font-medium transition-all">
+                                    class="text-[11px] py-1 ps-2 pe-6 rounded-lg bg-canvas-base border border-orange-100 text-[#1F2937] focus:outline-none focus:ring-1 focus:ring-primary-700 cursor-pointer font-medium transition-all">
                                     <option value="under_review" {{ $order->status === 'under_review' ? 'selected' : '' }}>⏳ قيد المراجعة</option>
                                     <option value="pending" {{ $order->status === 'pending' ? 'selected' : '' }}>📦 قيد الانتظار</option>
                                     <option value="confirmed" {{ $order->status === 'confirmed' ? 'selected' : '' }}>✓ تم التأكيد</option>
@@ -282,7 +283,7 @@
         </div>
 
         @if($orders->hasPages())
-        <div class="p-4 border-t border-[border-orange-100] bg-[bg-canvas-base]/30">
+        <div class="p-4 border-t border-orange-100 bg-canvas-base/30">
             {{ $orders->links() }}
         </div>
         @endif
@@ -308,13 +309,13 @@
     </div>
 
     <!-- Cancel Order Confirmation Modal -->
-    <div id="luxuryCancelOrderModal" 
+    <div id="luxuryCancelOrderModal"
          class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/60 backdrop-blur-xs transition-opacity duration-200 opacity-0 pointer-events-none"
          dir="rtl">
-        
-        <div id="luxuryCancelOrderCard" 
-             class="bg-white rounded-3xl border border-[border-orange-100] max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 transform transition-all duration-200 scale-95">
-            
+
+        <div id="luxuryCancelOrderCard"
+             class="bg-white rounded-3xl border border-orange-100 max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 transform transition-all duration-200 scale-95">
+
             <div class="flex items-center gap-3">
                 <div class="w-12 h-12 rounded-2xl bg-rose-50 border border-rose-200 text-rose-600 flex items-center justify-center text-2xl shrink-0 shadow-inner">
                     ⚠️
@@ -339,15 +340,15 @@
 
             <div class="space-y-1.5">
                 <label class="block text-xs font-bold text-gray-700">{{ __('سبب الإلغاء أو ملاحظة الإدارة (اختياري):') }}</label>
-                <input type="text" 
-                    id="cancelModalReasonInput" 
+                <input type="text"
+                    id="cancelModalReasonInput"
                     value="{{ __('تم الإلغاء واسترجاع المخزون') }}"
                     placeholder="{{ __('مثال: لم يرد العميل، طلب العميل الإلغاء...') }}"
-                    class="w-full px-4 py-2.5 text-xs rounded-xl bg-[bg-canvas-base] border border-[border-orange-100] text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white">
+                    class="w-full px-4 py-2.5 text-xs rounded-xl bg-canvas-base border border-orange-100 text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white">
             </div>
 
             <div class="flex items-center gap-3 pt-2">
-                <button type="button" 
+                <button type="button"
                     id="confirmCancelBtn"
                     onclick="window.confirmCancelOrder()"
                     class="flex-1 py-3 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-all shadow-md active:scale-98 cursor-pointer flex items-center justify-center gap-2">
@@ -355,7 +356,7 @@
                     <span>{{ __('تأكيد الإلغاء واسترجاع المخزون') }}</span>
                 </button>
 
-                <button type="button" 
+                <button type="button"
                     onclick="window.closeCancelModal()"
                     class="py-3 px-5 rounded-xl bg-gray-100 hover:bg-gray-200 text-[#1F2937] text-xs font-semibold transition-colors cursor-pointer">
                     {{ __('تراجع') }}
@@ -368,8 +369,8 @@
 </div>
 
 <!-- Floating Toast Notification Container -->
-<div id="ajaxToast" 
-     class="fixed top-6 left-1/2 -translate-x-1/2 z-[99999] transform transition-all duration-300 -translate-y-24 opacity-0 pointer-events-none flex items-center gap-3.5 px-6 py-4 rounded-2xl shadow-2xl border-2 text-sm font-bold bg-white text-gray-900 border-emerald-500 shadow-emerald-500/20 min-w-[320px] max-w-lg" 
+<div id="ajaxToast"
+     class="fixed top-6 left-1/2 -translate-x-1/2 z-[99999] transform transition-all duration-300 -translate-y-24 opacity-0 pointer-events-none flex items-center gap-3.5 px-6 py-4 rounded-2xl shadow-2xl border-2 text-sm font-bold bg-white text-gray-900 border-emerald-500 shadow-emerald-500/20 min-w-[320px] max-w-lg"
      dir="rtl">
     <div id="ajaxToastIconWrap" class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl shrink-0 shadow-inner">
         <span id="ajaxToastIcon">✅</span>

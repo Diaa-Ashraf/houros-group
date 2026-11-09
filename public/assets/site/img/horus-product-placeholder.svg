@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="خامات الديكور والتشطيب من حورس">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#eef7f3"/><stop offset="1" stop-color="#dcece5"/></linearGradient>
+    <linearGradient id="arch" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#238f82"/><stop offset="1" stop-color="#073f40"/></linearGradient>
+  </defs>
+  <rect width="640" height="480" fill="url(#bg)"/>
+  <path d="M76 480V212C76 77 184 12 320 12s244 65 244 200v268" fill="none" stroke="#c8a635" stroke-width="2" opacity=".6"/>
+  <path d="M126 480V218c0-107 82-159 194-159s194 52 194 159v262" fill="url(#arch)"/>
+  <path d="M173 480V225c0-79 59-119 147-119s147 40 147 119v255" fill="none" stroke="#82d9c7" stroke-width="2" opacity=".65"/>
+  <circle cx="320" cy="223" r="82" fill="#ffffff" opacity=".08"/>
+  <path d="M264 267v-50l56-47 56 47v50h-37v-44h-38v44z" fill="#f7f8f5" opacity=".94"/>
+  <path d="M292 285h56m-45 13h34" stroke="#c8a635" stroke-width="4" stroke-linecap="round"/>
+  <text x="320" y="357" text-anchor="middle" font-family="Cairo, sans-serif" font-weight="800" font-size="29" fill="#f7f8f5">حورس</text>
+  <text x="320" y="389" text-anchor="middle" font-family="Cairo, sans-serif" font-size="15" fill="#c8e9df">خامات التشطيب والديكور</text>
+</svg>

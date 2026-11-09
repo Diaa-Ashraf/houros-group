@@ -11,7 +11,7 @@
                     <span>✨</span>
                     <span>توفير حقيقي للعائلات</span>
                 </span>
-                <h2 class="text-xl sm:text-3xl font-black text-gray-900 tracking-tight">عروض التوحيد المجمعة (Bundles)</h2>
+                <h2 class="text-xl sm:text-3xl font-black text-gray-900 tracking-tight">باقات حورس المجمعة</h2>
                 <p class="text-xs sm:text-sm text-gray-500 font-medium mt-1">باقات توفيرية مجمعة مختارة بعناية لأفضل المنتجات بأسعار جملة مخفضة</p>
             </div>
             <a href="{{ route('site.products') }}" class="text-xs font-black text-red-600 hover:text-red-700 flex items-center gap-1 group self-start sm:self-auto">
