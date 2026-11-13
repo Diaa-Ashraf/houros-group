@@ -1,151 +1,134 @@
 {{-- resources/views/storefront/categories/show.blade.php --}}
 @extends('layouts.storefront')
 
-@section('title', $category->name . ' | مؤسسة حورس')
+@section('title', $category->name . ' | مؤسسة حورس شبيه أمازون')
 
 @section('content')
-<div class="py-8 bg-canvas-base min-h-screen">
- <div class="container mx-auto px-4 space-y-6">
- 
- <!-- Breadcrumb -->
- <nav class="flex items-center gap-2 text-xs text-charcoal-muted">
- <a href="{{ route('site.home') }}" class="hover:text-primary-800 transition-colors">الرئيسية</a>
- <span>/</span>
- <a href="{{ route('categories.index') }}" class="hover:text-primary-800 transition-colors">أقسام المتجر</a>
- <span>/</span>
- <span class="text-charcoal-heading font-bold">{{ $category->name }}</span>
- </nav>
+<div class="bg-[#EAEDED] py-3 sm:py-4 min-h-screen font-sans text-right" dir="rtl"
+     x-data="{
+         mobileFiltersOpen: false,
+         sort: '{{ request('sort', 'latest') }}'
+     }">
+    <div class="max-w-[1500px] mx-auto px-2 sm:px-4 space-y-3">
 
- <!-- Category Hero Banner -->
- <div class="bg-white rounded-3xl p-6 sm:p-8 border border-cream shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
- <div class="space-y-1 text-center sm:text-start">
- <span class="text-xs font-bold text-accent-700 uppercase tracking-wider block">قسم من منتجات مؤسسة حورس</span>
- <h1 class="text-2xl sm:text-3xl font-black text-charcoal-heading">{{ $category->name }}</h1>
- @if($category->description)
- <p class="text-xs sm:text-sm text-charcoal-muted max-w-xl leading-relaxed">{{ $category->description }}</p>
- @endif
- </div>
+        <!-- Amazon Breadcrumb & Department Banner -->
+        <div class="bg-white rounded-sm border border-gray-200/80 p-3 sm:p-4 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+                <nav class="flex items-center gap-1.5 text-xs text-gray-500 mb-1">
+                    <a href="{{ route('site.home') }}" class="hover:text-[#C8A635]">الرئيسية</a>
+                    <span>›</span>
+                    <a href="{{ route('categories.index') }}" class="hover:text-[#C8A635]">الأقسام</a>
+                    <span>›</span>
+                    <span class="text-gray-900 font-bold">{{ $category->name }}</span>
+                </nav>
+                <h1 class="text-xl sm:text-2xl font-black text-gray-900 leading-tight">
+                    {{ $category->name }}
+                </h1>
+                @if($category->description)
+                    <p class="text-xs text-gray-600 mt-0.5">{{ $category->description }}</p>
+                @endif
+            </div>
 
- <div class="flex items-center gap-3">
- <span class="px-4 py-2 rounded-xl bg-canvas-base border border-cream text-xs font-bold text-charcoal">
- {{ $products->total() }} منتج متاح
- </span>
- </div>
- </div>
+            <div class="text-xs text-gray-600 shrink-0">
+                <span>النتائج: <strong class="text-gray-900 font-black">{{ $products->total() }}</strong> صنف</span>
+            </div>
+        </div>
 
- <!-- 2 Column Layout (Sidebar Filters + Products Grid) -->
- <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
- 
- <!-- Filters Sidebar -->
- <aside class="space-y-6">
- <!-- Filters Card -->
- <div class="bg-white rounded-2xl p-5 border border-cream shadow-sm space-y-5">
- <div class="flex items-center justify-between border-b border-cream pb-3">
- <h3 class="font-bold text-sm text-charcoal-heading">تصفية المنتجات</h3>
- @if(request()->hasAny(['deals_only', 'in_stock', 'min_price', 'max_price', 'sort']))
- <a href="{{ route('category.product', $category->id) }}" class="text-xs text-rose-600 hover:underline">
- مسح الفلاتر
- </a>
- @endif
- </div>
+        <!-- Master 2 Column Layout (Sidebar Filters + Products Grid) -->
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-3 items-start">
 
- <form action="{{ route('category.product', $category->id) }}" method="GET" class="space-y-4 text-xs">
- <!-- Quick Checkboxes -->
- <div class="space-y-2">
- <label class="flex items-center gap-2 cursor-pointer">
- <input type="checkbox" name="deals_only" value="1" {{ request('deals_only') ? 'checked' : '' }}
- onchange="this.form.submit()"
- class="w-4 h-4 rounded text-primary-800 focus:ring-primary-500 border-cream">
- <span class="font-bold text-charcoal">عروض وخصومات فقط </span>
- </label>
+            <!-- Amazon Desktop Sidebar Filters -->
+            <aside class="hidden lg:block lg:col-span-1 bg-white border border-gray-200/80 rounded-sm p-4 text-xs space-y-5 sticky top-28">
+                
+                <!-- Quick Category Navigation -->
+                <div class="space-y-2">
+                    <h3 class="font-black text-sm text-gray-900">الأقسام الأخرى</h3>
+                    <div class="space-y-1 max-h-56 overflow-y-auto">
+                        <a href="{{ route('site.products') }}" class="block py-1 text-gray-700 hover:text-[#073F40]">
+                            ‹ جميع الأقسام والمنتجات
+                        </a>
+                        <a href="{{ route('categories.index') }}" class="block py-1 text-gray-700 hover:text-[#073F40]">
+                            ‹ دليل الأقسام المصور
+                        </a>
+                    </div>
+                </div>
 
- <label class="flex items-center gap-2 cursor-pointer">
- <input type="checkbox" name="in_stock" value="1" {{ request('in_stock') ? 'checked' : '' }}
- onchange="this.form.submit()"
- class="w-4 h-4 rounded text-primary-800 focus:ring-primary-500 border-cream">
- <span class="font-bold text-charcoal">متوفر بالمخزون فقط</span>
- </label>
- </div>
+                <!-- Price Range Filter -->
+                <div class="pt-3 border-t border-gray-200 space-y-2">
+                    <h3 class="font-black text-sm text-gray-900">السعر (جنيه مصري)</h3>
+                    <form action="{{ route('category.product', $category->id) }}" method="GET" class="space-y-2">
+                        @foreach(request()->except(['min_price', 'max_price', 'page']) as $k => $v)
+                            <input type="hidden" name="{{ $k }}" value="{{ $v }}">
+                        @endforeach
+                        <div class="flex items-center gap-1.5">
+                            <input type="number" name="min_price" value="{{ request('min_price') }}" placeholder="من" class="w-16 px-2 py-1 bg-white border border-gray-300 rounded text-xs outline-none">
+                            <span class="text-gray-400">-</span>
+                            <input type="number" name="max_price" value="{{ request('max_price') }}" placeholder="إلى" class="w-16 px-2 py-1 bg-white border border-gray-300 rounded text-xs outline-none">
+                            <button type="submit" class="px-2.5 py-1 bg-[#F0F2F2] hover:bg-[#E3E6E6] border border-[#D5D9D9] rounded text-xs font-bold text-gray-800 shadow-2xs">انتقل</button>
+                        </div>
+                    </form>
+                </div>
 
- <!-- Price Range Filter -->
- <div class="pt-3 border-t border-cream space-y-2">
- <span class="font-bold text-charcoal-heading block">نطاق السعر (ج.م)</span>
- <div class="grid grid-cols-2 gap-2">
- <div>
- <label class="text-[10px] text-charcoal-muted block mb-1">من</label>
- <input type="number" name="min_price" value="{{ request('min_price') }}" placeholder="0"
- class="w-full bg-canvas-base border border-cream rounded-lg px-2.5 py-1.5 text-xs text-charcoal outline-none">
- </div>
- <div>
- <label class="text-[10px] text-charcoal-muted block mb-1">إلى</label>
- <input type="number" name="max_price" value="{{ request('max_price') }}" placeholder="1000"
- class="w-full bg-canvas-base border border-cream rounded-lg px-2.5 py-1.5 text-xs text-charcoal outline-none">
- </div>
- </div>
- </div>
+                <!-- Special Offers & Availability -->
+                <div class="pt-3 border-t border-gray-200 space-y-2">
+                    <h3 class="font-black text-sm text-gray-900">خيارات التصفية</h3>
+                    <div class="space-y-1.5 text-gray-700">
+                        <a href="{{ route('category.product', array_merge(['id' => $category->id], request()->query(), ['deals_only' => request('deals_only') ? null : 1])) }}"
+                           class="flex items-center gap-2 hover:text-[#CC0C39]">
+                            <input type="checkbox" {{ request('deals_only') ? 'checked' : '' }} class="rounded text-[#CC0C39] pointer-events-none">
+                            <span>عروض وتخفيضات القسم فقط 🔥</span>
+                        </a>
+                        <a href="{{ route('category.product', array_merge(['id' => $category->id], request()->query(), ['in_stock' => request('in_stock') ? null : 1])) }}"
+                           class="flex items-center gap-2 hover:text-emerald-700">
+                            <input type="checkbox" {{ request('in_stock') ? 'checked' : '' }} class="rounded text-emerald-600 pointer-events-none">
+                            <span>المتوفر بالمخزون فقط ✔️</span>
+                        </a>
+                    </div>
+                </div>
 
- <!-- Sort Order -->
- <div class="pt-3 border-t border-cream space-y-2">
- <span class="font-bold text-charcoal-heading block">ترتيب حسب</span>
- <select name="sort" onchange="this.form.submit()" class="w-full bg-canvas-base border border-cream rounded-lg px-3 py-2 text-xs text-charcoal outline-none">
- <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>الأحدث أولاً</option>
- <option value="price_low" {{ request('sort') == 'price_low' ? 'selected' : '' }}>السعر: من الأقل للأعلى</option>
- <option value="price_high" {{ request('sort') == 'price_high' ? 'selected' : '' }}>السعر: من الأعلى للأقل</option>
- <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>أبجدياً (أ - ي)</option>
- </select>
- </div>
+                @if(request()->hasAny(['deals_only', 'in_stock', 'min_price', 'max_price']))
+                    <div class="pt-3 border-t border-gray-200">
+                        <a href="{{ route('category.product', $category->id) }}" class="block text-center py-1.5 text-xs font-bold text-red-600 hover:underline">
+                            مسح جميع الفلاتر
+                        </a>
+                    </div>
+                @endif
+            </aside>
 
- <button type="submit" class="w-full py-2 rounded-xl bg-primary-800 hover:bg-primary-900 text-white font-bold text-xs transition-colors shadow-xs">
- تطبيق الفلاتر
- </button>
- </form>
- </div>
+            <!-- Products Grid Main Area -->
+            <main class="lg:col-span-4 space-y-3">
+                
+                @if($products->isNotEmpty())
+                    <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-3">
+                        @foreach($products as $product)
+                            <x-storefront.ui.product-card :product="$product" />
+                        @endforeach
+                    </div>
 
- <!-- Other Categories Navigation -->
- <div class="bg-white rounded-2xl p-5 border border-cream shadow-sm space-y-3">
- <h3 class="font-bold text-sm text-charcoal-heading border-b border-cream pb-2">أقسام أخرى</h3>
- <div class="space-y-1 text-xs">
- @foreach($otherCategories as $otherCat)
- <a href="{{ route('category.product', $otherCat->id) }}" 
- class="flex items-center justify-between py-1.5 px-2 rounded-lg transition-colors {{ $otherCat->id == $category->id ? 'bg-primary-50 text-primary-800 font-bold' : 'text-charcoal hover:bg-canvas-subtle' }}">
- <span>{{ $otherCat->name }}</span>
- <span class="text-[10px] text-charcoal-muted font-normal">{{ $otherCat->products_count }}</span>
- </a>
- @endforeach
- </div>
- </div>
- </aside>
+                    @if($products->hasPages())
+                        <div class="pt-6 flex justify-center">
+                            {{ $products->links() }}
+                        </div>
+                    @endif
+                @else
+                    <div class="bg-white rounded-sm border border-gray-200 p-12 text-center space-y-3">
+                        <div class="text-4xl">📦</div>
+                        <h4 class="font-black text-base text-gray-900">لا توجد منتجات مسجلة في هذا القسم حالياً</h4>
+                        <p class="text-xs text-gray-500 max-w-md mx-auto">
+                            يمكنك تصفح باقي الأقسام أو التواصل معنا للاستفسار عن المنتجات والأسعار.
+                        </p>
+                        <div class="pt-2">
+                            <a href="{{ route('site.products') }}" class="inline-block px-5 py-2 bg-[#FFD814] hover:bg-[#F7CA00] text-gray-900 font-bold text-xs rounded shadow-xs">
+                                تصفح كل منتجات حورس
+                            </a>
+                        </div>
+                    </div>
+                @endif
 
- <!-- Main Products Grid -->
- <main class="lg:col-span-3 space-y-6">
- @if($products->isNotEmpty())
- <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
- @foreach($products as $product)
- <x-storefront.ui.product-card :product="$product" />
- @endforeach
- </div>
+            </main>
 
- @if($products->hasPages())
- <div class="pt-6">
- {{ $products->links() }}
- </div>
- @endif
- @else
- <div class="bg-white rounded-3xl p-12 border border-cream text-center space-y-3 shadow-sm">
- <span class="text-4xl block"></span>
- <h3 class="text-base font-bold text-charcoal-heading">قائمة منتجات هذا القسم قيد التجهيز</h3>
- <p class="text-xs text-charcoal-muted max-w-sm mx-auto">
- تواصل مع مؤسسة حورس لمعرفة الخامات المتاحة وأسعارها.
- </p>
- <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', settings('store_whatsapp', '201002527072')) }}?text={{ urlencode('مرحباً حورس، أريد الاستفسار عن: ' . $category->name) }}" target="_blank" rel="noopener noreferrer" class="inline-block px-5 py-2.5 rounded-xl bg-primary-800 text-white font-bold text-xs">
- اسأل عن منتجات {{ $category->name }}
- </a>
- </div>
- @endif
- </main>
+        </div>
 
- </div>
-
- </div>
+    </div>
 </div>
 @endsection

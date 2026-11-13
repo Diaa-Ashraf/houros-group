@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Deal;
 use App\Models\Bundle;
 use App\Models\Branch;
+use App\Models\HeroCard;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Cache;
 
@@ -97,8 +98,18 @@ class HomeController extends Controller
                 ->get();
         });
 
+        // 8. Dynamic Amazon-Style Hero Feature Cards
+        $heroCards = Cache::remember('horus_storefront_hero_cards_v1', $cacheTtl, function () {
+            return HeroCard::select(['id', 'title', 'subtitle', 'image', 'url', 'link_text', 'badge_text', 'order'])
+                ->active()
+                ->ordered()
+                ->take(10)
+                ->get();
+        });
+
         return view('storefront.home', compact(
             'banners',
+            'heroCards',
             'categories',
             'deals',
             'featuredProducts',

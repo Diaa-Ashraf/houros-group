@@ -102,7 +102,7 @@
                             </div>
                             @if($order->instapay_reference)
                                 <p class="text-[11px] font-mono text-[#1F2937] mt-1">
-                                    مرجع الدفع: <strong>{{ $order->instapay_reference }}</strong>
+                                    الرقم / الحساب المحوّل منه: <strong>{{ $order->instapay_reference }}</strong>
                                 </p>
                             @endif
                         @else

@@ -185,16 +185,14 @@
                 <p class="text-xs text-gray-500 mb-4">أدوات الإدارة والتحكم الأكثر استخداماً</p>
                 
                 <div class="space-y-2.5">
-                    <a href="{{ route('admin.bundles.create') }}" 
-                       class="flex items-start gap-3 p-3 rounded-2xl bg-orange-50/60 hover:bg-orange-100/80 border border-orange-200/70 transition-all group">
-                        <div class="w-9 h-9 rounded-xl bg-orange-500 text-white flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                            </svg>
+                    <a href="{{ route('admin.hero-cards.index') }}" 
+                       class="flex items-start gap-3 p-3 rounded-2xl bg-[#073F40]/10 hover:bg-[#073F40]/20 border border-[#073F40]/20 transition-all group">
+                        <div class="w-9 h-9 rounded-xl bg-[#073F40] text-[#E2BF52] flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                            <span>🃏</span>
                         </div>
                         <div>
-                            <strong class="text-xs font-bold text-gray-900 block group-hover:text-red-600 transition-colors">إنشاء عرض مجمع (Bundle)</strong>
-                            <span class="text-[11px] text-gray-500 font-medium">كوّن باقة من منتجات حورس بسعر مخفض.</span>
+                            <strong class="text-xs font-bold text-gray-900 block group-hover:text-[#073F40] transition-colors">كروت واجهة الهيرو (Amazon)</strong>
+                            <span class="text-[11px] text-gray-500 font-medium">تخصيص البطاقات العائمة بالصور والأقسام.</span>
                         </div>
                     </a>
 

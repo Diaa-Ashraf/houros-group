@@ -33,7 +33,14 @@
 		<a href="{{ route('admin.reports.index') }}" 
 		   class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all {{ request()->routeIs('admin.reports.*') ? 'bg-[#C5A059] text-white shadow-sm' : 'text-[#52525B] hover:text-[#18181B] hover:bg-[#F8F6F2]' }}">
 			<span class="text-base flex-shrink-0">📈</span>
-			<span class="whitespace-nowrap">{{ __('التقارير الشاملة والمبيعات') }}</span>
+			<span class="whitespace-nowrap">{{ __('التقارير والمبيعات') }}</span>
+		</a>
+
+		<!-- Analytics -->
+		<a href="{{ route('admin.analytics.index') }}" 
+		   class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all {{ request()->routeIs('admin.analytics.*') ? 'bg-[#C5A059] text-white shadow-sm' : 'text-[#52525B] hover:text-[#18181B] hover:bg-[#F8F6F2]' }}">
+			<span class="text-base flex-shrink-0">📊</span>
+			<span class="whitespace-nowrap">{{ __('تحليلات وسلوك الزوار') }}</span>
 		</a>
 
 		<!-- Branches -->
@@ -50,11 +57,25 @@
 			<span class="whitespace-nowrap">{{ __('إدارة الطلبات والتوصيل') }}</span>
 		</a>
 
+		<!-- Abandoned Carts -->
+		<a href="{{ route('admin.abandoned-carts.index') }}" 
+		   class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all {{ request()->routeIs('admin.abandoned-carts.*') ? 'bg-[#C5A059] text-white shadow-sm' : 'text-[#52525B] hover:text-[#18181B] hover:bg-[#F8F6F2]' }}">
+			<span class="text-base flex-shrink-0">🛒</span>
+			<span class="whitespace-nowrap">{{ __('السلات المتروكة') }}</span>
+		</a>
+
 		<!-- Products -->
 		<a href="{{ route('admin.products.index') }}" 
 		   class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all {{ request()->routeIs('admin.products.*') ? 'bg-[#C5A059] text-white shadow-sm' : 'text-[#52525B] hover:text-[#18181B] hover:bg-[#F8F6F2]' }}">
-			<span class="text-base flex-shrink-0">🧀</span>
-			<span class="whitespace-nowrap">{{ __('المنتجات والمخزون') }}</span>
+			<span class="text-base flex-shrink-0">🎨</span>
+			<span class="whitespace-nowrap">{{ __('المنتجات والخامات') }}</span>
+		</a>
+
+		<!-- Stocks -->
+		<a href="{{ route('admin.stocks.index') }}" 
+		   class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all {{ request()->routeIs('admin.stocks.*') ? 'bg-[#C5A059] text-white shadow-sm' : 'text-[#52525B] hover:text-[#18181B] hover:bg-[#F8F6F2]' }}">
+			<span class="text-base flex-shrink-0">🏬</span>
+			<span class="whitespace-nowrap">{{ __('مخزون وجرد الفروع') }}</span>
 		</a>
 
 		<!-- Categories -->
@@ -64,32 +85,32 @@
 			<span class="whitespace-nowrap">{{ __('التصنيفات والأقسام') }}</span>
 		</a>
 
-		<!-- Weekly Offers Magazines (Phase 7 Unified) -->
-		<a href="{{ route('admin.magazines.index') }}" 
-		   class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.magazines.*') ? 'bg-[#C5A059] text-white shadow-sm' : 'text-red-700 hover:text-red-900 hover:bg-red-50/50 bg-red-50/30 border border-red-100/60' }}">
-			<span class="text-base flex-shrink-0">📰</span>
-			<span class="whitespace-nowrap">{{ __('مجلات العروض الأسبوعية') }}</span>
-		</a>
-
-		<!-- Bundles -->
-		<a href="{{ route('admin.bundles.index') }}" 
-		   class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all {{ request()->routeIs('admin.bundles.*') ? 'bg-[#C5A059] text-white shadow-sm' : 'text-[#52525B] hover:text-[#18181B] hover:bg-[#F8F6F2]' }}">
-			<span class="text-base flex-shrink-0">📦</span>
-			<span class="whitespace-nowrap">{{ __('العروض المجمعة (Bundles)') }}</span>
+		<!-- Coupons -->
+		<a href="{{ route('admin.coupons.index') }}" 
+		   class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all {{ request()->routeIs('admin.coupons.*') ? 'bg-[#C5A059] text-white shadow-sm' : 'text-[#52525B] hover:text-[#18181B] hover:bg-[#F8F6F2]' }}">
+			<span class="text-base flex-shrink-0">🏷️</span>
+			<span class="whitespace-nowrap">{{ __('كوبونات الخصم') }}</span>
 		</a>
 
 		<!-- Deals -->
 		<a href="{{ route('admin.deals.index') }}" 
-		   class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all {{ request()->routeIs('admin.deals.*') ? 'bg-[#C5A059] text-white shadow-sm' : 'text-[#52525B] hover:text-[#18181B] hover:bg-[#F8F6F2]' }}">
+		   class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all {{ request()->routeIs('admin.deals.*') ? 'bg-[#073F40] text-white shadow-sm' : 'text-[#52525B] hover:text-[#18181B] hover:bg-[#F8F6F2]' }}">
 			<span class="text-base flex-shrink-0">⚡</span>
-			<span class="whitespace-nowrap">{{ __('التخفيضات والصفقات') }}</span>
+			<span class="whitespace-nowrap">{{ __('صفقات وتخفيضات اليوم') }}</span>
 		</a>
 
 		<!-- Banners -->
 		<a href="{{ route('admin.banners.index') }}" 
 		   class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all {{ request()->routeIs('admin.banners.*') ? 'bg-[#C5A059] text-white shadow-sm' : 'text-[#52525B] hover:text-[#18181B] hover:bg-[#F8F6F2]' }}">
 			<span class="text-base flex-shrink-0">🖼️</span>
-			<span class="whitespace-nowrap">{{ __('البانرات والإعلانات') }}</span>
+			<span class="whitespace-nowrap">{{ __('البانرات وسلايدر الهيرو') }}</span>
+		</a>
+
+		<!-- Hero Feature Cards -->
+		<a href="{{ route('admin.hero-cards.index') }}" 
+		   class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all {{ request()->routeIs('admin.hero-cards.*') ? 'bg-[#C5A059] text-white shadow-sm' : 'text-[#52525B] hover:text-[#18181B] hover:bg-[#F8F6F2]' }}">
+			<span class="text-base flex-shrink-0">🃏</span>
+			<span class="whitespace-nowrap">{{ __('كروت واجهة الهيرو') }}</span>
 		</a>
 
 		<!-- Job Applications -->

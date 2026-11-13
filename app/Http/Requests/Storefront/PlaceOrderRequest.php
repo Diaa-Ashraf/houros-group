@@ -13,7 +13,7 @@ class PlaceOrderRequest extends FormRequest
     }
 
     /**
-     * Sanitize phone number, convert Arabic numbers, strip spaces before validation
+     * Sanitize phone number, convert Arabic numbers, strip spaces and formatting before validation
      */
     protected function prepareForValidation(): void
     {
@@ -25,15 +25,12 @@ class PlaceOrderRequest extends FormRequest
             $englishNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
             $phone = str_replace($arabicNumbers, $englishNumbers, $phone);
             
-            // Remove non-digit characters
-            $phone = preg_replace('/[^0-9]/', '', $phone);
-            
-            // Normalize Egyptian country code: +2010... or 2010... -> 010...
-            if (str_starts_with($phone, '201') && strlen($phone) === 12) {
-                $phone = '0' . substr($phone, 2);
-            }
+            // Keep leading '+' if international, strip other symbols/spaces/brackets
+            $hasPlus = str_starts_with(trim($phone), '+');
+            $digitsOnly = preg_replace('/[^0-9]/', '', $phone);
+            $normalizedPhone = ($hasPlus ? '+' : '') . $digitsOnly;
 
-            $this->merge(['phone' => $phone]);
+            $this->merge(['phone' => $normalizedPhone]);
         }
 
         // Normalize payment_method if sent as 'cash' or 'cod'
@@ -52,7 +49,7 @@ class PlaceOrderRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:3|max:150',
-            'phone' => ['required', 'string', 'regex:/^(01)[0-2,5]{1}[0-9]{8}$/'],
+            'phone' => ['required', 'string', 'min:7', 'max:25', 'regex:/^\+?[0-9]{7,20}$/'],
             'email' => 'nullable|email|max:150',
             'delivery_type' => 'required|in:' . Order::DELIVERY_TYPE_DELIVERY . ',' . Order::DELIVERY_TYPE_PICKUP,
             'branch_id' => 'required|exists:branches,id',
@@ -65,6 +62,9 @@ class PlaceOrderRequest extends FormRequest
                     Order::PAYMENT_METHOD_INSTAPAY,
                     Order::PAYMENT_METHOD_VODAFONE_CASH,
                     Order::PAYMENT_METHOD_BRANCH,
+                    Order::PAYMENT_METHOD_WHATSAPP,
+                    'whatsapp',
+                    'whatsapp_checkout',
                     'cash',
                     'cod',
                 ]),
@@ -82,7 +82,9 @@ class PlaceOrderRequest extends FormRequest
             'name.min' => 'الاسم يجب ألا يقل عن 3 أحرف.',
             'name.max' => 'الاسم لا يجب أن يتجاوز 150 حرفاً.',
             'phone.required' => 'يرجى كتابة رقم الهاتف للتواصل والتوصيل.',
-            'phone.regex' => 'يرجى إدخال رقم هاتف مصري صحيح يبدأ بـ 01 (مثال: 01012345678).',
+            'phone.min' => 'رقم الهاتف قصير جداً، يرجى التأكد من كتابة الرقم كاملاً مع كود الدولة.',
+            'phone.max' => 'رقم الهاتف طويل جداً، يرجى التأكد من الرقم المدخل.',
+            'phone.regex' => 'يرجى إدخال رقم هاتف صحيح (أرقام فقط، مع إمكانية إضافة + في البداية للأرقام الدولية).',
             'delivery_type.required' => 'يرجى اختيار طريقة الاستلام (توصيل للمنزل أو استلام من الفرع).',
             'delivery_type.in' => 'طريقة الاستلام المحددة غير صالحة.',
             'branch_id.required' => 'يرجى اختيار فرع حورس.',
@@ -94,7 +96,7 @@ class PlaceOrderRequest extends FormRequest
             'payment_proof_image.image' => 'الملف المرفق يجب أن يكون صورة لإيصال التحويل.',
             'payment_proof_image.mimes' => 'صيغ الصور المقبولة للإيصال هي: jpeg, png, jpg, webp.',
             'payment_proof_image.max' => 'حجم صورة الإيصال لا يجب أن يتجاوز 5 ميجابايت.',
-            'instapay_reference.max' => 'رقم مرجع إنستاباي يجب ألا يتجاوز 100 حرف.',
+            'instapay_reference.max' => 'الرقم أو الحساب المحوّل منه يجب ألا يتجاوز 100 حرف.',
             'notes.max' => 'الملاحظات لا يجب أن تتجاوز 500 حرف.',
         ];
     }

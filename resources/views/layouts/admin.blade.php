@@ -182,37 +182,15 @@
                     <span x-show="!sidebarCollapsed" x-transition.opacity.duration.200ms class="truncate">موقع المؤسسة</span>
                 </a>
 
-                {{-- 6. Weekly Offers Magazine Editions (Phase 7) --}}
-                <a href="{{ route('admin.magazines.index') }}" 
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.magazines.*') ? 'bg-gradient-to-r from-primary-700 to-primary-900 text-white shadow-md shadow-primary-900/20' : 'text-primary-900 hover:bg-primary-50 font-black' }}"
-                   :class="sidebarCollapsed ? 'justify-center px-2' : ''"
-                   title="مجلات العروض الأسبوعية">
-                    <svg class="w-4 h-4 shrink-0 text-primary-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
-                    </svg>
-                    <span x-show="!sidebarCollapsed" x-transition.opacity.duration.200ms class="truncate">مجلات العروض الأسبوعية</span>
-                </a>
-
-                {{-- 7. Deals & Discounts (مجلة العروض) --}}
+                {{-- 6. Deals & Discounts --}}
                 <a href="{{ route('admin.deals.index') }}" 
                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.deals.*') ? 'bg-gradient-to-r from-primary-700 to-primary-900 text-white shadow-md shadow-primary-900/20' : 'text-gray-700 hover:bg-accent-50 hover:text-primary-900' }}"
                    :class="sidebarCollapsed ? 'justify-center px-2' : ''"
-                   title="تخفيضات ومجلة العروض">
+                   title="صفقات وتخفيضات اليوم">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
                     </svg>
-                    <span x-show="!sidebarCollapsed" x-transition.opacity.duration.200ms class="truncate">مجلة العروض والتخفيضات</span>
-                </a>
-
-                {{-- 7. Bundles --}}
-                <a href="{{ route('admin.bundles.index') }}" 
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.bundles.*') ? 'bg-gradient-to-r from-primary-700 to-primary-900 text-white shadow-md shadow-primary-900/20' : 'text-gray-700 hover:bg-accent-50 hover:text-primary-900' }}"
-                   :class="sidebarCollapsed ? 'justify-center px-2' : ''"
-                   title="عروض التوفير المجمعة (Bundles)">
-                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-                    </svg>
-                    <span x-show="!sidebarCollapsed" x-transition.opacity.duration.200ms class="truncate">عروض التوفير المجمعة (Bundles)</span>
+                    <span x-show="!sidebarCollapsed" x-transition.opacity.duration.200ms class="truncate">صفقات وتخفيضات اليوم</span>
                 </a>
 
                 {{-- 8. Coupons & Promo Codes --}}
@@ -245,7 +223,18 @@
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
-                    <span x-show="!sidebarCollapsed" x-transition.opacity.duration.200ms class="truncate">بانرات الواجهة الرئيسية</span>
+                    <span x-show="!sidebarCollapsed" x-transition.opacity.duration.200ms class="truncate">بانرات الواجهة وسلايدر الهيرو</span>
+                </a>
+
+                {{-- 10. Hero Feature Cards --}}
+                <a href="{{ route('admin.hero-cards.index') }}" 
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.hero-cards.*') ? 'bg-gradient-to-r from-primary-700 to-primary-900 text-white shadow-md shadow-primary-900/20' : 'text-gray-700 hover:bg-accent-50 hover:text-primary-900' }}"
+                   :class="sidebarCollapsed ? 'justify-center px-2' : ''"
+                   title="كروت واجهة الهيرو">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                    </svg>
+                    <span x-show="!sidebarCollapsed" x-transition.opacity.duration.200ms class="truncate">كروت وبطاقات واجهة الهيرو</span>
                 </a>
 
                 {{-- 12. Job Applications --}}

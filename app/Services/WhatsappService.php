@@ -115,49 +115,55 @@ class WhatsappService
     public function formatOrderMessage(Order $order, array $cartItems, array $customerData): string
     {
         $storeName = settings('site_name', 'مؤسسة حورس للتوريدات والتشطيبات');
-        $currency = $order->currency ?? get_active_currency();
+        $currency = $order->currency ?? 'EGP';
+        $isPickup = ($customerData['delivery_type'] ?? $order->delivery_type) === Order::DELIVERY_TYPE_PICKUP;
+        $branchName = $order->branch?->name ?? 'فرع مؤسسة حورس';
 
-        $msg = "👑 *طلب جديد من متجر {$storeName}*\n";
+        $msg = "🦅 *طلب جديد عبر واتساب | {$storeName}*\n";
         $msg .= "━━━━━━━━━━━━━━━━━━━━\n";
         $msg .= "🔖 *رقم الطلب:* `{$order->order_number}`\n";
-        $msg .= "👤 *اسم العميل:* {$customerData['name']}\n";
-        $msg .= "📞 *رقم الهاتف:* {$customerData['phone']}\n";
-        $msg .= "📍 *العنوان:* {$customerData['address']}\n";
+        $msg .= "👤 *اسم العميل:* " . ($customerData['name'] ?? $order->customer_name) . "\n";
+        $msg .= "📞 *رقم الهاتف:* " . ($customerData['phone'] ?? $order->phone) . "\n";
 
-        if (!empty($customerData['notes'])) {
-            $msg .= "📝 *ملاحظات إضافية:* {$customerData['notes']}\n";
+        if ($isPickup) {
+            $msg .= "🏪 *طريقة الاستلام:* استلام من الفرع ({$branchName})\n";
+        } else {
+            $address = $customerData['address'] ?? $order->address;
+            $msg .= "🚚 *طريقة الاستلام:* توصيل للمنزل\n";
+            $msg .= "📍 *عنوان التوصيل:* {$address}\n";
+        }
+
+        if (!empty($customerData['notes'] ?? $order->notes)) {
+            $notes = $customerData['notes'] ?? $order->notes;
+            $msg .= "📝 *ملاحظات الطلب:* {$notes}\n";
         }
 
         $msg .= "━━━━━━━━━━━━━━━━━━━━\n";
-        $msg .= "📦 *تفاصيل المنتجات المطلوبة:*\n\n";
+        $msg .= "📦 *تفاصيل المنتجات المحجوزة:*\n\n";
 
         $itemCounter = 1;
         foreach (array_values($cartItems) as $item) {
             $name = $item['name'] ?? 'منتج';
             $qty = (int)($item['quantity'] ?? 1);
+            $portion = !empty($item['portion_label']) ? " ({$item['portion_label']})" : '';
             $unitPrice = (float)($item['price'] ?? 0);
             $totalPrice = (float)($item['total'] ?? ($unitPrice * $qty));
-            $priceFormatted = format_currency($unitPrice, $currency);
-            $totalFormatted = format_currency($totalPrice, $currency);
+            $priceFormatted = number_format($unitPrice, 2) . ' ج.م';
+            $totalFormatted = number_format($totalPrice, 2) . ' ج.م';
 
-            $msg .= "{$itemCounter}. *{$name}*\n";
-            $msg .= "   • الكمية: {$qty}\n";
-            $msg .= "   • السعر الإفرادي: {$priceFormatted}\n";
-            $msg .= "   • الإجمالي: {$totalFormatted}\n";
-
-            if (!empty($item['image'])) {
-                $msg .= "   • 🖼️ صورة المنتج: {$item['image']}\n";
-            }
-            $msg .= "\n";
+            $msg .= "{$itemCounter}. *{$name}*{$portion}\n";
+            $msg .= "   • الكمية: {$qty} × {$priceFormatted}\n";
+            $msg .= "   • الإجمالي: {$totalFormatted}\n\n";
             $itemCounter++;
         }
 
         $msg .= "━━━━━━━━━━━━━━━━━━━━\n";
         $orderTotal = (float) $order->total_price;
-        $msg .= "💵 *المجموع النهائي:* " . format_currency($orderTotal, 'USD') . "\n";
-        $msg .= "🚚 *طريقة الدفع:* الدفع عند الاستلام / تأكيد عبر واتساب\n";
+        $msg .= "💵 *الإجمالي النهائي:* " . number_format($orderTotal, 2) . " ج.م\n";
+        $msg .= "🔒 *حالة الحجز:* تم خصم وحجز المنتجات من المخزون بنجاح\n";
+        $msg .= "🔗 *رابط تتبع الطلب:*\n" . route('orders.track', $order->public_order_id) . "\n";
         $msg .= "━━━━━━━━━━━━━━━━━━━━\n";
-        $msg .= "شكراً لاختياركم {$storeName}! ✨";
+        $msg .= "أرجو تأكيد تجهيز الطلب وموعد الاستلام/التوصيل. شكراً لكم!";
 
         return $msg;
     }

@@ -26,6 +26,14 @@ class Category extends Model
             return null;
         }
 
+        if (str_starts_with($this->image, 'http://') || str_starts_with($this->image, 'https://')) {
+            return $this->image;
+        }
+
+        if (file_exists(public_path($this->image))) {
+            return asset($this->image);
+        }
+
         if (Storage::disk('public')->exists($this->image)) {
             return Storage::disk('public')->url($this->image);
         }
@@ -34,7 +42,7 @@ class Category extends Model
             return Storage::disk('public')->url("categories/{$this->image}");
         }
 
-        return null;
+        return asset($this->image);
     }
 
     public function products(): HasMany

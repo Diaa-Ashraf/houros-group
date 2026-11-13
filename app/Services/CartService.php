@@ -411,9 +411,9 @@ class CartService
 
         if ($couponData) {
             $couponCode = $couponData['code'] ?? null;
-            // Validate coupon dynamically against subtotal
+            // Validate coupon dynamically against subtotal and cart items
             $couponService = app(CouponService::class);
-            $validation = $couponService->validateCoupon($couponCode, $subtotal, auth()->id());
+            $validation = $couponService->validateCoupon($couponCode, $subtotal, auth()->id(), null, $this->getItems());
             if ($validation['valid']) {
                 $discountAmount = (float)$validation['discount'];
             } else {

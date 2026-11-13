@@ -5,11 +5,11 @@
 @section('content')
 <div class="space-y-6 sm:space-y-8">
     {{-- Header --}}
-    <div class="bg-white border border-orange-100 rounded-3xl p-6 sm:p-8 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div class="bg-white border border-[#EADBCC] rounded-3xl p-6 sm:p-8 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <div class="flex items-center gap-2 mb-2">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-xs">
-                    <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-[#073F40] text-[#E2BF52] shadow-xs">
+                    <span class="w-2 h-2 rounded-full bg-[#E2BF52] animate-pulse"></span>
                     <span>مؤسسة حورس للتوريدات والتشطيبات</span>
                 </span>
             </div>
@@ -23,24 +23,24 @@
 
         <div class="flex flex-wrap items-center gap-2.5 shrink-0">
             <a href="{{ route('admin.orders.index') }}" 
-               class="px-4 py-2.5 rounded-2xl border border-orange-200 bg-orange-50/70 hover:bg-orange-100 text-red-700 text-xs font-bold transition-all shadow-xs flex items-center gap-2 cursor-pointer">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               class="px-4 py-2.5 rounded-2xl border border-gray-200 bg-gray-50 hover:bg-gray-100 text-gray-800 text-xs font-bold transition-all shadow-xs flex items-center gap-2 cursor-pointer">
+                <svg class="w-4 h-4 text-[#073F40]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
                 </svg>
                 <span>الطلبات ({{ $metrics['pending_orders'] ?? 0 }} معلقة)</span>
             </a>
-            <a href="{{ route('admin.categories.create') }}" 
-               class="px-4 py-2.5 rounded-2xl border border-orange-200 bg-white hover:bg-orange-50 text-gray-800 text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer">
-                <span>🏷️</span>
-                <span>+ قسم جديد</span>
+            <a href="{{ route('admin.hero-cards.index') }}" 
+               class="px-4 py-2.5 rounded-2xl border border-[#C8A635]/40 bg-[#C8A635]/10 hover:bg-[#C8A635]/20 text-[#073F40] text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer">
+                <span>🃏</span>
+                <span>كروت الهيرو (Amazon)</span>
             </a>
             <a href="{{ route('admin.deals.create') }}" 
-               class="px-4 py-2.5 rounded-2xl border border-red-200 bg-red-50/70 hover:bg-red-100 text-red-700 text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer">
-                <span>🔥</span>
-                <span>+ عرض وتخفيض</span>
+               class="px-4 py-2.5 rounded-2xl border border-amber-200 bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer">
+                <span>⚡</span>
+                <span>+ صفقة وعرض</span>
             </a>
             <a href="{{ route('admin.products.create') }}" 
-               class="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600 text-white text-xs font-black shadow-md shadow-red-500/20 transition-all flex items-center gap-1.5 cursor-pointer">
+               class="px-5 py-2.5 rounded-2xl bg-[#073F40] hover:bg-[#0B5759] text-white text-xs font-black shadow-md transition-all flex items-center gap-1.5 cursor-pointer">
                 <span>+</span>
                 <span>إضافة صنف / منتج جديد</span>
             </a>
@@ -66,17 +66,17 @@
         </div>
 
         {{-- Total Revenue --}}
-        <div class="bg-white border border-orange-100 rounded-3xl p-5 shadow-xs flex items-center justify-between hover:shadow-md transition-all">
+        <div class="bg-white border border-[#EADBCC] rounded-3xl p-5 shadow-xs flex items-center justify-between hover:shadow-md transition-all">
             <div class="space-y-1">
                 <span class="text-xs font-bold text-gray-500">إجمالي المبيعات</span>
-                <h3 class="text-2xl font-black text-red-600 tabular-nums">
+                <h3 class="text-2xl font-black text-[#073F40] tabular-nums">
                     {{ format_currency($metrics['total_revenue'] ?? 0) }}
                 </h3>
                 <span class="inline-block text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-lg border border-emerald-200">
                     مبيعات معتمدة
                 </span>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-red-50 text-red-600 border border-red-200 flex items-center justify-center shrink-0 shadow-xs">
+            <div class="w-12 h-12 rounded-2xl bg-[#073F40]/10 text-[#073F40] border border-[#073F40]/20 flex items-center justify-center shrink-0 shadow-xs">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
@@ -234,23 +234,32 @@
             @endif
         </div>
 
-        {{-- Quick Management Tools (offers, locations and reports) --}}
-        <div class="lg:col-span-4 bg-white border border-orange-100 rounded-3xl p-6 shadow-xs flex flex-col justify-between">
+        {{-- Quick Management Tools --}}
+        <div class="lg:col-span-4 bg-white border border-[#EADBCC] rounded-3xl p-6 shadow-xs flex flex-col justify-between">
             <div>
                 <h2 class="text-base font-black text-gray-900 mb-1">إجراءات وروابط سريعة</h2>
                 <p class="text-xs text-gray-500 mb-4">أدوات إدارة متجر مؤسسة حورس</p>
                 
                 <div class="space-y-2.5">
                     <a href="{{ route('admin.deals.index') }}" 
-                       class="flex items-start gap-3 p-3 rounded-2xl bg-red-50/60 hover:bg-red-100/80 border border-red-200/70 transition-all group">
-                        <div class="w-9 h-9 rounded-xl bg-red-600 text-white flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
-                            </svg>
+                       class="flex items-start gap-3 p-3 rounded-2xl bg-amber-50/60 hover:bg-amber-100/80 border border-amber-200/70 transition-all group">
+                        <div class="w-9 h-9 rounded-xl bg-[#C8A635] text-white flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                            <span class="text-base">⚡</span>
                         </div>
                         <div>
-                            <strong class="text-xs font-bold text-gray-900 block group-hover:text-red-600 transition-colors">مجلة عروض اليوم والتخفيضات</strong>
-                            <span class="text-[11px] text-gray-500 font-medium">إدارة تخفيضات اليوم ونسب الخصم</span>
+                            <strong class="text-xs font-bold text-gray-900 block group-hover:text-[#073F40] transition-colors">صفقات وتخفيضات اليوم</strong>
+                            <span class="text-[11px] text-gray-500 font-medium">إدارة عروض وتخفيضات المنتجات ونسب الخصم</span>
+                        </div>
+                    </a>
+
+                    <a href="{{ route('admin.hero-cards.index') }}" 
+                       class="flex items-start gap-3 p-3 rounded-2xl bg-[#073F40]/5 hover:bg-[#073F40]/10 border border-[#073F40]/15 transition-all group">
+                        <div class="w-9 h-9 rounded-xl bg-[#073F40] text-[#E2BF52] flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                            <span class="text-base">🃏</span>
+                        </div>
+                        <div>
+                            <strong class="text-xs font-bold text-gray-900 block group-hover:text-[#073F40] transition-colors">كروت واجهة الهيرو (Amazon)</strong>
+                            <span class="text-[11px] text-gray-500 font-medium">تخصيص البطاقات العائمة الخمس بالصور والروابط</span>
                         </div>
                     </a>
 
@@ -262,8 +271,8 @@
                             </svg>
                         </div>
                         <div>
-                            <strong class="text-xs font-bold text-gray-900 block group-hover:text-red-600 transition-colors">موقع المؤسسة</strong>
-                            <span class="text-[11px] text-gray-500 font-medium">تحديث بيانات الموقع ومواعيد العمل</span>
+                            <strong class="text-xs font-bold text-gray-900 block group-hover:text-[#073F40] transition-colors">موقع المؤسسة والتواصل</strong>
+                            <span class="text-[11px] text-gray-500 font-medium">تحديث بيانات المقر، الهواتف ومواعيد العمل</span>
                         </div>
                     </a>
 
@@ -277,19 +286,6 @@
                         <div>
                             <strong class="text-xs font-bold text-gray-900 block group-hover:text-emerald-700 transition-colors">التقارير الشاملة والمبيعات</strong>
                             <span class="text-[11px] text-gray-500 font-medium">تحليلات الأداء والفترات وتفاصيل الإيرادات</span>
-                        </div>
-                    </a>
-
-                    <a href="{{ route('admin.bundles.create') }}" 
-                       class="flex items-start gap-3 p-3 rounded-2xl bg-amber-50/60 hover:bg-amber-100/80 border border-amber-200/70 transition-all group">
-                        <div class="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <strong class="text-xs font-bold text-gray-900 block group-hover:text-red-600 transition-colors">إنشاء عرض مجمع (Bundle)</strong>
-                            <span class="text-[11px] text-gray-500 font-medium">دمج عدة أصناف بلدية بسعر عائلي مخفض</span>
                         </div>
                     </a>
                 </div>

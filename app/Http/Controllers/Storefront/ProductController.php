@@ -122,6 +122,8 @@ class ProductController extends Controller
         ->take(4)
         ->get();
 
-        return view('storefront.products.show', compact('product', 'relatedProducts'));
+        $availableCoupons = app(\App\Services\CouponService::class)->getActiveCouponsForProduct($product->id, $product->category_id);
+
+        return view('storefront.products.show', compact('product', 'relatedProducts', 'availableCoupons'));
     }
 }

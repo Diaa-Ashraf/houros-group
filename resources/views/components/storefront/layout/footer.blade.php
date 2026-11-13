@@ -90,7 +90,7 @@
                 <ul class="space-y-2 text-xs text-white/70">
                     <li><a href="{{ route('site.home') }}" class="hover:text-accent-400 transition-colors">الرئيسية</a></li>
                     <li><a href="{{ route('site.products') }}" class="hover:text-accent-400 transition-colors">تصفح كل المنتجات</a></li>
-                    <li><a href="{{ route('offers.index') }}" class="hover:text-accent-400 transition-colors">مجلة عروض التوفير</a></li>
+                    <li><a href="{{ route('categories.index') }}" class="hover:text-accent-400 transition-colors">أقسام وخامات التشطيب</a></li>
                     <li><a href="{{ route('branches.index') }}" class="hover:text-accent-400 transition-colors">موقعنا في حدائق الأهرام</a></li>
                     <li><a href="{{ route('pages.about') }}" class="hover:text-accent-400 transition-colors">عن مؤسسة حورس</a></li>
                     <li><a href="{{ route('careers.index') }}" class="hover:text-accent-400 transition-colors">فرص العمل والتوظيف</a></li>

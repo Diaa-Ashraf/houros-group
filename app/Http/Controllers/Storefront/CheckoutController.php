@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Services\CartService;
 use App\Services\OrderService;
 use App\Services\AbandonedCartService;
+use App\Services\WhatsappService;
 use App\Http\Requests\Storefront\PlaceOrderRequest;
+use App\Http\Requests\Storefront\PlaceWhatsAppOrderRequest;
 use App\Models\Branch;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -21,7 +23,8 @@ class CheckoutController extends Controller
     public function __construct(
         protected CartService $cartService,
         protected OrderService $orderService,
-        protected AbandonedCartService $abandonedCartService
+        protected AbandonedCartService $abandonedCartService,
+        protected WhatsappService $whatsappService
     ) {}
 
     /**
@@ -54,7 +57,9 @@ class CheckoutController extends Controller
             'vodafone_cash_instructions' => settings('vodafone_cash_instructions'),
         ];
 
-        return view('storefront.checkout', compact('items', 'totals', 'branches', 'user', 'deliveryType', 'paymentMethods', 'paymentDetails'));
+        $availableCoupons = app(\App\Services\CouponService::class)->getAvailableCoupons($totals['subtotal']);
+
+        return view('storefront.checkout', compact('items', 'totals', 'branches', 'user', 'deliveryType', 'paymentMethods', 'paymentDetails', 'availableCoupons'));
     }
 
     /**
@@ -79,6 +84,7 @@ class CheckoutController extends Controller
             'cash', 'cod', Order::PAYMENT_METHOD_CASH, Order::PAYMENT_METHOD_BRANCH => settings('enable_cod', '1') == '1',
             Order::PAYMENT_METHOD_INSTAPAY => settings('enable_instapay', '1') == '1',
             Order::PAYMENT_METHOD_VODAFONE_CASH => settings('enable_vodafone_cash', '1') == '1',
+            Order::PAYMENT_METHOD_WHATSAPP, 'whatsapp', 'whatsapp_checkout' => true,
             default => false,
         };
         if (!$paymentEnabled) {
@@ -122,6 +128,22 @@ class CheckoutController extends Controller
                 $this->cartService->removeCoupon();
             }
 
+            $isWhatsAppOrder = in_array($customerData['payment_method'] ?? '', [
+                Order::PAYMENT_METHOD_WHATSAPP,
+                'whatsapp',
+                'whatsapp_checkout'
+            ], true);
+
+            $whatsappUrl = null;
+            if ($isWhatsAppOrder) {
+                $whatsappUrl = $this->whatsappService->buildOrderWhatsappUrl(
+                    $order,
+                    $this->cartService->getDetailedItems(),
+                    $customerData,
+                    $user
+                );
+            }
+
             // 5. Clear shopping cart
             $this->cartService->clear();
 
@@ -131,12 +153,17 @@ class CheckoutController extends Controller
                     'message' => __('تم تسجيل طلبك بنجاح!'),
                     'order_id' => $order->id,
                     'public_order_id' => $order->public_order_id,
+                    'whatsapp_url' => $whatsappUrl,
                     'redirect_url' => route('checkout.confirmation', $order->public_order_id),
                 ]);
             }
 
-            return redirect()->route('checkout.confirmation', $order->public_order_id)
-                ->with('order_success', true);
+            $redirect = redirect()->route('checkout.confirmation', $order->public_order_id)->with('order_success', true);
+            if ($whatsappUrl) {
+                $redirect->with('whatsapp_url', $whatsappUrl);
+            }
+
+            return $redirect;
 
         } catch (Throwable $e) {
             // Delete uploaded receipt file on failure
@@ -152,6 +179,81 @@ class CheckoutController extends Controller
             }
 
             return back()->withInput()->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Handle express checkout and stock reservation directly for WhatsApp.
+     */
+    public function placeWhatsAppOrder(PlaceWhatsAppOrderRequest $request): JsonResponse
+    {
+        $items = $this->cartService->getItems();
+
+        if (empty($items)) {
+            return response()->json([
+                'success' => false,
+                'message' => __('سلة الشراء فارغة، يرجى إضافة منتجات أولاً للمتابعة.')
+            ], 422);
+        }
+
+        $customerData = $request->validated();
+        $customerData['payment_method'] = Order::PAYMENT_METHOD_WHATSAPP;
+        $deliveryType = $customerData['delivery_type'] ?? 'delivery';
+        $totals = $this->cartService->getTotals($deliveryType);
+        $user = auth()->user();
+
+        try {
+            // 1. Create order & deduct stock atomically with lockForUpdate in OrderService
+            $order = $this->orderService->createOrder($customerData, $items, $totals, $user);
+
+            // 2. Dispatch real-time Admin Notification
+            try {
+                \App\Models\AdminNotification::createForOrder($order);
+            } catch (\Throwable $e) {
+                // Ignore notification error
+            }
+
+            // 3. Mark abandoned cart recovered
+            $this->abandonedCartService->markRecoveredForUserOrSession($user);
+
+            // 4. Record coupon usage if applied
+            if (!empty($totals['coupon_code'])) {
+                app(\App\Services\CouponService::class)->recordUsage(
+                    $totals['coupon_code'],
+                    $user?->id,
+                    $order->id,
+                    $order->phone,
+                    (float)($totals['discount_amount'] ?? 0)
+                );
+                $this->cartService->removeCoupon();
+            }
+
+            // 5. Build WhatsApp URL
+            $detailedItems = $this->cartService->getDetailedItems();
+            $whatsappUrl = $this->whatsappService->buildOrderWhatsappUrl(
+                $order,
+                $detailedItems,
+                $customerData,
+                $user
+            );
+
+            // 6. Clear shopping cart
+            $this->cartService->clear();
+
+            return response()->json([
+                'success' => true,
+                'message' => __('تم تسجيل طلبك بنجاح وحجز المنتجات من المخزون! جاري تحويلك إلى واتساب...'),
+                'order_id' => $order->id,
+                'public_order_id' => $order->public_order_id,
+                'whatsapp_url' => $whatsappUrl,
+                'redirect_url' => route('checkout.confirmation', $order->public_order_id),
+            ]);
+
+        } catch (Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 422);
         }
     }
 

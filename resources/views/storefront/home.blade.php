@@ -1,101 +1,642 @@
 {{-- Horus Group storefront landing page --}}
 @extends('layouts.storefront')
 
-@section('title', 'مؤسسة حورس للتوريدات والتشطيبات')
-@section('meta_description', 'كل احتياجات التشطيب والديكور في مكان واحد. دهانات SCIB، جبسون بورد، كرانيش فيوتك، أدوات ومستلزمات التشطيب. حدائق الأهرام، بوابة حورس.')
+@section('title', 'مؤسسة حورس للتوريدات والتشطيبات | المركز الرئيسي حدائق الأهرام')
+@section('meta_description', 'كل احتياجات التشطيب والديكور في مكان واحد. وكيل معتمد لدهانات SCIB، جبسون بورد، كرانيش فيوتك، بديل الخشب، أدوات ومستلزمات التشطيب. حدائق الأهرام، بوابة حورس.')
 
 @section('content')
 @php
     $horusPhone = settings('store_phone', '01002527072');
     $horusWhatsApp = preg_replace('/[^0-9]/', '', settings('store_whatsapp', '201002527072'));
 @endphp
-<div class="horus-home" dir="rtl">
-    <section class="horus-hero">
-        <div class="horus-hero-pattern"></div>
-        <div class="container mx-auto px-4 horus-hero-inner">
-            <div class="horus-hero-copy">
-                <span class="horus-eyebrow"><i></i> مؤسسة حورس للتوريدات والتشطيبات</span>
-                <h1>كل تفاصيل التشطيب<br><em>تبدأ من اختيارك.</em></h1>
-                <p>خامات موثوقة، اختيارات متنوعة، وحلول عملية من أول التأسيس لحد اللمسة الأخيرة. كل اللي تحتاجه لمشروعك في مكان واحد.</p>
-                <div class="horus-hero-actions">
-                    <a href="{{ route('site.products') }}" class="horus-btn horus-btn-light">تصفح المنتجات <span>←</span></a>
-                    <a href="https://wa.me/{{ $horusWhatsApp }}" class="horus-btn horus-btn-outline" dir="rtl">تواصل معنا</a>
-                </div>
-                <div class="horus-trust"><span>خبرة أكثر من 10 سنوات</span><b>•</b><span>وكيل معتمد لدهانات SCIB</span></div>
-            </div>
-            <div class="horus-hero-art" aria-label="خامات الدهانات والتشطيب">
-                <div class="horus-arch"><div class="horus-arch-inner"><img class="horus-art-mark" src="{{ asset('assets/site/img/horus-mark.png') }}" alt="شعار حورس"><span class="horus-art-caption">من أول خطوة<br>لآخر لمسة</span></div></div>
-                <div class="horus-float horus-float-one"><strong>SCIB</strong><span>دهانات معتمدة</span></div>
-                <div class="horus-float horus-float-two"><span class="horus-dot"></span><span>خامات تشطيب<br>بجودة تثق فيها</span></div>
-            </div>
-            <div class="horus-hero-index">01 <span></span> 03</div>
-        </div>
-    </section>
 
-    <section class="horus-proof container mx-auto px-4" aria-label="مميزات حورس">
-        <div><span class="horus-proof-icon">✦</span><span><b>اختيارات متكاملة</b><small>من مواد البناء للديكور</small></span></div>
-        <div><span class="horus-proof-icon">✓</span><span><b>جودة موثوقة</b><small>منتجات مختارة بعناية</small></span></div>
-        <div><span class="horus-proof-icon">↗</span><span><b>خبرة أكثر من 10 سنوات</b><small>نفهم احتياجات شغلك</small></span></div>
-        <div><span class="horus-proof-icon">⌖</span><span><b>حدائق الأهرام</b><small>بوابة حورس، ٢٢ع</small></span></div>
-    </section>
+<div class="bg-[#EAEDED] font-sans text-right" dir="rtl">
 
-    <div class="horus-payments container mx-auto px-4"><span>طرق الدفع</span>@if(settings('enable_vodafone_cash', '1'))<b>فودافون كاش</b>@endif @if(settings('enable_vodafone_cash', '1') && settings('enable_instapay', '1'))<i></i>@endif @if(settings('enable_instapay', '1'))<b>إنستاباي</b>@endif @if((settings('enable_cod', '1')) && (settings('enable_vodafone_cash', '1') || settings('enable_instapay', '1')))<i></i>@endif @if(settings('enable_cod', '1'))<b>الدفع عند الاستلام</b>@endif</div>
-
-    <section class="horus-section container mx-auto px-4">
-        <div class="horus-section-head"><div><span class="horus-kicker">حلول لكل مرحلة</span><h2>كل احتياجات التشطيب، <em>في مكان واحد</em></h2></div><a href="{{ route('site.products') }}" class="horus-text-link">اكتشف المنتجات <span>←</span></a></div>
-        <div class="horus-services">
-            <a href="{{ route('site.products') }}" class="horus-service-card service-paint"><span class="horus-service-no">01</span><div><small>اختيار اللون يبدأ هنا</small><h3>دهانات<br>وألوان عصرية</h3><span class="horus-service-link">اكتشف الدهانات ↙</span></div><span class="horus-service-shape"></span></a>
-            <a href="{{ route('site.products') }}" class="horus-service-card service-ceiling"><span class="horus-service-no">02</span><div><small>تفاصيل تصنع الفرق</small><h3>جبسون بورد<br>وكرانيش فيوتك</h3><span class="horus-service-link">اكتشف الخامات ↙</span></div><span class="horus-service-shape"></span></a>
-            <a href="{{ route('site.products') }}" class="horus-service-card service-tools"><span class="horus-service-no">03</span><div><small>معدات يعتمد عليها</small><h3>أدوات ومستلزمات<br>التشطيب</h3><span class="horus-service-link">تصفح الأدوات ↙</span></div><span class="horus-service-shape"></span></a>
-        </div>
-    </section>
-
-    <section class="horus-scip">
-        <div class="container mx-auto px-4 horus-scip-inner"><div><span class="horus-kicker">وكيل معتمد</span><h2>اختار ألوانك بثقة.<br><em>دهانات SCIB عند حورس</em></h2><p>متاح كل منتجات سكيب للدهانات، مع اختيارات تناسب احتياجاتك الداخلية والخارجية.</p><a href="https://wa.me/{{ $horusWhatsApp }}?text={{ urlencode('مرحباً، أريد الاستفسار عن دهانات SCIB') }}" class="horus-btn horus-btn-green">اسأل عن المنتجات <span>←</span></a></div><div class="horus-scip-stamp"><b>SCIB</b><span>PAINTS</span><i></i></div><span class="horus-scip-watermark">حورس</span></div>
-    </section>
-
-    @php
-        $horusPosts = [
-            ['image' => 'tools-finishing.jpg', 'title' => 'أدوات البناء والتشطيب', 'slug' => 'painting-and-finishing-tools'],
-            ['image' => 'paint-store.jpg', 'title' => 'دهانات SCIB وخامات التشطيب', 'slug' => 'scib-interior-exterior-paints'],
-            ['image' => 'finishing-materials.jpg', 'title' => 'مستلزمات النقاشة والمعجون', 'slug' => 'interior-exterior-putty'],
-            ['image' => 'scib-paints.jpg', 'title' => 'دهانات وألوان SCIB', 'slug' => 'computer-color-mixing'],
-            ['image' => 'horus-scib.jpg', 'title' => 'كل احتياجات التشطيب', 'slug' => 'gypsum-board-systems'],
-        ];
-    @endphp
-    <section class="horus-gallery-section container mx-auto px-4">
-        <div class="horus-section-head"><div><span class="horus-kicker">منتجات وخامات حورس</span><h2>شوف <em>تشكيلتنا</em></h2><p class="mt-2 text-[10px] text-gray-500">صور تعريفية من منشورات حورس؛ اسألنا عن الشكل والمقاس المتاح قبل الطلب.</p></div><a href="{{ route('categories.index') }}" class="horus-text-link">كل الأقسام <span>←</span></a></div>
-        <div class="horus-post-grid">
-            @foreach($horusPosts as $post)
-                <a href="{{ route('product.show', $post['slug']) }}" class="horus-post-card">
-                    <div class="horus-post-image"><img src="{{ asset('assets/site/img/horus-gallery/' . $post['image']) }}" alt="{{ $post['title'] }}" loading="lazy"></div>
-                    <div class="horus-post-caption"><b>{{ $post['title'] }}</b><span>اسأل عن السعر والتوافر <i>←</i></span></div>
+    <!-- 1. Top Horizontal Sub-Category & Deals Ribbon (Amazon Egypt Style) -->
+    <div class="bg-white border-b border-gray-200/90 py-2 px-2 sm:px-4 shadow-2xs">
+        <div class="max-w-[1500px] mx-auto flex items-center justify-between gap-2">
+            
+            <!-- Scrollable Pills Strip -->
+            <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar scroll-smooth py-0.5 text-xs font-semibold text-gray-800" id="amazonPillsTrack">
+                <a href="{{ route('site.products', ['filter' => 'deals']) }}" 
+                   class="shrink-0 px-3 py-1.5 rounded-full bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 font-black flex items-center gap-1.5 transition-colors">
+                    <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+                    <span>صفقات حورس اليوم</span>
                 </a>
-            @endforeach
+
+                <a href="{{ route('category.product', 33) }}" 
+                   class="shrink-0 px-3 py-1.5 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-800 border border-gray-200/80 hover:border-[#073F40] transition-colors">
+                    دهانات SCIB المعتمدة
+                </a>
+
+                <a href="{{ route('category.product', 34) }}" 
+                   class="shrink-0 px-3 py-1.5 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-800 border border-gray-200/80 hover:border-[#073F40] transition-colors">
+                    جبسون بورد وأسقف معلقة
+                </a>
+
+                <a href="{{ route('category.product', 35) }}" 
+                   class="shrink-0 px-3 py-1.5 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-800 border border-gray-200/80 hover:border-[#073F40] transition-colors">
+                    كرانيش فيوتك الأصلية
+                </a>
+
+                <a href="{{ route('category.product', 36) }}" 
+                   class="shrink-0 px-3 py-1.5 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-800 border border-gray-200/80 hover:border-[#073F40] transition-colors">
+                    بديل الخشب والرخام
+                </a>
+
+                <a href="{{ route('category.product', 37) }}" 
+                   class="shrink-0 px-3 py-1.5 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-800 border border-gray-200/80 hover:border-[#073F40] transition-colors">
+                    أدوات ومستلزمات البناء
+                </a>
+
+                <a href="{{ route('category.product', 38) }}" 
+                   class="shrink-0 px-3 py-1.5 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-800 border border-gray-200/80 hover:border-[#073F40] transition-colors">
+                    مواد التأسيس والتشطيب
+                </a>
+
+                <a href="{{ route('categories.index') }}" 
+                   class="shrink-0 px-3 py-1.5 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-800 border border-gray-200/80 hover:border-[#073F40] transition-colors">
+                    دليل جميع الأقسام
+                </a>
+
+                <a href="https://wa.me/{{ $horusWhatsApp }}?text={{ urlencode('مرحباً مؤسسة حورس، أود طلب تسعير وتوريد مباشر للمشروع.') }}" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="shrink-0 px-3 py-1.5 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold flex items-center gap-1 transition-colors">
+                    <span>توريد مشروعات المقاولين</span>
+                    <span class="text-xs">↗</span>
+                </a>
+            </div>
+
+            <!-- Quick Shop Link -->
+            <a href="{{ route('site.products') }}" 
+               class="shrink-0 text-xs font-bold text-[#073F40] hover:text-[#C8A635] hover:underline hidden md:flex items-center gap-1 px-2">
+                <span>تصفح الكل</span>
+                <span>←</span>
+            </a>
+
+        </div>
+    </div>
+
+    <!-- 2. Amazon Full-Width Dynamic Hero Carousel -->
+    <div class="relative bg-neutral-900 overflow-hidden select-none"
+         x-data="{
+             active: 0,
+             total: 4,
+             timer: null,
+             next() { this.active = (this.active + 1) % this.total; },
+             prev() { this.active = (this.active - 1 + this.total) % this.total; },
+             start() { this.timer = setInterval(() => this.next(), 6000); },
+             stop() { clearInterval(this.timer); }
+         }"
+         x-init="start()"
+         @mouseenter="stop()"
+         @mouseleave="start()">
+
+        <!-- Slides Container -->
+        <div class="relative w-full h-[360px] sm:h-[440px] md:h-[500px] lg:h-[540px]">
+
+            <!-- Slide 1: دهانات SCIB العالمية وتلوين الكمبيوتر -->
+            <div x-show="active === 0"
+                 x-transition:enter="transition-opacity ease-out duration-700"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition-opacity ease-in duration-500"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="absolute inset-0 w-full h-full">
+                
+                <!-- Background Image -->
+                <img src="{{ asset('assets/site/img/hero/horus-luxury-interior.jpg') }}" 
+                     alt="دهانات SCIB مؤسسة حورس" 
+                     class="w-full h-full object-cover object-center">
+
+                <!-- Ambient Amazon Teal Overlay -->
+                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-[#073F40]/60 to-[#073F40]/95"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20"></div>
+
+                <!-- Slide Content -->
+                <div class="absolute inset-0 max-w-[1500px] mx-auto px-4 sm:px-8 md:px-12 flex items-center">
+                    <div class="max-w-2xl text-white space-y-3 sm:space-y-4 pt-2 sm:pt-4">
+                        
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#C8A635] text-[#073F40] font-black text-xs shadow-sm">
+                            <span>⭐</span>
+                            <span>الوكيل والمركز المعتمد لدهانات SCIB</span>
+                        </div>
+
+                        <h1 class="text-2xl sm:text-4xl md:text-5xl font-black leading-tight drop-shadow-md">
+                            أحدث درجات وتشكيلات <br>
+                            <span class="text-[#E2BF52]">دهانات SCIB وتلوين الكمبيوتر</span>
+                        </h1>
+
+                        <p class="text-xs sm:text-base text-gray-200 font-normal leading-relaxed max-w-xl drop-shadow-sm">
+                            خلط وتلوين بالكمبيوتر فوري لأكثر من 10,000 درجة لون معتمدة • خامات عالية المقاومة وقابلة للغسيل • أسعار الوكيل المباشر وتوصيل فوري للموقع بحدائق الأهرام ومحيطها.
+                        </p>
+
+                        <div class="pt-2 flex flex-wrap items-center gap-3">
+                            <a href="{{ route('category.product', 33) }}" 
+                               class="px-6 py-3 bg-[#FFD814] hover:bg-[#F7CA00] active:scale-95 text-gray-900 font-black text-xs sm:text-sm rounded-sm shadow-md transition-all flex items-center gap-2">
+                                <span>تسوق دهانات SCIB الآن</span>
+                                <span>←</span>
+                            </a>
+                            <a href="https://wa.me/{{ $horusWhatsApp }}?text={{ urlencode('مرحباً، أود استشارة واختيار ألوان دهانات SCIB بالكمبيوتر.') }}" 
+                               target="_blank" 
+                               class="px-5 py-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white font-bold text-xs sm:text-sm rounded-sm border border-white/30 transition-all flex items-center gap-2">
+                                <span>استفسار تلوين بالكمبيوتر</span>
+                                <span>↗</span>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2: أنظمة الجبسون بورد والأسقف المعلقة -->
+            <div x-show="active === 1"
+                 x-cloak
+                 x-transition:enter="transition-opacity ease-out duration-700"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition-opacity ease-in duration-500"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="absolute inset-0 w-full h-full">
+                
+                <img src="{{ asset('assets/site/img/hero/horus-gypsum-ceiling.jpg') }}" 
+                     alt="جبسون بورد وأسقف معلقة" 
+                     class="w-full h-full object-cover object-center">
+
+                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-[#073F40]/60 to-[#073F40]/95"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20"></div>
+
+                <div class="absolute inset-0 max-w-[1500px] mx-auto px-4 sm:px-8 md:px-12 flex items-center">
+                    <div class="max-w-2xl text-white space-y-3 sm:space-y-4 pt-2 sm:pt-4">
+                        
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#0B5759] text-white border border-[#82d9c7]/40 font-bold text-xs shadow-sm">
+                            <span>🏗️</span>
+                            <span>أنظمة الجبسون بورد والأسقف المعلقة</span>
+                        </div>
+
+                        <h2 class="text-2xl sm:text-4xl md:text-5xl font-black leading-tight drop-shadow-md">
+                            خامات كناوف ومستلزمات <br>
+                            <span class="text-[#E2BF52]">الأسقف والديكورات الحديثة</span>
+                        </h2>
+
+                        <p class="text-xs sm:text-base text-gray-200 font-normal leading-relaxed max-w-xl drop-shadow-sm">
+                            ألواح جبسون بورد مقاومة للرطوبة والحرائق • قطاعات الصاج والشاسيهات المعتمدة • معجون فواصل وشبك وفيشر وكافة مستلزمات الفنيين والمهندسين.
+                        </p>
+
+                        <div class="pt-2 flex flex-wrap items-center gap-3">
+                            <a href="{{ route('category.product', 34) }}" 
+                               class="px-6 py-3 bg-[#FFD814] hover:bg-[#F7CA00] active:scale-95 text-gray-900 font-black text-xs sm:text-sm rounded-sm shadow-md transition-all flex items-center gap-2">
+                                <span>استكشف الجبسون بورد والملحقات</span>
+                                <span>←</span>
+                            </a>
+                            <a href="{{ route('site.products') }}" 
+                               class="px-5 py-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white font-bold text-xs sm:text-sm rounded-sm border border-white/30 transition-all">
+                                <span>كل مستلزمات البناء</span>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: كرانيش وبانوهات فيوتك الأصلية -->
+            <div x-show="active === 2"
+                 x-cloak
+                 x-transition:enter="transition-opacity ease-out duration-700"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition-opacity ease-in duration-500"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="absolute inset-0 w-full h-full">
+                
+                <img src="{{ asset('assets/site/img/hero/horus-cornices-classic.jpg') }}" 
+                     alt="كرانيش وبانوهات فيوتك" 
+                     class="w-full h-full object-cover object-center">
+
+                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-[#073F40]/60 to-[#073F40]/95"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20"></div>
+
+                <div class="absolute inset-0 max-w-[1500px] mx-auto px-4 sm:px-8 md:px-12 flex items-center">
+                    <div class="max-w-2xl text-white space-y-3 sm:space-y-4 pt-2 sm:pt-4">
+                        
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#C8A635] text-[#073F40] font-black text-xs shadow-sm">
+                            <span>⚜️</span>
+                            <span>الموزع المعتمد لكرانيش وبانوهات فيوتك الأصلية</span>
+                        </div>
+
+                        <h2 class="text-2xl sm:text-4xl md:text-5xl font-black leading-tight drop-shadow-md">
+                            فخامة اللمسات المعمارية <br>
+                            <span class="text-[#E2BF52]">كرانيش، صرر، وبانوهات جدارية</span>
+                        </h2>
+
+                        <p class="text-xs sm:text-base text-gray-200 font-normal leading-relaxed max-w-xl drop-shadow-sm">
+                            خامات بولي يوريثان عالية الكثافة من فيوتك • مقاومة تامة للماء والرطوبة والحرارة • سهلة وسريعة التركيب بأدق التفاصيل والرسومات الكلاسيكية والمودرن.
+                        </p>
+
+                        <div class="pt-2 flex flex-wrap items-center gap-3">
+                            <a href="{{ route('category.product', 35) }}" 
+                               class="px-6 py-3 bg-[#FFD814] hover:bg-[#F7CA00] active:scale-95 text-gray-900 font-black text-xs sm:text-sm rounded-sm shadow-md transition-all flex items-center gap-2">
+                                <span>تصفح تشكيلة كرانيش فيوتك</span>
+                                <span>←</span>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: توريد مشروعات المقاولين والشركات -->
+            <div x-show="active === 3"
+                 x-cloak
+                 x-transition:enter="transition-opacity ease-out duration-700"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition-opacity ease-in duration-500"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="absolute inset-0 w-full h-full">
+                
+                <img src="{{ asset('assets/site/img/hero/horus-paints-decor.jpg') }}" 
+                     alt="توريد مشروعات المقاولين مؤسسة حورس" 
+                     class="w-full h-full object-cover object-center">
+
+                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-[#073F40]/60 to-[#073F40]/95"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20"></div>
+
+                <div class="absolute inset-0 max-w-[1500px] mx-auto px-4 sm:px-8 md:px-12 flex items-center">
+                    <div class="max-w-2xl text-white space-y-3 sm:space-y-4 pt-2 sm:pt-4">
+                        
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-emerald-600 text-white font-black text-xs shadow-sm">
+                            <span>💼</span>
+                            <span>قسم توريدات الشركات والمقاولين والمهندسين</span>
+                        </div>
+
+                        <h2 class="text-2xl sm:text-4xl md:text-5xl font-black leading-tight drop-shadow-md">
+                            أسعار جملة وتسهيلات توريد <br>
+                            <span class="text-[#E2BF52]">مباشرة لموقع مشروعك الإنشائي</span>
+                        </h2>
+
+                        <p class="text-xs sm:text-base text-gray-200 font-normal leading-relaxed max-w-xl drop-shadow-sm">
+                            توفير كامل لكافة كميات مواد التشطيب، المعاجين، البويات، وألواح الجبس، مع سيارات نقل مجهزة وسرعة تسليم لجميع مناطق حدائق الأهرام وأكتوبر والشيخ زايد.
+                        </p>
+
+                        <div class="pt-2 flex flex-wrap items-center gap-3">
+                            <a href="https://wa.me/{{ $horusWhatsApp }}?text={{ urlencode('مرحباً مؤسسة حورس، أود طلب عرض أسعار جملة لمشروعي.') }}" 
+                               target="_blank" 
+                               class="px-6 py-3 bg-[#25D366] hover:bg-[#20bd5a] active:scale-95 text-white font-black text-xs sm:text-sm rounded-sm shadow-md transition-all flex items-center gap-2">
+                                <span>طلب عرض أسعار عبر واتساب</span>
+                                <span>↗</span>
+                            </a>
+                            <a href="tel:{{ $horusPhone }}" 
+                               class="px-5 py-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white font-bold text-xs sm:text-sm rounded-sm border border-white/30 transition-all flex items-center gap-2" dir="ltr">
+                                <span>{{ $horusPhone }}</span>
+                                <span>📞</span>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Amazon Left/Right Floating Navigation Chevrons -->
+        <button type="button" 
+                @click="prev()" 
+                class="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-20 w-10 sm:w-11 h-20 sm:h-28 bg-white/80 hover:bg-white text-gray-900 border border-gray-300 rounded-xs shadow-md flex items-center justify-center transition-all opacity-80 hover:opacity-100 cursor-pointer focus:outline-none"
+                aria-label="السابق">
+            <svg class="w-6 h-6 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
+
+        <button type="button" 
+                @click="next()" 
+                class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 w-10 sm:w-11 h-20 sm:h-28 bg-white/80 hover:bg-white text-gray-900 border border-gray-300 rounded-xs shadow-md flex items-center justify-center transition-all opacity-80 hover:opacity-100 cursor-pointer focus:outline-none"
+                aria-label="التالي">
+            <svg class="w-6 h-6 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+
+        <!-- Slide Indicators -->
+        <div class="absolute bottom-40 sm:bottom-48 inset-x-0 z-20 flex items-center justify-center gap-2 pointer-events-none">
+            <template x-for="i in total" :key="i">
+                <button type="button" 
+                        @click="active = i - 1" 
+                        class="pointer-events-auto h-2 rounded-full transition-all"
+                        :class="active === (i - 1) ? 'w-8 bg-[#FFD814]' : 'w-2 bg-white/60 hover:bg-white'">
+                </button>
+            </template>
+        </div>
+
+        <!-- The Signature Amazon Bottom Fade Gradient (Smoothly dissolves into #EAEDED) -->
+        <div class="absolute bottom-0 inset-x-0 h-44 sm:h-56 bg-gradient-to-t from-[#EAEDED] via-[#EAEDED]/80 to-transparent pointer-events-none z-10"></div>
+
+    </div>
+
+    <!-- 3. The Iconic Amazon Multi-Card Row (Dynamic from Dashboard) -->
+    <div class="relative z-20 max-w-[1500px] mx-auto px-2 sm:px-4 -mt-28 sm:-mt-36 md:-mt-44 mb-6">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3.5">
+            @if(isset($heroCards) && $heroCards->isNotEmpty())
+                @foreach($heroCards as $card)
+                    <div class="bg-white rounded-xs border border-gray-200/90 p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between group">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between gap-1">
+                                <h3 class="font-black text-xs sm:text-sm text-gray-900 group-hover:text-[#073F40] line-clamp-1">
+                                    {{ $card->title }}
+                                </h3>
+                                @if($card->badge_text)
+                                    <span class="px-1.5 py-0.5 rounded-xs text-[9px] font-bold bg-[#C8A635]/20 text-[#073F40]">
+                                        {{ $card->badge_text }}
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div class="aspect-square w-full rounded-xs overflow-hidden bg-gray-50 flex items-center justify-center p-1">
+                                <img src="{{ $card->image_url }}" 
+                                     alt="{{ $card->title }}" 
+                                     loading="lazy" 
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            </div>
+
+                            @if($card->subtitle)
+                                <p class="text-[11px] text-gray-500 line-clamp-1">{{ $card->subtitle }}</p>
+                            @endif
+                        </div>
+
+                        <div class="pt-2.5 border-t border-gray-100 mt-2">
+                            <a href="{{ $card->url ?: route('site.products') }}" 
+                               @if(str_starts_with($card->url ?? '', 'http') && !str_contains($card->url ?? '', request()->getHost())) target="_blank" rel="noopener noreferrer" @endif
+                               class="text-xs font-semibold {{ str_contains($card->url ?? '', 'wa.me') ? 'text-emerald-700 hover:text-emerald-900' : 'text-[#007185] hover:text-[#C7511F]' }} hover:underline block">
+                                {{ $card->link_text ?: 'تسوق الآن ←' }}
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            @else
+                <!-- Amazon Card 1: دهانات SCIB -->
+                <div class="bg-white rounded-xs border border-gray-200/90 p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between group">
+                    <div class="space-y-2">
+                        <h3 class="font-black text-xs sm:text-sm text-gray-900 group-hover:text-[#073F40] line-clamp-1">دهانات SCIB العالمية</h3>
+                        <div class="aspect-square w-full rounded-xs overflow-hidden bg-gray-50 flex items-center justify-center p-1">
+                            <img src="{{ asset('assets/site/img/categories/scib-paints.jpg') }}" alt="دهانات SCIB" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <p class="text-[11px] text-gray-500 line-clamp-1">خلط كمبيوتر فوري لأحدث درجات 2026</p>
+                    </div>
+                    <div class="pt-2.5 border-t border-gray-100 mt-2">
+                        <a href="{{ route('category.product', 33) }}" class="text-xs font-semibold text-[#007185] hover:text-[#C7511F] hover:underline block">
+                            تسوق دهانات SCIB ←
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Amazon Card 2: جبسون بورد وأسقف معلقة -->
+                <div class="bg-white rounded-xs border border-gray-200/90 p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between group">
+                    <div class="space-y-2">
+                        <h3 class="font-black text-xs sm:text-sm text-gray-900 group-hover:text-[#073F40] line-clamp-1">جبسون بورد وأسقف</h3>
+                        <div class="aspect-square w-full rounded-xs overflow-hidden bg-gray-50 flex items-center justify-center p-1">
+                            <img src="{{ asset('assets/site/img/categories/gypsum-board.jpg') }}" alt="جبسون بورد" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <p class="text-[11px] text-gray-500 line-clamp-1">خامات كناوف ومستلزمات التثبيت</p>
+                    </div>
+                    <div class="pt-2.5 border-t border-gray-100 mt-2">
+                        <a href="{{ route('category.product', 34) }}" class="text-xs font-semibold text-[#007185] hover:text-[#C7511F] hover:underline block">
+                            تسوق الجبسون بورد ←
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Amazon Card 3: كرانيش فيوتك الأصلية -->
+                <div class="bg-white rounded-xs border border-gray-200/90 p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between group">
+                    <div class="space-y-2">
+                        <h3 class="font-black text-xs sm:text-sm text-gray-900 group-hover:text-[#073F40] line-clamp-1">كرانيش فيوتك الأصلية</h3>
+                        <div class="aspect-square w-full rounded-xs overflow-hidden bg-gray-50 flex items-center justify-center p-1">
+                            <img src="{{ asset('assets/site/img/categories/fyutec-cornices.jpg') }}" alt="كرانيش فيوتك" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <p class="text-[11px] text-gray-500 line-clamp-1">خامات أصلية مقاومة للماء والحرارة</p>
+                    </div>
+                    <div class="pt-2.5 border-t border-gray-100 mt-2">
+                        <a href="{{ route('category.product', 35) }}" class="text-xs font-semibold text-[#007185] hover:text-[#C7511F] hover:underline block">
+                            استكشف الفيوتك ←
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Amazon Card 4: بديل الخشب وورق الحائط -->
+                <div class="bg-white rounded-xs border border-gray-200/90 p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between group">
+                    <div class="space-y-2">
+                        <h3 class="font-black text-xs sm:text-sm text-gray-900 group-hover:text-[#073F40] line-clamp-1">بديل الخشب والرخام</h3>
+                        <div class="aspect-square w-full rounded-xs overflow-hidden bg-gray-50 flex items-center justify-center p-1">
+                            <img src="{{ asset('assets/site/img/categories/wall-panels.jpg') }}" alt="بديل الخشب" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <p class="text-[11px] text-gray-500 line-clamp-1">ديكورات جدارية وحلول عصرية</p>
+                    </div>
+                    <div class="pt-2.5 border-t border-gray-100 mt-2">
+                        <a href="{{ route('category.product', 36) }}" class="text-xs font-semibold text-[#007185] hover:text-[#C7511F] hover:underline block">
+                            تصفح البدائل الديكورية ←
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Amazon Card 5: توريد مشروعات المقاولات -->
+                <div class="col-span-2 md:col-span-1 bg-white rounded-xs border border-gray-200/90 p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between group">
+                    <div class="space-y-2">
+                        <h3 class="font-black text-xs sm:text-sm text-gray-900 group-hover:text-[#073F40] line-clamp-1">توريد مشروعات المقاولات</h3>
+                        <div class="aspect-square w-full rounded-xs overflow-hidden bg-gray-50 flex items-center justify-center p-1">
+                            <img src="{{ asset('assets/site/img/categories/construction-tools.jpg') }}" alt="توريد المقاولات" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <p class="text-[11px] text-gray-500 line-clamp-1">أسعار خاصة للمهندسين والمقاولين</p>
+                    </div>
+                    <div class="pt-2.5 border-t border-gray-100 mt-2">
+                        <a href="https://wa.me/{{ $horusWhatsApp }}?text={{ urlencode('مرحباً، أود الاستفسار عن عروض أسعار الجملة وتوريد المشروعات.') }}" target="_blank" class="text-xs font-bold text-emerald-700 hover:text-emerald-900 hover:underline block">
+                            طلب تسعير جملة عبر واتساب ↗
+                        </a>
+                    </div>
+                </div>
+            @endif
+        </div>
+    </div>
+
+    <!-- 4. Amazon Deals of the Day (صفقات اليوم والعروض التوفيرية) -->
+    @if(isset($deals) && $deals->isNotEmpty())
+    <section class="max-w-[1500px] mx-auto px-2 sm:px-4 mb-6">
+        <div class="bg-white rounded-xs border border-gray-200/90 p-4 sm:p-5 shadow-2xs space-y-4">
+            
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-gray-200">
+                <div class="flex items-center gap-3">
+                    <span class="px-2.5 py-1 rounded-xs bg-[#CC0C39] text-white text-xs font-black">
+                        صفقات حورس اليوم
+                    </span>
+                    <h2 class="text-base sm:text-lg font-black text-gray-900">
+                        عروض حصرية وخصومات حتى 25% على مواد التشطيب
+                    </h2>
+                </div>
+                <a href="{{ route('site.products', ['filter' => 'deals']) }}" class="text-xs font-semibold text-[#007185] hover:text-[#C7511F] hover:underline">
+                    شاهد جميع صفقات اليوم ←
+                </a>
+            </div>
+
+            <!-- Deals Grid (Amazon Egypt Style with Yellow Plus Buttons) -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                @foreach($deals->take(5) as $deal)
+                    @if($deal->product)
+                        <x-storefront.ui.product-card :product="$deal->product" />
+                    @endif
+                @endforeach
+            </div>
+
+        </div>
+    </section>
+    @endif
+
+
+
+    <!-- 6. Categories Visual Grid Section -->
+    @if(isset($categories) && $categories->isNotEmpty())
+    <section class="max-w-[1500px] mx-auto px-2 sm:px-4 mb-8">
+        <div class="bg-white rounded-xs border border-gray-200/80 p-4 sm:p-6 shadow-2xs space-y-4">
+            
+            <!-- Section Header (Amazon Section Style) -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-gray-200">
+                <div>
+                    <h2 class="text-lg sm:text-xl font-black text-gray-900">
+                        تسوق حسب القسم • أقسام مؤسسة حورس المعتمدة
+                    </h2>
+                    <p class="text-xs text-gray-500">دهانات SCIB، جبسون بورد، كرانيش فيوتك، بديل خشب، ومستلزمات البناء والديكور</p>
+                </div>
+                <a href="{{ route('categories.index') }}" class="text-xs font-semibold text-[#007185] hover:text-[#C7511F] hover:underline shrink-0">
+                    استعراض دليل جميع الأقسام بالصور والأسعار ←
+                </a>
+            </div>
+
+            <!-- Categories Visual Cards -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+                @foreach($categories as $category)
+                    <a href="{{ route('category.product', $category->id) }}" 
+                       class="group relative block rounded-xs overflow-hidden bg-white border border-gray-200/90 hover:border-[#073F40] shadow-2xs hover:shadow-md transition-all duration-300">
+                        
+                        <!-- Category Image Container -->
+                        <div class="relative aspect-[4/3] overflow-hidden bg-gray-100">
+                            @if($category->image_url)
+                                <img src="{{ $category->image_url }}" 
+                                     alt="{{ $category->name }}" 
+                                     loading="lazy" 
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            @else
+                                <div class="w-full h-full bg-[#073F40] flex items-center justify-center text-white text-2xl font-black">
+                                    {{ mb_substr($category->name, 0, 1) }}
+                                </div>
+                            @endif
+
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
+
+                            <!-- Item Count Badge -->
+                            <div class="absolute top-2.5 right-2.5">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-black bg-black/60 backdrop-blur-xs text-white border border-white/20">
+                                    {{ $category->products_count ?? 0 }} صنف
+                                </span>
+                            </div>
+
+                            <!-- Title on Image -->
+                            <div class="absolute bottom-2.5 inset-x-2.5 text-right space-y-0.5">
+                                <h3 class="font-bold text-sm text-white group-hover:text-[#E2BF52] transition-colors truncate">
+                                    {{ $category->name }}
+                                </h3>
+                                <div class="text-[10px] text-gray-300 group-hover:text-white font-medium flex items-center gap-1">
+                                    <span>تصفح المنتجات والأسعار</span>
+                                    <span>←</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+
+        </div>
+    </section>
+    @endif
+
+    <!-- 7. Featured Products Carousel Section -->
+    @if(isset($featuredProducts) && $featuredProducts->isNotEmpty())
+    <div class="max-w-[1500px] mx-auto px-2 sm:px-4 mb-8">
+        <div class="bg-white rounded-xs border border-gray-200/80 p-4 sm:p-6 shadow-2xs space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-gray-200">
+                <div>
+                    <h2 class="text-lg sm:text-xl font-black text-gray-900">منتجات مختارة من حورس</h2>
+                    <p class="text-xs text-gray-500">خامات وأدوات موثوقة تساعدك تنجز شغلك بأفضل جودة وأسعار تنافسية</p>
+                </div>
+                <a href="{{ route('site.products') }}" class="text-xs font-semibold text-[#007185] hover:text-[#C7511F] hover:underline">
+                    عرض جميع المنتجات ←
+                </a>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-3">
+                @foreach($featuredProducts->take(5) as $product)
+                    <x-storefront.ui.product-card :product="$product" />
+                @endforeach
+            </div>
+        </div>
+    </div>
+    @endif
+
+    <!-- 8. SCIB Paints Authorized Agent Band -->
+    <section class="max-w-[1500px] mx-auto px-2 sm:px-4 mb-8">
+        <div class="bg-gradient-to-r from-[#073F40] via-[#094E50] to-[#0B5759] text-white rounded-xs border border-[#062F31] p-6 sm:p-10 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="space-y-2 max-w-2xl text-right">
+                <span class="inline-block px-3 py-1 rounded bg-white/15 text-[#E2BF52] text-xs font-black">
+                    الوكيل المعتمد لدهانات SCIB العالمية
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-black leading-tight">
+                    اختار ألوانك بثقة مع دهانات SCIB عند حورس
+                </h2>
+                <p class="text-xs sm:text-sm text-gray-200 leading-relaxed">
+                    متاح جميع منتجات سكيب للدهانات الداخلية والخارجية والواجهات، مع ماكينة خلط الألوان بالكمبيوتر لاختيار أي درجة لون بدقة 100%.
+                </p>
+                <div class="pt-2">
+                    <a href="https://wa.me/{{ $horusWhatsApp }}?text={{ urlencode('مرحباً، أود الاستفسار عن درجات وأسعار دهانات SCIB.') }}" 
+                       target="_blank" 
+                       class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#FFD814] hover:bg-[#F7CA00] text-gray-900 font-black text-xs rounded-xs shadow-md">
+                        <span>اسأل عن درجات ألوان سكيب بالكمبيوتر</span>
+                        <span>←</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-white/10 border-2 border-white/20 flex flex-col items-center justify-center shrink-0 text-center p-4">
+                <span class="text-2xl sm:text-3xl font-black text-[#E2BF52] tracking-tighter">SCIB</span>
+                <span class="text-[10px] text-gray-200 tracking-widest font-bold">PAINTS</span>
+                <span class="w-8 h-1 bg-[#25D366] rounded mt-1"></span>
+            </div>
         </div>
     </section>
 
-    @if(isset($categories) && $categories->isNotEmpty())
-    <section class="horus-section container mx-auto px-4">
-        <div class="horus-section-head"><div><span class="horus-kicker">تسوق حسب القسم</span><h2>اكتشف <em>تشكيلتنا</em></h2></div><a href="{{ route('categories.index') }}" class="horus-text-link">كل الأقسام <span>←</span></a></div>
-        <div class="horus-category-grid">@foreach($categories as $category)<a href="{{ route('category.product', $category->id) }}" class="horus-category">@if($category->image)<img src="{{ $category->image_url ?? asset($category->image) }}" alt="{{ $category->name }}">@else<span class="horus-category-placeholder">ح</span>@endif<span><b>{{ $category->name }}</b><small>تسوق القسم ←</small></span></a>@endforeach</div>
+    <!-- 9. Support & Direct Contact Band -->
+    <section class="max-w-[1500px] mx-auto px-2 sm:px-4 mb-8">
+        <div class="bg-white rounded-xs border border-gray-200/80 p-5 sm:p-8 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="text-right">
+                <span class="text-xs font-bold text-[#073F40]">فريق خدمة العملاء جاهز لمساعدتك</span>
+                <h3 class="text-lg sm:text-xl font-black text-gray-900 mt-1">
+                    مشروعك يستاهل بداية مظبوطة وخامات تثق فيها
+                </h3>
+                <p class="text-xs text-gray-500 mt-0.5">كلمنا واسأل عن المنتجات والأسعار أو زورنا في فرع المعرض بحدائق الأهرام.</p>
+            </div>
+            <div class="flex items-center gap-3 shrink-0">
+                <a href="tel:{{ $horusPhone }}" class="px-5 py-2.5 rounded-xs bg-gray-100 hover:bg-gray-200 text-gray-900 text-xs font-black border border-gray-300 flex items-center gap-2" dir="ltr">
+                    <span>{{ $horusPhone }}</span>
+                    <span>📞</span>
+                </a>
+                <a href="https://wa.me/{{ $horusWhatsApp }}?text={{ urlencode('مرحباً حورس، أود الاستفسار عن المنتجات والأسعار.') }}" target="_blank" class="px-5 py-2.5 rounded-xs bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-black shadow-xs flex items-center gap-2">
+                    <span>طلب فوري عبر واتساب</span>
+                    <span>↗</span>
+                </a>
+            </div>
+        </div>
     </section>
-    @endif
 
-    @if(isset($featuredProducts) && $featuredProducts->isNotEmpty())
-    <x-storefront.sections.products-carousel title="منتجات مختارة من حورس" subtitle="خامات وأدوات تساعدك تنجز شغلك" :products="$featuredProducts" :viewAllRoute="route('site.products')" badge="✦" />
-    @endif
-
-    <section class="horus-contact-band"><div class="container mx-auto px-4 horus-contact-inner"><div><span class="horus-kicker">جاهزين نساعدك تختار</span><h2>مشروعك يستاهل <em>بداية مظبوطة.</em></h2><p>كلمنا واسأل عن المنتجات والأسعار أو زورنا في حدائق الأهرام.</p></div><a href="tel:{{ $horusPhone }}" class="horus-phone"><span>اتصل بنا</span><b dir="ltr">{{ $horusPhone }}</b><i>↗</i></a></div></section>
 </div>
 @endsection
-
-@push('styles')
-<style>
-.horus-home{--h-ink:#073f40;--h-deep:#062f31;--h-green:#159b8b;--h-mint:#82d9c7;--h-paper:#f5f4ef;--h-gold:#e2bf52;color:#173b3a;background:#fff;font-family:'Cairo','Alexandria',sans-serif}.horus-home *{box-sizing:border-box}.horus-hero{position:relative;overflow:hidden;background:var(--h-deep);color:#fff;min-height:590px}.horus-hero:before{content:"";position:absolute;inset:0 48% 0 0;background:linear-gradient(135deg,rgba(16,138,127,.35),transparent 68%)}.horus-hero-pattern{position:absolute;width:680px;height:680px;border:1px solid rgba(130,217,199,.13);border-radius:50%;left:-230px;top:-280px;box-shadow:0 0 0 60px rgba(130,217,199,.025),0 0 0 120px rgba(130,217,199,.025)}.horus-hero-inner{position:relative;min-height:590px;display:flex;align-items:center}.horus-hero-copy{position:relative;z-index:2;width:57%;padding:70px 0 80px}.horus-eyebrow,.horus-kicker{display:inline-flex;align-items:center;gap:10px;color:var(--h-green);font-size:12px;font-weight:800;letter-spacing:.04em}.horus-eyebrow{color:var(--h-mint);border:1px solid rgba(130,217,199,.28);padding:8px 13px;border-radius:30px}.horus-eyebrow i{width:7px;height:7px;background:var(--h-gold);border-radius:50%;box-shadow:0 0 0 4px rgba(226,191,82,.13)}.horus-hero h1{font-size:clamp(40px,5vw,68px);line-height:1.35;letter-spacing:-.045em;margin:26px 0 14px;font-weight:900}.horus-hero h1 em,.horus-section-head h2 em,.horus-scip h2 em,.horus-contact-band h2 em{font-style:normal;color:var(--h-mint)}.horus-hero-copy>p{max-width:490px;color:rgba(255,255,255,.72);font-size:16px;line-height:2}.horus-hero-actions{display:flex;gap:12px;margin-top:28px}.horus-btn{display:inline-flex;align-items:center;gap:24px;padding:13px 20px;border-radius:5px;font-size:13px;font-weight:800;transition:.2s}.horus-btn:hover{transform:translateY(-2px)}.horus-btn-light{background:#fff;color:var(--h-deep)}.horus-btn-outline{color:white;border:1px solid rgba(255,255,255,.38)}.horus-trust{display:flex;gap:12px;align-items:center;margin-top:35px;color:rgba(255,255,255,.62);font-size:11px}.horus-trust b{color:var(--h-gold)}.horus-hero-art{position:absolute;left:2%;top:50%;transform:translateY(-50%);width:39%;height:480px}.horus-arch{position:absolute;inset:0 12% 0 5%;border:1px solid rgba(130,217,199,.5);border-radius:220px 220px 8px 8px;padding:10px;background:linear-gradient(145deg,rgba(20,143,132,.8),rgba(8,57,58,.5));box-shadow:0 30px 80px #001e2080}.horus-arch-inner{height:100%;border-radius:210px 210px 3px 3px;background:radial-gradient(ellipse at 55% 32%,#58b7a3 0,#167d77 25%,#0c5657 58%,#073839 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}.horus-arch-inner:before,.horus-arch-inner:after{content:"";position:absolute;border:1px solid #c8ead335;border-radius:50%;width:440px;height:440px}.horus-arch-inner:after{width:330px;height:330px}.horus-art-mark{width:168px;height:190px;object-fit:contain;filter:drop-shadow(0 4px 18px #002a2b80)}.horus-art-caption{position:absolute;bottom:45px;font-size:17px;line-height:1.6;text-align:center;color:#d6f1e8;letter-spacing:.12em}.horus-float{position:absolute;z-index:1;background:#fff;color:var(--h-deep);box-shadow:0 15px 35px #001d1d55;border-radius:5px;padding:12px 16px}.horus-float-one{top:18%;right:-2%;display:flex;flex-direction:column;align-items:center}.horus-float-one strong{font-size:26px;letter-spacing:-.04em}.horus-float-one span,.horus-float-two{font-size:10px}.horus-float-two{bottom:17%;left:-4%;display:flex;gap:10px;align-items:center;line-height:1.7}.horus-dot{width:9px;height:9px;border-radius:50%;background:#3aa995;box-shadow:0 0 0 5px #3aa99520}.horus-hero-index{position:absolute;bottom:27px;left:16px;display:flex;align-items:center;gap:9px;font-size:10px;letter-spacing:.2em;color:#ffffff8c}.horus-hero-index span{height:1px;width:35px;background:var(--h-mint)}
-.horus-proof{position:relative;margin-top:-1px;background:#fff;display:grid;grid-template-columns:repeat(4,1fr);padding-top:23px;padding-bottom:23px;box-shadow:0 12px 35px #0a373710;border-bottom:1px solid #e9eeea}.horus-proof>div{display:flex;align-items:center;justify-content:center;gap:12px;border-left:1px solid #e8ece8}.horus-proof>div:last-child{border:0}.horus-proof-icon{width:37px;height:37px;border-radius:50%;display:grid;place-items:center;color:var(--h-green);background:#e9f6f1;font-size:17px;font-weight:900}.horus-proof b,.horus-proof small{display:block}.horus-proof b{font-size:12px}.horus-proof small{font-size:10px;color:#87928e;margin-top:2px}.horus-section{padding-top:86px;padding-bottom:78px}.horus-section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:27px}.horus-kicker{font-size:10px;letter-spacing:.14em;text-transform:uppercase}.horus-section-head h2,.horus-scip h2,.horus-contact-band h2{font-size:clamp(25px,3vw,38px);line-height:1.5;font-weight:900;margin:6px 0 0;color:#183b3a}.horus-section-head h2 em,.horus-contact-band h2 em{color:var(--h-green)}.horus-text-link{font-size:11px;font-weight:800;color:var(--h-green);padding-bottom:8px}.horus-text-link span{font-size:16px;margin-right:8px}.horus-services{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.horus-service-card{position:relative;min-height:280px;overflow:hidden;padding:23px 25px;color:#fff;background:#104849;display:flex;flex-direction:column;justify-content:space-between;border-radius:4px;transition:.25s}.horus-service-card:hover{transform:translateY(-5px);box-shadow:0 16px 30px #073f4026;color:#fff}.service-paint{background:linear-gradient(130deg,#0b4d4d,#13877a)}.service-ceiling{background:linear-gradient(130deg,#163d3d,#387a6b)}.service-tools{background:linear-gradient(130deg,#243b39,#55715d)}.horus-service-no{font-size:10px;letter-spacing:.16em;color:#ffffff87}.horus-service-card>div{z-index:1}.horus-service-card small{font-size:10px;color:#b7ded0}.horus-service-card h3{font-size:24px;font-weight:900;line-height:1.5;margin:8px 0 16px}.horus-service-link{font-size:10px;color:#d5e9de}.horus-service-shape{position:absolute;width:215px;height:215px;border:1px solid #ffffff29;border-radius:50%;left:-58px;top:20px;box-shadow:0 0 0 24px #ffffff08,0 0 0 50px #ffffff06}.horus-service-shape:before,.horus-service-shape:after{content:"";position:absolute;border:1px solid #ffffff30;border-radius:50%;inset:30px}.horus-service-shape:after{inset:64px}
-.horus-payments{display:flex;justify-content:center;align-items:center;gap:18px;padding-top:17px;padding-bottom:17px;color:#6c7b76;font-size:10px;border-bottom:1px solid #eef1ed}.horus-payments>span{font-weight:700;color:#214644}.horus-payments b{font-weight:700;color:#138579}.horus-payments i{width:3px;height:3px;border-radius:50%;background:#bdc9c2}
-.horus-scip{background:#f2f5ef;overflow:hidden}.horus-scip-inner{min-height:340px;position:relative;display:flex;align-items:center;padding-top:52px;padding-bottom:52px}.horus-scip-inner>div:first-child{position:relative;z-index:1;max-width:490px}.horus-scip h2 em{color:var(--h-green)}.horus-scip p{font-size:13px;line-height:1.9;color:#6e7b73;max-width:400px;margin:10px 0 20px}.horus-btn-green{background:var(--h-ink);color:white}.horus-scip-stamp{position:absolute;left:16%;top:50%;transform:translateY(-50%) rotate(-7deg);width:245px;height:245px;border:1px solid #188678;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#0d635d;background:#e8f2e9;box-shadow:0 0 0 12px #e8f2e980,0 0 0 13px #18867835}.horus-scip-stamp b{font-size:62px;letter-spacing:-.09em}.horus-scip-stamp span{letter-spacing:.3em;font-size:12px}.horus-scip-stamp i{width:48px;height:4px;background:#82c87a;margin-top:10px;border-radius:5px}.horus-scip-watermark{position:absolute;left:-2%;bottom:-70px;font-family:serif;font-size:230px;color:#0a595708;font-weight:bold}.horus-gallery-section{padding-top:72px;padding-bottom:60px}.horus-post-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.horus-post-card{display:flex;flex-direction:column;overflow:hidden;border:1px solid #e5ece7;border-radius:5px;background:#fff;color:#173b3a;transition:.2s}.horus-post-card:hover{transform:translateY(-4px);border-color:#59aa9a;box-shadow:0 14px 28px #073f4017}.horus-post-image{aspect-ratio:3/4;background:#f5f6f2;overflow:hidden}.horus-post-image img{width:100%;height:100%;object-fit:contain}.horus-post-caption{display:flex;flex-direction:column;gap:8px;padding:12px}.horus-post-caption b{font-size:11px;line-height:1.6}.horus-post-caption span{display:flex;justify-content:space-between;align-items:center;color:var(--h-green);font-size:10px;font-weight:800}.horus-post-caption i{font-style:normal;font-size:15px}.horus-category-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.horus-category{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid #e9efeb;border-radius:4px;color:#183b3a;transition:.2s}.horus-category:hover{border-color:#54a995;box-shadow:0 8px 20px #0c51420e}.horus-category img,.horus-category-placeholder{width:56px;height:56px;object-fit:cover;background:#edf4ef;border-radius:3px}.horus-category-placeholder{display:grid;place-items:center;color:var(--h-green);font-family:serif;font-size:28px}.horus-category b,.horus-category small{display:block}.horus-category b{font-size:12px}.horus-category small{color:#81918b;font-size:9px;margin-top:4px}.horus-contact-band{background:var(--h-deep);color:white}.horus-contact-inner{display:flex;justify-content:space-between;align-items:center;padding-top:43px;padding-bottom:43px}.horus-contact-band h2{color:#fff;font-size:30px}.horus-contact-band h2 em{color:var(--h-mint)}.horus-contact-band p{color:#ffffff9c;font-size:12px;margin:5px 0 0}.horus-phone{display:flex;align-items:center;gap:15px;padding:12px 17px;border:1px solid #ffffff45;border-radius:4px;color:white}.horus-phone span{font-size:10px;color:#b4d6cb}.horus-phone b{font-size:19px;letter-spacing:.03em}.horus-phone i{font-style:normal;color:var(--h-mint);font-size:18px}
-@media(max-width:767px){.horus-payments{gap:8px;flex-wrap:wrap;font-size:9px}.horus-payments>span{width:100%;text-align:center}.horus-hero,.horus-hero-inner{min-height:670px}.horus-hero-copy{width:100%;padding:52px 0 300px}.horus-hero h1{font-size:40px}.horus-hero-copy>p{font-size:13px;max-width:94%}.horus-hero-art{width:53%;height:255px;left:4%;top:auto;bottom:23px;transform:none}.horus-art-mark{width:92px;height:110px}.horus-art-caption{bottom:18px;font-size:11px}.horus-float-one{top:8%;right:-15%}.horus-float-one strong{font-size:18px}.horus-float-two{bottom:10%;left:-20%;font-size:9px}.horus-trust{font-size:9px;gap:7px;margin-top:24px}.horus-hero-index{bottom:18px}.horus-proof{grid-template-columns:repeat(2,1fr);row-gap:15px;padding-top:18px;padding-bottom:18px}.horus-proof>div{justify-content:flex-start;padding-right:8px;border:0}.horus-proof b{font-size:10px}.horus-proof small{font-size:9px}.horus-proof-icon{width:31px;height:31px}.horus-section{padding-top:55px;padding-bottom:50px}.horus-section-head h2{font-size:24px}.horus-section-head{align-items:start;gap:10px}.horus-text-link{white-space:nowrap;font-size:9px;padding-top:14px}.horus-services{grid-template-columns:1fr;gap:10px}.horus-service-card{min-height:190px;padding:18px 20px}.horus-service-card h3{font-size:22px}.horus-service-shape{left:-25px;top:-45px}.horus-scip-inner{min-height:400px;align-items:flex-start;padding-top:45px}.horus-scip-inner>div:first-child{max-width:75%}.horus-scip h2{font-size:26px}.horus-scip-stamp{width:135px;height:135px;left:3%;top:auto;bottom:26px;transform:rotate(-7deg)}.horus-scip-stamp b{font-size:38px}.horus-scip-stamp span{font-size:8px}.horus-scip-stamp i{margin-top:5px;width:30px}.horus-scip-watermark{font-size:125px;bottom:-35px}.horus-gallery-section{padding-top:48px;padding-bottom:42px}.horus-post-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.horus-post-caption{padding:9px}.horus-post-caption b{font-size:10px}.horus-category-grid{grid-template-columns:repeat(2,1fr);gap:8px}.horus-category{padding:8px;gap:8px}.horus-category img,.horus-category-placeholder{width:42px;height:42px}.horus-category b{font-size:10px}.horus-contact-inner{align-items:flex-start;gap:18px;flex-direction:column;padding-top:32px;padding-bottom:32px}.horus-contact-band h2{font-size:25px}.horus-phone b{font-size:17px}.horus-home .swiper{margin-top:0}}
-</style>
-@endpush

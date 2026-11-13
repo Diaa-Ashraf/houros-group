@@ -36,6 +36,7 @@ class Order extends Model
     public const PAYMENT_METHOD_INSTAPAY = 'instapay';
     public const PAYMENT_METHOD_VODAFONE_CASH = 'vodafone_cash';
     public const PAYMENT_METHOD_BRANCH = 'cash_in_branch';
+    public const PAYMENT_METHOD_WHATSAPP = 'whatsapp_checkout';
 
     protected $fillable = [
         'public_order_id',

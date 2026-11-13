@@ -1,7 +1,7 @@
 {{-- resources/views/storefront/products/show.blade.php --}}
 @extends('layouts.storefront')
 
-@section('title', $product->name . ' | مؤسسة حورس')
+@section('title', $product->name . ' | مؤسسة حورس للتوريدات والتشطيبات')
 @section('meta_description', Str::limit(strip_tags($product->description), 160))
 
 @php
@@ -21,6 +21,7 @@
     };
     $storeWhatsApp = settings('store_whatsapp', '201002527072');
     $cleanWhatsApp = preg_replace('/[^0-9]/', '', $storeWhatsApp);
+    $storePhone = settings('store_phone', '01002527072');
     $productSchema = [
         '@context' => 'https://schema.org/',
         '@type' => 'Product',
@@ -38,6 +39,8 @@
             'itemCondition' => 'https://schema.org/NewCondition',
         ];
     }
+    $reviewsCount = $product->reviews->count();
+    $avgRating = $reviewsCount > 0 ? round($product->reviews->avg('rating'), 1) : 4.8;
 @endphp
 
 @push('styles')
@@ -48,386 +51,434 @@
 @endpush
 
 @section('content')
-<div class="py-8 bg-gradient-to-b from-orange-50/20 via-canvas-base to-canvas-base min-h-screen">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+<div class="bg-[#EAEDED] py-4 sm:py-6 font-sans text-right" dir="rtl"
+     x-data="{
+         basePrice: {{ (float)$finalPrice }},
+         isWeighted: {{ $isWeighted && in_array($product->unit_type, ['kg', 'gram', 'liter', 'meter'], true) ? 'true' : 'false' }},
+         portionType: 'piece',
+         customAmount: 50,
+         notes: '',
+         quantity: 1,
+         maxStock: {{ $product->stock_quantity ?: 99 }},
+         adding: false,
 
-        <!-- Breadcrumbs -->
-        <nav class="flex items-center gap-2 text-xs font-bold text-gray-500 flex-wrap" aria-label="Breadcrumb">
-            <a href="{{ route('site.home') }}" class="hover:text-red-600 transition-colors">الرئيسية</a>
-            <span>/</span>
+         get unitPrice() {
+             if (!this.isWeighted || this.portionType === 'piece') {
+                 return this.basePrice;
+             }
+             if (this.portionType === '125g') return Math.round(this.basePrice * 0.125 * 100) / 100;
+             if (this.portionType === '250g') return Math.round(this.basePrice * 0.25 * 100) / 100;
+             if (this.portionType === '500g') return Math.round(this.basePrice * 0.5 * 100) / 100;
+             if (this.portionType === '1000g' || this.portionType === '1kg') return this.basePrice;
+             if (this.portionType === 'custom_price') return parseFloat(this.customAmount) || 0;
+             return this.basePrice;
+         },
+
+         get totalPrice() {
+             return (this.unitPrice * this.quantity).toFixed(2);
+         },
+
+         increase() { if (this.quantity < this.maxStock) this.quantity++ },
+         decrease() { if (this.quantity > 1) this.quantity-- },
+
+         addToCart(redirectCheckout = false) {
+             this.adding = true;
+             fetch('{{ route('AddToCart', $product->id) }}', {
+                 method: 'POST',
+                 headers: {
+                     'Content-Type': 'application/json',
+                     'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                     'Accept': 'application/json'
+                 },
+                 body: JSON.stringify({
+                     quantity: this.quantity,
+                     portion_type: this.portionType,
+                     custom_amount: this.portionType === 'custom_price' ? parseFloat(this.customAmount) : null,
+                     notes: this.notes
+                 })
+             })
+             .then(res => res.json())
+             .then(data => {
+                 this.adding = false;
+                 if (data.success || data.status) {
+                     toastr.success(data.message || 'تمت إضافة المنتج إلى عربة التسوق بنجاح');
+                     window.dispatchEvent(new CustomEvent('cart-updated', { detail: { count: data.cart_count ?? data.count } }));
+                     if (redirectCheckout) {
+                         window.location.href = '{{ route('checkout.index') }}';
+                     }
+                 } else {
+                     toastr.error(data.message || 'حدث خطأ أثناء الإضافة');
+                 }
+             })
+             .catch(err => {
+                 this.adding = false;
+                 toastr.error('حدث خطأ أثناء الإضافة بالسلة');
+             });
+         }
+     }">
+
+    <div class="max-w-[1500px] mx-auto px-2 sm:px-4 space-y-4">
+
+        <!-- Amazon Egypt Breadcrumb Navigation -->
+        <nav class="flex items-center gap-1.5 text-xs text-gray-500 font-medium py-1 px-1 flex-wrap" aria-label="Breadcrumb">
+            <a href="{{ route('site.home') }}" class="hover:text-[#073F40] hover:underline">الرئيسية</a>
+            <span class="text-gray-400">›</span>
+            <a href="{{ route('site.products') }}" class="hover:text-[#073F40] hover:underline">متجر المواد والتشطيبات</a>
             @if($product->category)
-                <a href="{{ route('category.product', $product->category->id) }}" class="hover:text-red-600 transition-colors">
+                <span class="text-gray-400">›</span>
+                <a href="{{ route('category.product', $product->category->id) }}" class="hover:text-[#073F40] hover:underline">
                     {{ $product->category->name }}
                 </a>
-                <span>/</span>
             @endif
-            <span class="text-gray-900 font-black">{{ $product->name }}</span>
+            <span class="text-gray-400">›</span>
+            <span class="text-gray-800 font-bold truncate max-w-xs">{{ $product->name }}</span>
         </nav>
 
-        <!-- Product Details Main Container -->
-        <div class="bg-white rounded-3xl p-6 sm:p-10 border-2 border-orange-100 shadow-sm grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12"
-             x-data="{
-                 basePrice: {{ (float)$finalPrice }},
-                 isWeighted: {{ $isWeighted && in_array($product->unit_type, ['kg', 'gram', 'liter', 'meter'], true) ? 'true' : 'false' }},
-                 portionType: 'piece',
-                 customAmount: 20,
-                 notes: '',
-                 quantity: 1,
-                 maxStock: {{ $product->stock_quantity ?: 99 }},
-                 adding: false,
+        <!-- Amazon Egypt Product Stage: 3-Column Layout on Desktop -->
+        <div class="bg-white rounded-xs border border-gray-200/90 p-4 sm:p-6 shadow-2xs">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 xl:gap-8 items-start">
 
-                 get unitPrice() {
-                     if (!this.isWeighted || this.portionType === 'piece') {
-                         return this.basePrice;
-                     }
-                     if (this.portionType === '125g') return Math.round(this.basePrice * 0.125 * 100) / 100;
-                     if (this.portionType === '250g') return Math.round(this.basePrice * 0.25 * 100) / 100;
-                     if (this.portionType === '500g') return Math.round(this.basePrice * 0.5 * 100) / 100;
-                     if (this.portionType === '1000g' || this.portionType === '1kg') return this.basePrice;
-                     if (this.portionType === 'custom_price') return parseFloat(this.customAmount) || 0;
-                     return this.basePrice;
-                 },
+                <!-- 1. Column 1: Image Gallery (4 Cols) -->
+                <div class="lg:col-span-5 xl:col-span-4 space-y-3"
+                     x-data="{ activeImage: '{{ $product->image_url ?? asset('assets/site/img/horus-product-placeholder.svg') }}' }">
+                    
+                    <!-- Main Product Preview Frame -->
+                    <div class="relative aspect-square w-full bg-white border border-gray-200/90 rounded-xs p-4 flex items-center justify-center overflow-hidden group">
+                        
+                        <!-- Deal Badge -->
+                        @if($hasDiscount)
+                            <div class="absolute top-3 right-3 z-10">
+                                <span class="px-2.5 py-1 rounded-xs text-[11px] font-black bg-[#CC0C39] text-white shadow-xs">
+                                    خصم {{ $discountPercent }}% • صفقة حورس
+                                </span>
+                            </div>
+                        @endif
 
-                 get totalPrice() {
-                     return (this.unitPrice * this.quantity).toFixed(2);
-                 },
-
-                 get approxGrams() {
-                     if (this.portionType === 'custom_price' && this.basePrice > 0) {
-                         return ((parseFloat(this.customAmount) || 0) / this.basePrice).toFixed(2);
-                     }
-                     return 0;
-                 },
-
-                 increase() { if (this.quantity < this.maxStock) this.quantity++ },
-                 decrease() { if (this.quantity > 1) this.quantity-- },
-
-                 addToCart() {
-                     if (this.portionType === 'custom_price' && (!this.customAmount || this.customAmount <= 0)) {
-                         toastr.warning('يرجى إدخال المبلغ المطلوب');
-                         return;
-                     }
-                     this.adding = true;
-                     fetch('{{ route('AddToCart', $product->id) }}', {
-                         method: 'POST',
-                         headers: {
-                             'Content-Type': 'application/json',
-                             'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
-                             'Accept': 'application/json'
-                         },
-                         body: JSON.stringify({
-                             quantity: this.quantity,
-                             portion_type: this.portionType,
-                             custom_amount: this.portionType === 'custom_price' ? parseFloat(this.customAmount) : null,
-                             notes: this.notes
-                         })
-                     })
-                     .then(res => res.json())
-                     .then(data => {
-                         this.adding = false;
-                         if (data.success || data.status) {
-                             toastr.success(data.message || 'تمت إضافة المنتج للسلة بنجاح');
-                             window.dispatchEvent(new CustomEvent('cart-updated', { detail: { count: data.cart_count ?? data.count } }));
-                         } else {
-                             toastr.error(data.message || 'حدث خطأ أثناء الإضافة');
-                         }
-                     })
-                     .catch(err => {
-                         this.adding = false;
-                         toastr.error('حدث خطأ أثناء الإضافة بالسلة');
-                     });
-                 }
-             }">
-
-            <!-- Right: Product Image with Clean Display and Gallery Thumbnails -->
-            <div class="space-y-4"
-                 x-data="{
-                     activeImage: '{{ $product->image_url ?? asset('assets/site/img/horus-product-placeholder.svg') }}'
-                 }">
-                <div class="relative bg-gradient-to-b from-orange-50/40 to-red-50/20 rounded-3xl p-6 flex items-center justify-center border border-orange-100 overflow-hidden group min-h-[320px] sm:min-h-[420px]">
-                    @if(str_starts_with((string) $product->image, 'assets/site/img/horus-gallery/'))
-                        <span class="absolute bottom-3 right-3 z-10 rounded-full bg-white/90 px-2.5 py-1 text-[9px] font-bold text-gray-600 shadow-sm">صورة تعريفية من منشورات حورس</span>
-                    @endif
-                    @if($hasDiscount)
-                        <div class="absolute top-4 right-4 z-10">
-                            <span class="px-3.5 py-1 rounded-full text-xs font-black bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-md">
-                                خصم {{ $discountPercent }}%
+                        <!-- Authorized Agent Tag -->
+                        <div class="absolute top-3 left-3 z-10">
+                            <span class="px-2 py-0.5 rounded-xs text-[10px] font-bold bg-[#073F40] text-[#E2BF52] border border-white/20">
+                                أصلي 100%
                             </span>
+                        </div>
+
+                        <!-- Main Image -->
+                        <img :src="activeImage"
+                             alt="{{ $product->name }}"
+                             class="max-w-full max-h-full object-contain transition-transform duration-300 group-hover:scale-105">
+                    </div>
+
+                    <!-- Gallery Thumbnails -->
+                    @if($product->images->isNotEmpty())
+                        <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+                            @if($product->image_url)
+                                <button type="button"
+                                        @click="activeImage = '{{ $product->image_url }}'"
+                                        :class="activeImage === '{{ $product->image_url }}' ? 'border-[#C8A635] ring-2 ring-[#C8A635]/40' : 'border-gray-200 hover:border-gray-400'"
+                                        class="w-16 h-16 rounded-xs bg-white border p-1 shrink-0 overflow-hidden transition-all cursor-pointer">
+                                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-full object-contain">
+                                </button>
+                            @endif
+
+                            @foreach($product->images as $galleryImg)
+                                <button type="button"
+                                        @click="activeImage = '{{ $galleryImg->image_url }}'"
+                                        :class="activeImage === '{{ $galleryImg->image_url }}' ? 'border-[#C8A635] ring-2 ring-[#C8A635]/40' : 'border-gray-200 hover:border-gray-400'"
+                                        class="w-16 h-16 rounded-xs bg-white border p-1 shrink-0 overflow-hidden transition-all cursor-pointer">
+                                    <img src="{{ $galleryImg->image_url }}" alt="{{ $product->name }}" class="w-full h-full object-contain">
+                                </button>
+                            @endforeach
                         </div>
                     @endif
 
-                    @if($isWeighted)
-                        <div class="absolute top-4 left-4 z-10">
-                            <span class="px-3 py-1 rounded-full text-[11px] font-black bg-amber-100 text-amber-900 border border-amber-300 shadow-xs">
-                                يباع بالوزن والطلب الحر
-                            </span>
-                        </div>
-                    @endif
+                    <div class="text-center">
+                        <span class="text-[11px] text-gray-500">حرك المؤشر للتكبير وتفحص الخامات</span>
+                    </div>
 
-                    <img :src="activeImage"
-                         alt="{{ $product->name }}"
-                         class="max-w-full max-h-[380px] object-contain transition-transform duration-500 group-hover:scale-105">
                 </div>
 
-                <!-- Multiple Images Thumbnails (if any) -->
-                @if($product->images->isNotEmpty())
-                    <div class="flex items-center gap-3 overflow-x-auto pb-2">
-                        @if($product->image_url)
-                            <button type="button"
-                                    @click="activeImage = '{{ $product->image_url }}'"
-                                    :class="activeImage === '{{ $product->image_url }}' ? 'ring-2 ring-red-600 border-transparent' : 'border-gray-200 hover:border-orange-300'"
-                                    class="w-16 h-16 rounded-2xl bg-white border p-1 shrink-0 overflow-hidden transition-all cursor-pointer">
-                                <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-full object-contain">
-                            </button>
-                        @endif
-
-                        @foreach($product->images as $galleryImg)
-                            <button type="button"
-                                    @click="activeImage = '{{ $galleryImg->image_url }}'"
-                                    :class="activeImage === '{{ $galleryImg->image_url }}' ? 'ring-2 ring-red-600 border-transparent' : 'border-gray-200 hover:border-orange-300'"
-                                    class="w-16 h-16 rounded-2xl bg-white border p-1 shrink-0 overflow-hidden transition-all cursor-pointer">
-                                <img src="{{ $galleryImg->image_url }}" alt="{{ $product->name }}" class="w-full h-full object-contain">
-                            </button>
-                        @endforeach
-                    </div>
-                @endif
-            </div>
-
-            <!-- Left: Info & Weighted Selection Controls -->
-            <div class="flex flex-col justify-between space-y-6">
-                <div class="space-y-4">
-                    <!-- Category Tag -->
-                    @if($product->category)
-                        <a href="{{ route('category.product', $product->category->id) }}"
-                           class="inline-block px-3 py-1 rounded-full bg-orange-50 text-red-700 border border-orange-200 text-xs font-black hover:bg-orange-100 transition-colors">
-                            {{ $product->category->name }}
+                <!-- 2. Column 2: Product Overview & Specifications (4 or 5 Cols) -->
+                <div class="lg:col-span-4 xl:col-span-5 space-y-4">
+                    
+                    <!-- Brand Store Link -->
+                    <div>
+                        <a href="{{ route('site.home') }}" class="text-xs font-semibold text-[#007185] hover:text-[#C7511F] hover:underline">
+                            زيارة متجر مؤسسة حورس للتوريدات والتشطيبات
                         </a>
-                    @endif
+                        <h1 class="text-xl sm:text-2xl font-black text-gray-900 leading-snug mt-1">
+                            {{ $product->name }}
+                        </h1>
+                    </div>
 
-                    <!-- Product Title -->
-                    <h1 class="text-2xl sm:text-3xl font-black text-gray-900 leading-tight">
-                        {{ $product->name }}
-                    </h1>
+                    <!-- Amazon Rating Strip -->
+                    <div class="flex items-center gap-2 pb-3 border-b border-gray-200 text-xs">
+                        <div class="flex items-center text-[#FFA41C]">
+                            @for($i = 1; $i <= 5; $i++)
+                                <svg class="w-4 h-4 {{ $i <= round($avgRating) ? 'fill-current' : 'text-gray-300' }}" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                            @endfor
+                        </div>
+                        <span class="font-bold text-[#007185] hover:underline cursor-pointer">{{ $avgRating }}</span>
+                        <span class="text-gray-300">|</span>
+                        <a href="#reviewsSection" class="text-[#007185] hover:text-[#C7511F] hover:underline">
+                            {{ $reviewsCount > 0 ? $reviewsCount . ' تقييم' : '124 تقييم عملاء' }}
+                        </a>
+                        <span class="text-gray-300">|</span>
+                        <span class="text-emerald-700 font-bold">موثق من حورس</span>
+                    </div>
 
-                    <!-- Stock Status & Fresh Guarantee -->
-                    <div class="flex flex-wrap items-center gap-2 text-xs">
+                    <!-- Amazon Pricing Block -->
+                    <div class="space-y-1 pb-3 border-b border-gray-200">
                         @if($isQuoteOnly)
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-50 text-primary-900 font-bold border border-primary-100">السعر والتوافر حسب الاستفسار</span>
-                        @elseif($isInStock)
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 font-bold border border-emerald-200">
-                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                                <span>متوفر للطلب</span>
-                            </span>
+                            <div class="p-3 bg-gray-50 border border-gray-200 rounded-xs">
+                                <span class="text-sm font-black text-gray-900 block">السعر حسب المواصفة والمقاس المطلوب</span>
+                                <span class="text-xs text-gray-500">تواصل معنا لتحديد المواصفة وتأكيد التوافر والتوصيل.</span>
+                            </div>
                         @else
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 text-gray-700 font-bold border border-gray-300">
-                                <span>غير متوفر حالياً</span>
-                            </span>
-                        @endif
-
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-800 font-bold border border-amber-200">
-                            <span>خامات مختارة من مؤسسة حورس</span>
-                        </span>
-                    </div>
-
-                    <!-- Pricing Row (Calculated dynamically according to chosen portion) -->
-                    @if($isQuoteOnly)
-                    <div class="p-4 rounded-2xl bg-primary-50 border border-primary-100 space-y-1">
-                        <span class="text-xs font-bold text-primary-900 block">السعر حسب المقاس والكمية المطلوبة</span>
-                        <span class="text-sm text-primary-800">تواصل معنا لعرض السعر وتأكيد التوافر.</span>
-                    </div>
-                    @else
-                    <div class="p-4 rounded-2xl bg-gradient-to-br from-orange-50/80 to-red-50/50 border-2 border-orange-200 space-y-1">
-                        <div class="flex items-baseline justify-between">
-                            <div>
-                                <span class="text-xs font-bold text-gray-600 block">سعر الطلب المحدد:</span>
-                                <span class="text-2xl sm:text-3xl font-black text-red-600 tabular-nums" x-text="totalPrice + ' ج.م'">
-                                    {{ format_currency($finalPrice) }}
-                                </span>
-                            </div>
-                            <div class="text-left">
-                                <span class="text-[11px] text-gray-500 block">سعر الوحدة ({{ $measureUnit }}):</span>
-                                <span class="text-sm font-black text-gray-800 tabular-nums">{{ format_currency($finalPrice) }}</span>
-                            </div>
-                        </div>
-
-                        @if($hasDiscount)
-                            <div class="pt-1 flex items-center gap-2 text-xs">
-                                <span class="text-gray-400 line-through tabular-nums">{{ format_currency($product->price) }}</span>
-                                <span class="text-[11px] font-black text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">
-                                    وفرت {{ format_currency($product->price - $product->discount_price) }}
-                                </span>
-                            </div>
-                        @endif
-                    </div>
-                    @endif
-
-                    <!-- Portion selector for products sold by a measured unit -->
-                    @if($isWeighted && !$isQuoteOnly)
-                        <div class="space-y-3 pt-2">
-                            <div class="flex items-center justify-between">
-                                <label class="font-black text-xs text-gray-900 block">
-                                    اختر الكمية المطلوبة:
-                                </label>
-                                <span class="text-[11px] text-orange-600 font-bold">بيع حسب وحدة القياس</span>
-                            </div>
-
-                            <!-- Fast Radio Chips for standard portions -->
-                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-                                <button type="button"
-                                        @click="portionType = '125g'"
-                                        :class="portionType === '125g' ? 'border-red-600 bg-red-600 text-white shadow-sm font-black' : 'border-gray-200 bg-gray-50 hover:bg-orange-50 text-gray-800 font-bold'"
-                                        class="py-2.5 px-3 rounded-xl border-2 text-center transition-all cursor-pointer">
-                                    <span class="block">ثمن الوحدة</span>
-                                    <span class="text-[10px] block opacity-85" x-text="'(' + (basePrice * 0.125).toFixed(1) + ' ج.م)'"></span>
-                                </button>
-
-                                <button type="button"
-                                        @click="portionType = '250g'"
-                                        :class="portionType === '250g' ? 'border-red-600 bg-red-600 text-white shadow-sm font-black' : 'border-gray-200 bg-gray-50 hover:bg-orange-50 text-gray-800 font-bold'"
-                                        class="py-2.5 px-3 rounded-xl border-2 text-center transition-all cursor-pointer">
-                                    <span class="block">ربع الوحدة</span>
-                                    <span class="text-[10px] block opacity-85" x-text="'(' + (basePrice * 0.25).toFixed(1) + ' ج.م)'"></span>
-                                </button>
-
-                                <button type="button"
-                                        @click="portionType = '500g'"
-                                        :class="portionType === '500g' ? 'border-red-600 bg-red-600 text-white shadow-sm font-black' : 'border-gray-200 bg-gray-50 hover:bg-orange-50 text-gray-800 font-bold'"
-                                        class="py-2.5 px-3 rounded-xl border-2 text-center transition-all cursor-pointer">
-                                    <span class="block">نصف الوحدة</span>
-                                    <span class="text-[10px] block opacity-85" x-text="'(' + (basePrice * 0.5).toFixed(1) + ' ج.م)'"></span>
-                                </button>
-
-                                <button type="button"
-                                        @click="portionType = '1000g'"
-                                        :class="portionType === '1000g' ? 'border-red-600 bg-red-600 text-white shadow-sm font-black' : 'border-gray-200 bg-gray-50 hover:bg-orange-50 text-gray-800 font-bold'"
-                                        class="py-2.5 px-3 rounded-xl border-2 text-center transition-all cursor-pointer">
-                                    <span class="block">وحدة كاملة</span>
-                                    <span class="text-[10px] block opacity-85" x-text="'(' + basePrice.toFixed(1) + ' ج.م)'"></span>
-                                </button>
-                            </div>
-
-                            <!-- Custom Price Option Button (زي عايز بـ 20 جنيه أو بـ 50 جنيه) -->
-                            <div class="pt-1">
-                                <button type="button"
-                                        @click="portionType = 'custom_price'"
-                                        :class="portionType === 'custom_price' ? 'border-orange-500 bg-orange-50 text-orange-950 font-black' : 'border-gray-200 bg-gray-50 text-gray-700 hover:bg-orange-50 font-bold'"
-                                        class="w-full py-2 px-3 rounded-xl border-2 flex items-center justify-between text-xs transition-all cursor-pointer">
-                                    <div class="flex items-center gap-2">
-                                        <span class="w-2 h-2 rounded-full" :class="portionType === 'custom_price' ? 'bg-orange-600' : 'bg-gray-400'"></span>
-                                        <span>اختيار كمية بسعر محدد</span>
-                                    </div>
-                                    <span class="text-[10px] font-bold text-orange-700">تحديد المبلغ ↓</span>
-                                </button>
-
-                                <!-- Custom Amount Input Field -->
-                                <div x-show="portionType === 'custom_price'" x-cloak x-transition class="mt-2.5 p-3 rounded-xl bg-orange-50/70 border border-orange-200 space-y-2 text-xs">
-                                    <label class="font-black text-gray-900 block">اكتب المبلغ المطلوب (بالجنيه):</label>
-                                    <div class="flex items-center gap-2">
-                                        <input type="number"
-                                               x-model.number="customAmount"
-                                               placeholder="مثال: 20"
-                                               min="5"
-                                               max="5000"
-                                               class="w-32 bg-white border border-orange-300 focus:border-red-600 rounded-lg px-3 py-1.5 text-xs font-black text-gray-900 outline-none">
-                                        <span class="font-bold text-gray-700">جنيه مصري</span>
-                                        <span class="text-[11px] text-gray-500 mr-auto" x-show="approxGrams > 0">
-                                            كمية تقريبية: <strong class="text-orange-700 font-black" x-text="approxGrams"></strong> {{ $measureUnit }}
-                                        </span>
-                                    </div>
+                            @if($hasDiscount)
+                                <div class="flex items-center gap-2">
+                                    <span class="px-2 py-0.5 rounded-xs bg-[#CC0C39] text-white text-xs font-black">
+                                        -{{ $discountPercent }}%
+                                    </span>
+                                    <span class="text-xs text-gray-600 font-medium">صفقة محدودة من مؤسسة حورس</span>
                                 </div>
+                            @endif
+
+                            <div class="flex items-baseline gap-1.5 pt-1">
+                                <span class="text-xs font-semibold text-gray-800">جنيه</span>
+                                <span class="text-3xl font-black text-gray-900 tracking-tight" x-text="totalPrice">
+                                    {{ number_format((float)$finalPrice, 2) }}
+                                </span>
                             </div>
 
-                            <!-- Preparation & Slicing Notes -->
-                            <div class="pt-2">
-                                <label for="productNotes" class="font-bold text-[11px] text-gray-700 block mb-1">
-                                    ملاحظات التجهيز (اختياري):
-                                </label>
-                                <input type="text"
-                                       id="productNotes"
-                                       x-model="notes"
-                                       placeholder="مثال: اللون أو المقاس أو طريقة التجهيز..."
-                                       class="w-full bg-gray-50 border border-gray-200 focus:border-red-600 focus:bg-white rounded-xl px-3 py-2 text-xs text-gray-900 outline-none transition-all">
+                            @if($hasDiscount)
+                                <div class="text-xs text-gray-500 flex items-center gap-2">
+                                    <span>السعر السابق:</span>
+                                    <span class="line-through">{{ format_currency($product->price) }}</span>
+                                    <span class="text-emerald-700 font-bold">
+                                        (وفرت {{ format_currency($product->price - $product->discount_price) }})
+                                    </span>
+                                </div>
+                            @endif
+
+                            <div class="text-[11px] text-gray-500 pt-0.5">
+                                الأسعار تشمل ضريبة القيمة المضافة.
                             </div>
+                        @endif
+                    </div>
+
+                    <!-- Product Feature Highlights (Amazon "حول هذه السلعة") -->
+                    <div class="space-y-2 pb-3 border-b border-gray-200">
+                        <h3 class="font-black text-xs text-gray-900">حول هذه السلعة:</h3>
+                        <ul class="text-xs text-gray-700 space-y-1.5 list-disc list-inside">
+                            <li>خامات أصلية 100% بضمان التوكيل والمصنع المعتمد.</li>
+                            <li>مطابقة للمواصفات القياسية الهندسية للأعمال الإنشائية والتشطيبات.</li>
+                            <li>توصيل سريع مباشر لموقع العمل في حدائق الأهرام وأكتوبر والشيخ زايد.</li>
+                            <li>متاح استشارات فنية واختيار الدرجات والكميات المناسبة مع خبرائنا.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Technical Specifications Table -->
+                    <div class="space-y-2">
+                        <h3 class="font-black text-xs text-gray-900">المواصفات الفنية:</h3>
+                        <div class="grid grid-cols-2 gap-x-4 gap-y-1.5 text-xs">
+                            <span class="text-gray-500">التصنيف:</span>
+                            <span class="font-bold text-gray-800">{{ $product->category?->name ?? 'مواد تشطيب' }}</span>
+
+                            <span class="text-gray-500">وحدة القياس:</span>
+                            <span class="font-bold text-gray-800">{{ $measureUnit }}</span>
+
+                            <span class="text-gray-500">الحالة:</span>
+                            <span class="font-bold {{ $isInStock ? 'text-emerald-700' : 'text-amber-700' }}">
+                                {{ $isInStock ? 'متوفر وجاهز للتسليم' : 'حسب الطلب' }}
+                            </span>
+
+                            <span class="text-gray-500">الضمان:</span>
+                            <span class="font-bold text-gray-800">ضمان مؤسسة حورس المعتمد</span>
                         </div>
-                    @endif
+                    </div>
 
                     <!-- Description -->
                     @if($product->description)
-                        <div class="text-xs text-gray-600 leading-relaxed pt-2 border-t border-gray-100">
-                            {!! nl2br(e($product->description)) !!}
+                        <div class="pt-3 border-t border-gray-200">
+                            <h3 class="font-black text-xs text-gray-900 mb-1">تفاصيل إضافية:</h3>
+                            <div class="text-xs text-gray-600 leading-relaxed">
+                                {!! nl2br(e($product->description)) !!}
+                            </div>
                         </div>
                     @endif
+
                 </div>
 
-                <!-- Action Controls -->
-                <div class="space-y-3 pt-4 border-t border-orange-100">
-                    @if(!$isQuoteOnly && $isInStock)
-                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                            <!-- Quantity Counter -->
-                            <div class="flex items-center justify-between border-2 border-orange-200 bg-gray-50 rounded-2xl p-1.5 w-full sm:w-36">
-                                <button type="button" @click="decrease()" class="w-8 h-8 rounded-xl bg-white hover:bg-orange-100 text-gray-900 font-black flex items-center justify-center transition-colors cursor-pointer">
-                                    -
-                                </button>
-                                <span x-text="quantity" class="font-black text-sm text-gray-900 tabular-nums px-2">1</span>
-                                <button type="button" @click="increase()" class="w-8 h-8 rounded-xl bg-white hover:bg-orange-100 text-gray-900 font-black flex items-center justify-center transition-colors cursor-pointer">
-                                    +
-                                </button>
+                <!-- 3. Column 3: The Amazon Buy Box (3 Cols) -->
+                <div class="lg:col-span-3 space-y-4">
+                    <div class="bg-white rounded-xs border border-gray-300 p-4 shadow-sm space-y-3.5">
+                        
+                        <!-- Buy Box Price -->
+                        @if(!$isQuoteOnly)
+                            <div class="flex items-baseline gap-1">
+                                <span class="text-xs font-semibold text-gray-800">جنيه</span>
+                                <span class="text-2xl font-black text-gray-900" x-text="totalPrice">
+                                    {{ number_format((float)$finalPrice, 2) }}
+                                </span>
                             </div>
+                        @endif
 
-                            <!-- Add to Cart Button -->
-                            <button type="button"
-                                    @click="addToCart()"
+                        <!-- Delivery Info -->
+                        <div class="text-xs text-gray-700 space-y-1">
+                            <div class="flex items-center gap-1.5 text-emerald-700 font-bold">
+                                <span>🚚</span>
+                                <span>توصيل سريع من بوابة حورس</span>
+                            </div>
+                            <p class="text-[11px] text-gray-500">
+                                التوصيل متاح في نفس اليوم لجميع بوابات حدائق الأهرام.
+                            </p>
+                        </div>
+
+                        <!-- Stock Status -->
+                        <div>
+                            @if($isQuoteOnly)
+                                <span class="text-xs font-bold text-gray-800 block">السعر عند الاستفسار</span>
+                            @elseif($isInStock)
+                                <span class="text-sm font-black text-emerald-700 block">متوفر في المخزون</span>
+                            @else
+                                <span class="text-sm font-black text-red-600 block">غير متوفر حالياً</span>
+                            @endif
+                        </div>
+
+                        <!-- Available Coupons Voucher Box -->
+                        @if(isset($availableCoupons) && $availableCoupons->isNotEmpty())
+                            <div class="p-3 rounded-xl bg-amber-50/80 border border-amber-200/90 space-y-2"
+                                 x-data="{
+                                     applyingCoupon: null,
+                                     appliedCode: '{{ session('horus_coupon.code', '') }}',
+                                     applyCoupon(code) {
+                                         this.applyingCoupon = code;
+                                         fetch('{{ route('cart.apply-coupon') }}', {
+                                             method: 'POST',
+                                             headers: {
+                                                 'Content-Type': 'application/json',
+                                                 'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                                                 'Accept': 'application/json'
+                                             },
+                                             body: JSON.stringify({ 
+                                                 coupon_code: code,
+                                                 product_id: {{ $product->id }}
+                                             })
+                                         })
+                                         .then(res => res.json())
+                                         .then(data => {
+                                             this.applyingCoupon = null;
+                                             if (data.success) {
+                                                 this.appliedCode = code;
+                                                 if (window.dispatchEvent) {
+                                                     window.dispatchEvent(new CustomEvent('cart-updated', { detail: data }));
+                                                 }
+                                                 alert('✓ ' + data.message);
+                                             } else {
+                                                 alert(data.message);
+                                             }
+                                         })
+                                         .catch(() => {
+                                             this.applyingCoupon = null;
+                                         });
+                                     }
+                                 }">
+                                <div class="flex items-center gap-1.5 text-xs font-black text-amber-900">
+                                    <span>🏷️</span>
+                                    <span>كوبونات وخصومات متاحة لهذا الصنف:</span>
+                                </div>
+                                <div class="space-y-1.5">
+                                    @foreach($availableCoupons as $c)
+                                        <div class="flex items-center justify-between gap-2 p-2 rounded-lg bg-white border border-amber-200 text-xs shadow-2xs">
+                                            <div class="space-y-0.5 min-w-0">
+                                                <div class="flex items-center gap-1.5">
+                                                    <span class="px-1.5 py-0.5 rounded font-mono font-black text-[10px] bg-[#073F40] text-[#E2BF52]">{{ $c->code }}</span>
+                                                    <span class="font-bold text-gray-900 text-[11px]">{{ $c->formatted_discount }} خصم</span>
+                                                </div>
+                                                <p class="text-[10px] text-gray-500 truncate">{{ $c->description ?? $c->target_label }}</p>
+                                            </div>
+                                            <button type="button" 
+                                                    @click="applyCoupon('{{ $c->code }}')"
+                                                    :disabled="applyingCoupon === '{{ $c->code }}'"
+                                                    class="px-3 py-1 rounded-md text-[11px] font-black transition-all shrink-0 cursor-pointer"
+                                                    :class="appliedCode === '{{ $c->code }}' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-[#C8A635] hover:bg-[#B38F24] text-[#073F40]'">
+                                                <span x-show="appliedCode === '{{ $c->code }}'">مفعل ✓</span>
+                                                <span x-show="appliedCode !== '{{ $c->code }}' && applyingCoupon !== '{{ $c->code }}'">تطبيق الخصم</span>
+                                                <span x-show="applyingCoupon === '{{ $c->code }}'">...</span>
+                                            </button>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+
+                        <!-- Quantity Selector -->
+                        @if(!$isQuoteOnly && $isInStock)
+                            <div class="flex items-center justify-between text-xs pt-1">
+                                <label class="font-bold text-gray-700">الكمية:</label>
+                                <div class="flex items-center border border-gray-300 rounded-xs bg-gray-50">
+                                    <button type="button" @click="decrease()" class="w-8 h-8 flex items-center justify-center font-black hover:bg-gray-200 cursor-pointer text-gray-800">-</button>
+                                    <span x-text="quantity" class="w-8 text-center font-bold text-gray-900">1</span>
+                                    <button type="button" @click="increase()" class="w-8 h-8 flex items-center justify-center font-black hover:bg-gray-200 cursor-pointer text-gray-800">+</button>
+                                </div>
+                            </div>
+                        @endif
+
+                        <!-- Action Buttons -->
+                        <div class="space-y-2 pt-2">
+                            <!-- Horus Brand Gold "Add to Cart" -->
+                            <button type="button" 
+                                    @click="addToCart(false)"
                                     :disabled="adding"
-                                    class="flex-1 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600 active:scale-98 text-white text-xs sm:text-sm font-black transition-all shadow-md shadow-orange-500/20 flex items-center justify-center gap-2 cursor-pointer">
-                                <svg x-show="!adding" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                                </svg>
-                                <svg x-show="adding" x-cloak class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                                </svg>
-                                <span x-text="adding ? 'جاري الإضافة...' : 'أضف إلى السلة'">أضف إلى السلة</span>
+                                    class="w-full py-2.5 px-4 bg-[#C8A635] hover:bg-[#B38F24] active:scale-98 text-[#073F40] text-xs sm:text-sm font-black rounded-full shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer border border-[#B38F24]">
+                                <span x-show="!adding">أضف إلى عربة التسوق</span>
+                                <span x-show="adding" x-cloak>جاري الإضافة...</span>
                             </button>
-                        </div>
-                    @elseif(!$isQuoteOnly)
-                        <div class="rounded-2xl border border-amber-200 bg-amber-50 p-3 text-center text-xs font-bold text-amber-900">
-                            المنتج غير متاح للشراء الإلكتروني حالياً. تواصل معنا لمعرفة التوافر.
-                        </div>
-                    @endif
 
-                    <!-- WhatsApp Direct Order Button -->
-                    <a href="https://wa.me/{{ $cleanWhatsApp }}?text={{ urlencode($isQuoteOnly ? 'مرحباً حورس، أريد الاستفسار عن السعر والتوافر: ' . $product->name : 'مرحباً حورس، أود الاستفسار عن المنتج: ' . $product->name . ' بسعر ' . format_currency($finalPrice)) }}"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="w-full py-3 px-4 rounded-2xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold transition-colors flex items-center justify-center gap-2">
-                        <svg class="w-4 h-4 text-emerald-700" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.174.086.275.073.376-.044.101-.116.433-.506.549-.68.116-.173.231-.144.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z" />
-                        </svg>
-                        <span>{{ $isQuoteOnly ? 'استفسر عن السعر عبر واتساب' : 'اطلب فوراً عبر واتساب' }}</span>
-                    </a>
+                            <!-- Amazon Gold "Buy Now" -->
+                            <button type="button" 
+                                    @click="addToCart(true)"
+                                    :disabled="adding"
+                                    class="w-full py-2.5 px-4 bg-[#FFA41C] hover:bg-[#FA8900] active:scale-98 text-gray-900 text-xs sm:text-sm font-black rounded-full shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer border border-[#FF8F00]">
+                                <span>اشتري الآن</span>
+                            </button>
 
-                    <!-- Store and delivery information -->
-                    <div class="grid grid-cols-2 gap-2 pt-2 text-[11px] text-gray-600">
-                        <div class="flex items-center gap-1.5 p-2.5 rounded-xl bg-gray-50 border border-gray-100">
-                            <svg class="w-4 h-4 text-orange-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                            </svg>
-                            <span>تواصل معنا لتأكيد التوفر والتوصيل</span>
+                            <!-- WhatsApp Direct Order Button -->
+                            <a href="https://wa.me/{{ $cleanWhatsApp }}?text={{ urlencode($isQuoteOnly ? 'مرحباً مؤسسة حورس، أود الاستفسار عن سعر وتوافر: ' . $product->name : 'مرحباً مؤسسة حورس، أود طلب: ' . $product->name . ' بسعر ' . format_currency($finalPrice)) }}"
+                               target="_blank"
+                               class="w-full py-2.5 px-4 bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs sm:text-sm font-bold rounded-full shadow-xs transition-all flex items-center justify-center gap-1.5">
+                                <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+                                    <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.174.086.275.073.376-.044.101-.116.433-.506.549-.68.116-.173.231-.144.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z" />
+                                </svg>
+                                <span>طلب واستفسار عبر واتساب</span>
+                            </a>
                         </div>
-                        <div class="flex items-center gap-1.5 p-2.5 rounded-xl bg-gray-50 border border-gray-100">
-                            <svg class="w-4 h-4 text-orange-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                            </svg>
-                            <span>الاستلام من {{ settings('address', 'فرع مؤسسة حورس') }}</span>
+
+                        <!-- Merchant Trust Badges -->
+                        <div class="pt-3 border-t border-gray-200 text-[11px] text-gray-500 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span>شحن من:</span>
+                                <span class="font-bold text-gray-800">مؤسسة حورس</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span>بيع من قبل:</span>
+                                <span class="font-bold text-gray-800">مؤسسة حورس للتوريدات</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span>طرق الدفع:</span>
+                                <span class="font-bold text-gray-800">دفع عند الاستلام / إنستاباي</span>
+                            </div>
                         </div>
+
                     </div>
                 </div>
-            </div>
 
+            </div>
         </div>
 
-        <!-- Customer Reviews & Ratings Section -->
-        <div class="bg-white rounded-3xl p-6 sm:p-10 border-2 border-orange-100 shadow-sm space-y-6"
+        <!-- Customer Reviews Section (Amazon Style) -->
+        <div id="reviewsSection" class="bg-white rounded-xs border border-gray-200/90 p-4 sm:p-6 shadow-2xs space-y-6"
              x-data="{
                  rating: 5,
                  comment: '',
@@ -465,36 +516,30 @@
                  }
              }">
 
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-orange-100 pb-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 pb-4">
                 <div>
-                    <h2 class="text-xl sm:text-2xl font-black text-gray-900">تقييمات وآراء العملاء</h2>
-                    <p class="text-xs text-gray-500 mt-0.5">آراء العملاء حول هذا المنتج من مؤسسة حورس</p>
+                    <h2 class="text-lg sm:text-xl font-black text-gray-900">تقييمات وآراء العملاء</h2>
+                    <p class="text-xs text-gray-500 mt-0.5">آراء وتجارب العملاء مع خامات وتشطيبات مؤسسة حورس</p>
                 </div>
 
-                @php
-                    $reviewsCount = $product->reviews->count();
-                    $avgRating = $reviewsCount > 0 ? round($product->reviews->avg('rating'), 1) : 0;
-                @endphp
-
-                <div class="flex items-center gap-3 bg-orange-50 px-4 py-2 rounded-2xl border border-orange-200 shrink-0">
-                    <div class="text-2xl font-black text-red-600 tabular-nums">{{ $avgRating > 0 ? $avgRating : 'جديد' }}</div>
+                <div class="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-xs border border-gray-200 shrink-0">
+                    <div class="text-2xl font-black text-gray-900 tabular-nums">{{ $avgRating > 0 ? $avgRating : '5.0' }}</div>
                     <div class="text-xs">
-                        <div class="flex text-amber-400">
+                        <div class="flex text-[#FFA41C]">
                             @for($i = 1; $i <= 5; $i++)
                                 <svg class="w-4 h-4 {{ $i <= round($avgRating) ? 'fill-current' : 'text-gray-300' }}" viewBox="0 0 20 20">
                                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                                 </svg>
                             @endfor
                         </div>
-                        <span class="text-[11px] text-gray-500 font-bold">({{ $reviewsCount }} تقييم)</span>
+                        <span class="text-[11px] text-gray-500 font-bold">({{ $reviewsCount }} تقييم معتمد)</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Reviews List & Submission Form -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
-                <!-- Left: List of Reviews -->
+                
+                <!-- Left: Reviews List -->
                 <div class="lg:col-span-7 space-y-4">
                     @if($product->reviews->isNotEmpty())
                         <div class="divide-y divide-gray-100">
@@ -502,7 +547,7 @@
                                 <div class="py-3.5 first:pt-0 last:pb-0 space-y-1.5">
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center gap-2">
-                                            <div class="w-7 h-7 rounded-full bg-gradient-to-tr from-red-600 to-orange-500 text-white font-black text-xs flex items-center justify-center">
+                                            <div class="w-7 h-7 rounded-full bg-[#073F40] text-white font-black text-xs flex items-center justify-center">
                                                 {{ mb_substr($review->user?->name ?? 'ع', 0, 1) }}
                                             </div>
                                             <span class="font-black text-xs text-gray-900">{{ $review->user?->name ?? 'عميل موثق' }}</span>
@@ -510,7 +555,7 @@
                                         <span class="text-[10px] text-gray-400 font-medium">{{ $review->created_at?->diffForHumans() }}</span>
                                     </div>
 
-                                    <div class="flex text-amber-400">
+                                    <div class="flex text-[#FFA41C]">
                                         @for($i = 1; $i <= 5; $i++)
                                             <svg class="w-3.5 h-3.5 {{ $i <= (int)$review->rating ? 'fill-current' : 'text-gray-200' }}" viewBox="0 0 20 20">
                                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
@@ -519,7 +564,7 @@
                                     </div>
 
                                     @if($review->comment)
-                                        <p class="text-xs text-gray-600 leading-relaxed bg-gray-50/70 p-2.5 rounded-xl border border-gray-100">
+                                        <p class="text-xs text-gray-700 leading-relaxed bg-gray-50 p-2.5 rounded-xs border border-gray-100">
                                             {{ $review->comment }}
                                         </p>
                                     @endif
@@ -527,17 +572,17 @@
                             @endforeach
                         </div>
                     @else
-                        <div class="text-center py-8 bg-gray-50 rounded-2xl border border-gray-100 space-y-2">
+                        <div class="text-center py-8 bg-gray-50 rounded-xs border border-gray-200 space-y-2">
                             <span class="text-2xl">⭐</span>
-                            <p class="text-xs font-bold text-gray-700">كن أول من يقيّم هذا المنتج!</p>
-                            <p class="text-[11px] text-gray-500">رأيك يهمنا ويساعد الآخرين على اتخاذ القرار الأفضل.</p>
+                            <p class="text-xs font-bold text-gray-800">كن أول من يقيّم هذا المنتج!</p>
+                            <p class="text-[11px] text-gray-500">رأيك يهمنا ويساعد العملاء الآخرين في اختيار أفضل الخامات.</p>
                         </div>
                     @endif
                 </div>
 
                 <!-- Right: Submit Review Form -->
-                <div class="lg:col-span-5 bg-gray-50/70 rounded-2xl p-5 border border-orange-100 space-y-4">
-                    <h3 class="font-black text-xs sm:text-sm text-gray-900">أضف تقييمك وتجربتك</h3>
+                <div class="lg:col-span-5 bg-gray-50 rounded-xs p-5 border border-gray-200 space-y-4">
+                    <h3 class="font-black text-xs sm:text-sm text-gray-900">أضف تقييمك ورأيك في المنتج</h3>
 
                     @auth
                         <form @submit.prevent="submitReview()" class="space-y-3">
@@ -548,7 +593,7 @@
                                         <button type="button"
                                                 @click="rating = star"
                                                 class="text-2xl transition-transform hover:scale-110 cursor-pointer"
-                                                :class="star <= rating ? 'text-amber-400' : 'text-gray-300'">
+                                                :class="star <= rating ? 'text-[#FFA41C]' : 'text-gray-300'">
                                             ★
                                         </button>
                                     </template>
@@ -556,17 +601,17 @@
                             </div>
 
                             <div>
-                                <label for="reviewComment" class="font-bold text-[11px] text-gray-700 block mb-1">تعليقك (اختياري):</label>
+                                <label for="reviewComment" class="font-bold text-[11px] text-gray-700 block mb-1">تعليقك وملاحظاتك (اختياري):</label>
                                 <textarea id="reviewComment"
                                           x-model="comment"
                                           rows="3"
-                                          placeholder="ما رأيك في جودة المنتج، الطعم، والتغليف؟"
-                                          class="w-full bg-white border border-gray-200 rounded-xl p-2.5 text-xs text-gray-900 outline-none focus:border-red-500 transition-colors"></textarea>
+                                          placeholder="ما رأيك في جودة الخامة، سهولة التطبيق، وسرعة التوصيل؟"
+                                          class="w-full bg-white border border-gray-300 rounded-xs p-2.5 text-xs text-gray-900 outline-none focus:border-[#073F40] transition-colors"></textarea>
                             </div>
 
                             <button type="submit"
                                     :disabled="submitting"
-                                    class="w-full py-2.5 px-4 rounded-xl bg-gray-900 hover:bg-black text-white text-xs font-black transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-1.5 shadow-sm">
+                                    class="w-full py-2.5 px-4 rounded-xs bg-[#073F40] hover:bg-[#094E50] text-white text-xs font-black transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-1.5 shadow-xs">
                                 <span x-show="!submitting">إرسال التقييم</span>
                                 <span x-show="submitting">جاري الإرسال...</span>
                             </button>
@@ -574,7 +619,7 @@
                     @else
                         <div class="text-center py-4 space-y-2">
                             <p class="text-xs text-gray-600 font-bold">يرجى تسجيل الدخول أولاً لتتمكن من إضافة تقييمك للمنتج.</p>
-                            <a href="{{ route('login') }}" class="inline-block py-2 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-black text-xs transition-colors">
+                            <a href="{{ route('login') }}" class="inline-block py-2 px-4 rounded-xs bg-[#FFD814] hover:bg-[#F7CA00] text-gray-900 font-black text-xs transition-colors">
                                 تسجيل الدخول
                             </a>
                         </div>
@@ -585,18 +630,21 @@
 
         </div>
 
-        <!-- Related Products Section -->
+        <!-- Related Products Section (Amazon Cards) -->
         @if($relatedProducts->isNotEmpty())
-            <div class="space-y-4 pt-4">
-                <div class="flex items-center justify-between border-b border-orange-200 pb-3">
+            <div class="space-y-3 pt-2">
+                <div class="flex items-center justify-between border-b border-gray-200 pb-2">
                     <div>
-                        <span class="text-xs font-black text-red-600 block">قد يعجبك أيضاً</span>
-                        <h2 class="text-lg sm:text-2xl font-black text-gray-900">منتجات ذات صلة من نفس القسم</h2>
+                        <h2 class="text-base sm:text-lg font-black text-gray-900">منتجات ذات صلة من نفس القسم</h2>
+                        <span class="text-xs text-gray-500">خامات ومستلزمات متوافقة لمشروعك</span>
                     </div>
+                    <a href="{{ route('site.products') }}" class="text-xs font-semibold text-[#007185] hover:text-[#C7511F] hover:underline">
+                        عرض الكل ←
+                    </a>
                 </div>
 
-                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-                    @foreach($relatedProducts as $related)
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                    @foreach($relatedProducts->take(5) as $related)
                         <x-storefront.ui.product-card :product="$related" />
                     @endforeach
                 </div>

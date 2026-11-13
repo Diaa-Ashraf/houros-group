@@ -33,7 +33,9 @@ class CartController extends Controller
             $this->abandonedCartService->recordSnapshot($this->cartService->getItems(), $totals, auth()->user());
         }
 
-        return view('storefront.cart', compact('items', 'totals', 'branches', 'deliveryType'));
+        $availableCoupons = app(\App\Services\CouponService::class)->getAvailableCoupons($totals['subtotal']);
+
+        return view('storefront.cart', compact('items', 'totals', 'branches', 'deliveryType', 'availableCoupons'));
     }
 
     /**
@@ -170,12 +172,30 @@ class CartController extends Controller
     public function applyCoupon(Request $request, \App\Services\CouponService $couponService): JsonResponse
     {
         $code = (string)$request->input('coupon_code', '');
-        
+        $productId = $request->input('product_id');
+
         if (empty($code)) {
             return response()->json([
                 'success' => false,
-                'message' => __('يرجى إدخال كود الكوبون.'),
+                'message' => __('يرجى إدخال أو اختيار كود الكوبون.'),
             ], 422);
+        }
+
+        // Auto-add target product to cart if requested from product page
+        if ($productId) {
+            $product = \App\Models\Product::find($productId);
+            if ($product) {
+                $hasItem = false;
+                foreach ($this->cartService->getItems() as $item) {
+                    if ((int)($item['product_id'] ?? 0) === (int)$productId) {
+                        $hasItem = true;
+                        break;
+                    }
+                }
+                if (!$hasItem) {
+                    $this->cartService->addProduct($product->id, 1);
+                }
+            }
         }
 
         $totals = $this->cartService->getTotals();
@@ -184,11 +204,17 @@ class CartController extends Controller
         if ($subtotal <= 0) {
             return response()->json([
                 'success' => false,
-                'message' => __('السلة فارغة، لا يمكن تطبيق الكوبون.'),
+                'message' => __('السلة فارغة، يرجى إضافة منتج أولاً لتطبيق الخصم.'),
             ], 422);
         }
 
-        $result = $couponService->validateCoupon($code, $subtotal);
+        $result = $couponService->validateCoupon(
+            $code, 
+            $subtotal, 
+            auth()->id(), 
+            null, 
+            $this->cartService->getItems()
+        );
 
         if (!$result['valid']) {
             return response()->json([
@@ -205,6 +231,8 @@ class CartController extends Controller
             'message' => $result['message'],
             'discount' => $result['discount'],
             'totals' => $newTotals,
+            'cart_count' => $this->cartService->getItemCount(),
+            'items' => $this->cartService->getDetailedItems(),
         ]);
     }
 

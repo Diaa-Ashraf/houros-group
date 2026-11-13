@@ -133,8 +133,10 @@
     <!-- Global Footer -->
     <x-storefront.layout.footer />
 
-    <!-- Slide-over Cart Drawer -->
-    <x-storefront.layout.cart-drawer />
+    <!-- Slide-over Cart Drawer (excluded on Cart & Checkout pages to avoid drawer popups over the page) -->
+    @if(!request()->routeIs('cart') && !request()->routeIs('checkout*'))
+        <x-storefront.layout.cart-drawer />
+    @endif
 
     <!-- WhatsApp Floating Action Button -->
     <x-storefront.layout.whatsapp-float />

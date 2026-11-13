@@ -126,6 +126,7 @@ Route::post('/reviews', [\App\Http\Controllers\Storefront\ReviewController::clas
 // Checkout Flow (Phase 4)
 Route::get('checkout', [\App\Http\Controllers\Storefront\CheckoutController::class, 'index'])->name('checkout.index');
 Route::post('checkout', [\App\Http\Controllers\Storefront\CheckoutController::class, 'placeOrder'])->middleware('throttle:checkout')->name('checkout.place');
+Route::post('checkout/whatsapp', [\App\Http\Controllers\Storefront\CheckoutController::class, 'placeWhatsAppOrder'])->middleware('throttle:checkout')->name('checkout.whatsapp');
 Route::get('checkout/confirmation/{order}', [\App\Http\Controllers\Storefront\CheckoutController::class, 'confirmation'])->name('checkout.confirmation');
 
 // Dashboard Routes - Protected by auth & admin middleware
@@ -310,6 +311,18 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/banners-edit-alias/{banner}', [BannerController::class, 'edit'])->name('banners.edit');
     Route::put('/banners-update-alias/{banner}', [BannerController::class, 'update'])->name('banners.update');
     Route::delete('/banners-destroy-alias/{banner}', [BannerController::class, 'destroy'])->name('banners.destroy');
+
+    // Hero Feature Cards (Floating Amazon-style Cards)
+    Route::resource('/hero-cards', \App\Http\Controllers\Admin\HeroCardController::class)->names([
+        'index' => 'admin.hero-cards.index',
+        'create' => 'admin.hero-cards.create',
+        'store' => 'admin.hero-cards.store',
+        'show' => 'admin.hero-cards.show',
+        'edit' => 'admin.hero-cards.edit',
+        'update' => 'admin.hero-cards.update',
+        'destroy' => 'admin.hero-cards.destroy',
+    ]);
+    Route::patch('/hero-cards/{hero_card}/toggle', [\App\Http\Controllers\Admin\HeroCardController::class, 'toggle'])->name('admin.hero-cards.toggle');
 
     // Global Settings
     Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');

@@ -7,383 +7,310 @@
         $cartCount = session('cart') ? count(session('cart')) : 0;
     }
 
-    $navCategories = \Illuminate\Support\Facades\Cache::remember('horus_nav_categories_v1', 3600, function () {
-        return \App\Models\Category::select('id', 'name', 'slug')->whereIn('slug', ['scib-paints', 'gypsum-board', 'fyutec-cornices', 'wall-panels', 'construction-tools', 'finishing-materials', 'doors', 'decor'])->take(8)->get();
+    $storePhone = settings('store_phone', '01002527072');
+    $storeWhatsApp = preg_replace('/[^0-9]/', '', settings('store_whatsapp', '201002527072'));
+    $categoriesList = \Illuminate\Support\Facades\Cache::remember('horus_amazon_nav_categories_v1', 3600, function () {
+        return \App\Models\Category::select('id', 'name', 'slug')->whereIn('slug', [
+            'scib-paints', 'gypsum-board', 'fyutec-cornices', 'wall-panels', 
+            'construction-tools', 'finishing-materials', 'doors', 'decor'
+        ])->get();
     });
 @endphp
 
-<header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md shadow-sm border-b border-cream" x-data="{ mobileSearchOpen: false }">
-    <!-- Main Header Bar -->
-    <div class="container mx-auto px-3 sm:px-4 py-2.5 sm:py-3 md:py-4">
-        <div class="flex items-center justify-between gap-2 sm:gap-4 md:gap-8">
+<header class="sticky top-0 z-40 w-full font-sans select-none text-white shadow-md" dir="rtl"
+        x-data="{ 
+            selectedCategory: 'all',
+            searchQuery: '{{ request('q', request('search')) }}',
+            searchResults: [],
+            searchLoading: false,
+            searchOpen: false,
+            userDropdown: false,
+            locationModal: false,
+            fetchResults() {
+                if (!this.searchQuery || this.searchQuery.trim().length < 1) {
+                    this.searchResults = [];
+                    this.searchOpen = false;
+                    return;
+                }
+                this.searchLoading = true;
+                let url = '{{ route('search.autocomplete') }}?q=' + encodeURIComponent(this.searchQuery);
+                if (this.selectedCategory !== 'all') {
+                    url += '&category_id=' + encodeURIComponent(this.selectedCategory);
+                }
+                fetch(url)
+                    .then(res => res.json())
+                    .then(data => {
+                        this.searchResults = data.results || [];
+                        this.searchOpen = this.searchResults.length > 0;
+                        this.searchLoading = false;
+                    })
+                    .catch(() => {
+                        this.searchLoading = false;
+                    });
+            }
+        }"
+        @click.outside="searchOpen = false; userDropdown = false">
 
-            <!-- Right Side: Hamburger + Logo -->
-            <div class="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
-                <!-- Mobile Menu Toggle Button -->
-                <button type="button"
-                        @click="$dispatch('open-mobile-menu')"
-                        class="lg:hidden p-1.5 text-charcoal-secondary hover:text-red-600 hover:bg-red-50 rounded-xl focus:outline-none transition-colors shrink-0"
-                        aria-label="القائمة الرئيسية">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
+    <!-- Amazon Tier 1: Main Header Bar (Deep Teal Brand #073F40) -->
+    <div class="bg-[#073F40] px-2 sm:px-4 py-2 sm:py-2.5">
+        <div class="container mx-auto flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 md:gap-4">
 
-                <!-- Brand Logo & Name -->
-                <a href="{{ route('site.home') }}" class="flex items-center gap-2 sm:gap-3 group min-w-0">
-                    <img src="{{ asset('assets/site/img/horus-mark.png') }}" alt="" class="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-xl group-hover:scale-105 transition-all shrink-0" aria-hidden="true">
-                    <div class="flex flex-col min-w-0">
-                        <div class="flex items-center gap-1 sm:gap-1.5">
-                            <span class="text-sm sm:text-xl md:text-2xl font-black text-primary-800 tracking-tight font-sans truncate">
-                                مؤسسة حورس
-                            </span>
-                            <span class="hidden sm:inline px-1.5 py-0.5 rounded text-[9px] font-black bg-accent-500 text-white uppercase tracking-wider shrink-0">للتشطيبات</span>
-                        </div>
-                        <span class="hidden sm:block text-[11px] text-gray-500 font-bold truncate">
-                            توريدات • تشطيبات • ديكور
-                        </span>
+            <!-- 1. Brand Logo (Amazon Style) -->
+            <a href="{{ route('site.home') }}" 
+               class="flex items-center gap-2 p-1.5 border border-transparent hover:border-white rounded-sm transition-colors group shrink-0">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-white/10 p-1 flex items-center justify-center border border-white/20 shrink-0">
+                    <img src="{{ asset('assets/site/img/horus-mark.png') }}" alt="حورس" class="w-full h-full object-contain">
+                </div>
+                <div class="flex flex-col text-right leading-none">
+                    <div class="flex items-baseline gap-1">
+                        <span class="text-base sm:text-xl font-black text-white tracking-tight">حورس</span>
+                        <span class="text-xs sm:text-sm font-bold text-[#C8A635]">.eg</span>
                     </div>
-                </a>
-            </div>
+                    <span class="text-[9px] text-gray-300 font-semibold tracking-wider">للتشطيبات والديكور</span>
+                </div>
+            </a>
 
-            <!-- Instant Search Bar (Desktop) -->
-            <div class="hidden md:flex flex-1 max-w-xl mx-4"
-                 x-data="{
-                    query: '{{ request('q', request('search')) }}',
-                    results: [],
-                    loading: false,
-                    open: false,
-                    fetchResults() {
-                        if (this.query.trim().length < 1) {
-                            this.results = [];
-                            this.open = false;
-                            return;
-                        }
-                        this.loading = true;
-                        fetch('{{ route('search.autocomplete') }}?q=' + encodeURIComponent(this.query))
-                            .then(res => res.json())
-                            .then(data => {
-                                this.results = data.results || [];
-                                this.open = this.results.length > 0;
-                                this.loading = false;
-                            })
-                            .catch(() => {
-                                this.loading = false;
-                            });
-                    }
-                 }"
-                 @click.outside="open = false">
-                <form action="{{ route('search.index') }}" method="GET" class="w-full relative">
+            <!-- 2. Delivery Location (Amazon Style) -->
+            <a href="{{ Route::has('branches.index') ? route('branches.index') : url('/branches') }}" 
+               class="hidden md:flex items-center gap-1.5 p-1.5 border border-transparent hover:border-white rounded-sm transition-colors shrink-0 text-right cursor-pointer">
+                <svg class="w-5 h-5 text-gray-200 shrink-0 mt-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <div class="flex flex-col leading-tight">
+                    <span class="text-[11px] text-gray-300 font-normal">التوصيل إلى</span>
+                    <span class="text-xs text-white font-bold whitespace-nowrap">حدائق الأهرام • الجيزة</span>
+                </div>
+            </a>
+
+            <!-- 3. The Iconic Amazon Omnibar Search -->
+            <div class="w-full order-last sm:order-none sm:w-auto sm:flex-1 max-w-3xl sm:mx-2 relative pt-1 sm:pt-0">
+                <form action="{{ route('search.index') }}" method="GET" class="w-full flex rounded-md overflow-hidden shadow-sm focus-within:ring-2 focus-within:ring-[#C8A635]">
+                    
+                    <!-- Category Select Dropdown (Right in RTL) -->
+                    <div class="hidden sm:flex relative bg-[#f3f3f3] hover:bg-[#dadada] border-l border-gray-300 transition-colors shrink-0">
+                        <select name="category_id" 
+                                x-model="selectedCategory"
+                                class="h-10 text-xs font-semibold text-gray-800 bg-transparent pr-3 pl-6 outline-none cursor-pointer appearance-none">
+                            <option value="all">الكل</option>
+                            @foreach($categoriesList as $cat)
+                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                            @endforeach
+                        </select>
+                        <svg class="w-3 h-3 text-gray-600 absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+
+                    <!-- Search Input Box -->
                     <input type="text"
                            name="q"
-                           x-model="query"
+                           x-model="searchQuery"
                            @input.debounce.250ms="fetchResults()"
-                           @focus="if(results.length > 0) open = true"
-                           placeholder="ابحث عن دهانات، أدوات تشطيب، ديكور..."
+                           @focus="if(searchResults.length > 0) searchOpen = true"
+                           placeholder="ابحث في دهانات SCIB، جبسون بورد، كرانيش فيوتك، بديل خشب..."
                            autocomplete="off"
-                           class="w-full bg-canvas-base border border-cream hover:border-red-300 focus:border-red-600 focus:ring-2 focus:ring-red-100 rounded-full py-2.5 pr-11 pl-10 text-base sm:text-sm text-charcoal placeholder-charcoal-muted/70 transition-all outline-none" />
-                    <button type="submit" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-charcoal-muted hover:text-primary-700 transition-colors" aria-label="بحث">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                           class="w-full h-10 px-3.5 bg-white text-gray-900 text-sm placeholder-gray-500 font-medium outline-none">
+
+                    <!-- Amazon Search Submit Button (Warm Gold #C8A635) -->
+                    <button type="submit" 
+                            class="w-12 sm:w-14 h-10 bg-[#C8A635] hover:bg-[#d8b43f] active:bg-[#b5942d] text-[#073F40] flex items-center justify-center transition-colors shrink-0 cursor-pointer"
+                            aria-label="بحث">
+                        <svg class="w-5 h-5 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </button>
-                    <div x-show="loading" x-cloak class="absolute left-3.5 top-1/2 -translate-y-1/2">
-                        <svg class="w-4 h-4 animate-spin text-primary-700" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                        </svg>
-                    </div>
-
-                    <!-- Live Autocomplete Dropdown -->
-                    <div x-show="open"
-                         x-cloak
-                         x-transition
-                         class="absolute top-full right-0 left-0 mt-2 bg-white rounded-2xl shadow-xl border border-cream overflow-hidden z-50 divide-y divide-cream/60">
-                        <template x-for="item in results" :key="item.id">
-                            <a :href="item.url" class="flex items-center gap-3 p-3 hover:bg-canvas-subtle transition-colors group">
-                                <img :src="item.image_url" :alt="item.name" class="w-11 h-11 object-contain rounded-lg bg-canvas-base p-1 border border-cream shrink-0">
-                                <div class="flex-1 min-w-0 text-right">
-                                    <div class="text-xs font-bold text-charcoal group-hover:text-primary-800 truncate" x-text="item.name"></div>
-                                    <div class="text-[10px] text-charcoal-muted" x-text="item.category"></div>
-                                </div>
-                                <div class="text-xs font-black text-primary-800 tabular-nums shrink-0" x-text="item.price"></div>
-                            </a>
-                        </template>
-                        <div class="p-2.5 bg-canvas-base/50 text-center">
-                            <button type="submit" class="text-xs font-bold text-primary-800 hover:text-primary-900 transition-colors">
-                                عرض جميع نتائج البحث لـ "<span x-text="query"></span>" ←
-                            </button>
-                        </div>
-                    </div>
                 </form>
-            </div>
 
-            <!-- Left Side: Action Icons -->
-            <div class="flex items-center gap-0.5 sm:gap-1.5 shrink-0">
-                <!-- Mobile Search Toggle -->
-                <button type="button"
-                        @click="mobileSearchOpen = !mobileSearchOpen"
-                        class="md:hidden p-2 text-charcoal-secondary hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
-                        aria-label="بحث في المنتجات">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                </button>
-
-                <!-- Wishlist -->
-                <a href="{{ route('wishlist.index') }}"
-                   class="hidden sm:flex relative p-2 text-charcoal-secondary hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
-                   title="قائمة المفضلة">
-                    <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                    </svg>
-                </a>
-
-                <!-- Cart Action Button -->
-                <button type="button"
-                        @click.prevent="$dispatch('open-cart-drawer')"
-                        class="relative flex items-center gap-1.5 py-1.5 px-2.5 sm:py-2 sm:px-3.5 bg-red-50 hover:bg-red-100 text-red-700 rounded-full border border-red-200 transition-all group cursor-pointer"
-                        title="سلة المشتريات">
-                    <div class="relative">
-                        <svg class="w-5 h-5 text-red-600 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                        </svg>
-                        <span id="cart-badge-count"
-                              class="absolute -top-2 -right-2 bg-accent-600 text-white font-bold text-[10px] min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center shadow">
-                            {{ $cartCount }}
-                        </span>
-                    </div>
-                    <span class="hidden sm:inline font-bold text-xs">السلة</span>
-                </button>
-
-                <!-- User Account -->
-                @auth
-                    <div class="relative" x-data="{ userMenuOpen: false }" @click.outside="userMenuOpen = false">
-                        <button type="button"
-                                @click="userMenuOpen = !userMenuOpen"
-                                class="p-2 text-charcoal-secondary hover:text-red-600 hover:bg-red-50 rounded-full transition-colors flex items-center gap-1 cursor-pointer"
-                                title="حسابي">
-                            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                        </button>
-
-                        <div x-show="userMenuOpen"
-                             x-cloak
-                             x-transition
-                             class="absolute left-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-cream py-2 z-50 divide-y divide-cream/60 text-xs">
-                            <div class="px-4 py-2">
-                                <div class="font-bold text-charcoal truncate">{{ auth()->user()->name }}</div>
-                                <div class="text-[10px] text-charcoal-muted truncate">{{ auth()->user()->phone }}</div>
-                            </div>
-                            <div class="py-1">
-                                <a href="{{ route('account.profile') }}" class="block px-4 py-2 hover:bg-canvas-subtle text-charcoal hover:text-primary-800 font-semibold">
-                                    الملف الشخصي
-                                </a>
-                                <a href="{{ route('account.addresses') }}" class="block px-4 py-2 hover:bg-canvas-subtle text-charcoal hover:text-primary-800 font-semibold">
-                                    العناوين المحفوظة
-                                </a>
-                                <a href="{{ route('account.orders') }}" class="block px-4 py-2 hover:bg-canvas-subtle text-charcoal hover:text-primary-800 font-semibold">
-                                    سجل طلباتي
-                                </a>
-                                @if(auth()->user()->isAdmin())
-                                    <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 hover:bg-primary-50 text-primary-800 font-bold">
-                                        لوحة التحكم
-                                    </a>
-                                @endif
-                            </div>
-                            <div class="pt-1">
-                                <form action="{{ route('logout') }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="w-full text-right px-4 py-2 text-rose-600 hover:bg-rose-50 font-semibold cursor-pointer">
-                                        تسجيل الخروج
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                @else
-                    <a href="{{ route('login') }}"
-                       class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-charcoal-secondary hover:text-primary-700 px-3 py-2 rounded-lg hover:bg-canvas-subtle transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                        </svg>
-                        <span>دخول</span>
-                    </a>
-                @endauth
-            </div>
-        </div>
-
-        <!-- Mobile Search Dropdown Bar -->
-        <div x-show="mobileSearchOpen"
-             x-cloak
-             x-transition
-             class="mt-3 md:hidden pt-2 border-t border-cream"
-             x-data="{
-                mobileQuery: '{{ request('q', request('search')) }}',
-                mobileResults: [],
-                mobileLoading: false,
-                mobileDropdownOpen: false,
-                fetchMobileResults() {
-                    if (this.mobileQuery.trim().length < 1) {
-                        this.mobileResults = [];
-                        this.mobileDropdownOpen = false;
-                        return;
-                    }
-                    this.mobileLoading = true;
-                    fetch('{{ route('search.autocomplete') }}?q=' + encodeURIComponent(this.mobileQuery))
-                        .then(res => res.json())
-                        .then(data => {
-                            this.mobileResults = data.results || [];
-                            this.mobileDropdownOpen = this.mobileResults.length > 0;
-                            this.mobileLoading = false;
-                        })
-                        .catch(() => {
-                            this.mobileLoading = false;
-                        });
-                }
-             }">
-            <form action="{{ route('search.index') }}" method="GET" class="relative">
-                <input type="text"
-                       name="q"
-                       x-model="mobileQuery"
-                       @input.debounce.250ms="fetchMobileResults()"
-                       placeholder="ابحث عن دهانات، جبسون بورد، أدوات تشطيب..."
-                       autocomplete="off"
-                       class="w-full bg-canvas-base border border-cream focus:border-red-600 focus:ring-2 focus:ring-red-100 rounded-full py-2.5 pr-11 pl-10 text-base text-charcoal outline-none shadow-2xs" />
-                <button type="submit" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-charcoal-muted hover:text-red-600" aria-label="بحث">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                </button>
-                <div x-show="mobileLoading" x-cloak class="absolute left-3.5 top-1/2 -translate-y-1/2">
-                    <svg class="w-4 h-4 animate-spin text-red-600" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                    </svg>
-                </div>
-
-                <!-- Mobile Autocomplete Dropdown -->
-                <div x-show="mobileDropdownOpen"
+                <!-- Amazon Live Autocomplete Dropdown -->
+                <div x-show="searchOpen"
                      x-cloak
-                     x-transition
-                     class="absolute top-full right-0 left-0 mt-2 bg-white rounded-2xl shadow-2xl border border-cream overflow-hidden z-50 divide-y divide-cream/60">
-                    <template x-for="item in mobileResults" :key="item.id">
-                        <a :href="item.url" class="flex items-center gap-3 p-3 hover:bg-canvas-subtle transition-colors">
-                            <img :src="item.image_url" :alt="item.name" class="w-10 h-10 object-contain rounded-xl bg-canvas-base p-1 border border-cream shrink-0">
-                            <div class="flex-1 min-w-0 text-right">
-                                <div class="text-xs font-black text-charcoal truncate" x-text="item.name"></div>
-                                <div class="text-[10px] text-charcoal-muted" x-text="item.category"></div>
+                     class="absolute top-full right-0 left-0 mt-1 bg-white rounded-b-md shadow-2xl border border-gray-200 z-50 divide-y divide-gray-100 overflow-hidden text-right">
+                    <template x-for="item in searchResults" :key="item.id">
+                        <a :href="item.url" class="flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors">
+                            <img :src="item.image_url" :alt="item.name" class="w-10 h-10 object-contain rounded bg-gray-50 p-1 border border-gray-200 shrink-0">
+                            <div class="flex-1 min-w-0">
+                                <div class="text-xs font-bold text-gray-900 truncate" x-text="item.name"></div>
+                                <div class="text-[10px] text-gray-500" x-text="item.category"></div>
                             </div>
-                            <div class="text-xs font-black text-red-600 tabular-nums shrink-0" x-text="item.price"></div>
+                            <div class="text-xs font-black text-[#073F40] tabular-nums shrink-0" x-text="item.price"></div>
                         </a>
                     </template>
-                    <div class="p-2.5 bg-canvas-base/60 text-center">
-                        <button type="submit" class="text-xs font-black text-red-600 hover:text-red-700">
-                            عرض جميع النتائج لـ "<span x-text="mobileQuery"></span>" ←
+                    <div class="p-2.5 bg-gray-50 text-center">
+                        <button type="submit" class="text-xs font-bold text-[#073F40] hover:text-[#C8A635] transition-colors">
+                            عرض جميع النتائج لـ "<span x-text="searchQuery"></span>" ←
                         </button>
                     </div>
                 </div>
-            </form>
+            </div>
+
+            <!-- 4. Direct WhatsApp (Fast Support) -->
+            <a href="https://wa.me/{{ $storeWhatsApp }}?text={{ urlencode('مرحباً مؤسسة حورس، أود الاستفسار عن مواد التشطيب والأسعار.') }}" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="hidden xl:flex items-center gap-1.5 p-1.5 border border-transparent hover:border-white rounded-sm transition-colors shrink-0 text-right">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <div class="flex flex-col leading-tight">
+                    <span class="text-[11px] text-gray-300 font-normal">خدمة العملاء</span>
+                    <span class="text-xs text-emerald-400 font-bold whitespace-nowrap">طلب عبر واتساب</span>
+                </div>
+            </a>
+
+            <!-- 5. Account & Lists (Amazon Style) -->
+            <div class="relative hidden sm:block shrink-0" @mouseenter="userDropdown = true" @mouseleave="userDropdown = false">
+                <a href="{{ auth()->check() ? route('account.profile') : route('login') }}" 
+                   class="flex items-center gap-1 p-1.5 border border-transparent hover:border-white rounded-sm transition-colors text-right cursor-pointer">
+                    <div class="flex flex-col leading-tight">
+                        <span class="text-[11px] text-gray-300 font-normal truncate max-w-[110px]">
+                            @auth مرحباً، {{ auth()->user()->name }} @else مرحباً، تسجيل الدخول @endauth
+                        </span>
+                        <div class="flex items-center gap-1">
+                            <span class="text-xs text-white font-bold whitespace-nowrap">الحساب والقوائم</span>
+                            <svg class="w-3 h-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Amazon Account Hover Menu -->
+                <div x-show="userDropdown"
+                     x-cloak
+                     class="absolute left-0 mt-1 w-56 bg-white rounded-md shadow-2xl border border-gray-200 py-3 z-50 text-gray-800 text-xs text-right">
+                    @auth
+                        <div class="px-4 pb-2 mb-2 border-b border-gray-100">
+                            <div class="font-bold text-gray-900 truncate">{{ auth()->user()->name }}</div>
+                            <div class="text-[10px] text-gray-500 truncate">{{ auth()->user()->phone }}</div>
+                        </div>
+                        <a href="{{ route('account.profile') }}" class="block px-4 py-2 hover:bg-gray-100 hover:text-[#073F40]">الملف الشخصي</a>
+                        <a href="{{ route('account.orders') }}" class="block px-4 py-2 hover:bg-gray-100 hover:text-[#073F40]">طلباتي ومشترياتي</a>
+                        @if(auth()->user()->isAdmin())
+                            <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 hover:bg-primary-50 text-[#073F40] font-bold">لوحة التحكم والإدارة</a>
+                        @endif
+                        <div class="pt-2 mt-2 border-t border-gray-100">
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="w-full text-right px-4 py-1.5 text-red-600 hover:bg-red-50 font-bold">تسجيل الخروج</button>
+                            </form>
+                        </div>
+                    @else
+                        <div class="px-4 pb-3 mb-2 border-b border-gray-100 text-center">
+                            <a href="{{ route('login') }}" class="block w-full py-2 bg-[#C8A635] hover:bg-[#d8b43f] text-[#073F40] font-black rounded-md shadow-xs mb-1">
+                                تسجيل الدخول
+                            </a>
+                            <span class="text-[10px] text-gray-500">عميل جديد؟ <a href="{{ route('login') }}" class="text-[#073F40] font-bold underline">ابدأ من هنا</a></span>
+                        </div>
+                        <a href="{{ route('orders.track') }}" class="block px-4 py-2 hover:bg-gray-100">تتبع الطلبات والشحنات</a>
+                        <a href="{{ route('site.products') }}" class="block px-4 py-2 hover:bg-gray-100">كتالوج المنتجات</a>
+                    @endauth
+                </div>
+            </div>
+
+            <!-- 6. Orders (Amazon Returns & Orders) -->
+            <a href="{{ route('orders.track') }}" 
+               class="hidden lg:flex flex-col p-1.5 border border-transparent hover:border-white rounded-sm transition-colors text-right shrink-0 leading-tight">
+                <span class="text-[11px] text-gray-300 font-normal">تتبع</span>
+                <span class="text-xs text-white font-bold whitespace-nowrap">الطلبات والشحنات</span>
+            </a>
+
+            <!-- 7. Amazon Cart Icon with Basket Counter -->
+            <button type="button"
+                    @click.prevent="$dispatch('open-cart-drawer')"
+                    class="flex items-center gap-1.5 p-1.5 px-2 border border-transparent hover:border-white rounded-sm transition-colors cursor-pointer shrink-0 group">
+                <div class="relative flex items-center">
+                    <!-- Amazon Cart Graphic -->
+                    <svg class="w-8 h-8 text-white group-hover:text-[#C8A635] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    <!-- Amazon Floating Badge in Basket -->
+                    <span id="cart-badge-count" 
+                          class="absolute -top-1 right-2.5 text-xs font-black text-[#C8A635] tabular-nums">
+                        {{ $cartCount }}
+                    </span>
+                </div>
+                <span class="hidden sm:inline text-xs text-white font-black mt-2">العربة</span>
+            </button>
+
         </div>
     </div>
 
-    <!-- Navigation Menu (Desktop) -->
-    <nav class="hidden lg:block border-t border-cream/70 bg-canvas-base/60 text-xs font-semibold">
-        <div class="container mx-auto px-4 flex items-center justify-between">
-            <div class="flex items-center gap-1">
-                <!-- All Categories Dropdown Menu -->
-                <div class="relative py-2.5" x-data="{ open: false }" @click.outside="open = false">
-                    <button @click="open = !open"
-                            type="button"
-                            class="flex items-center gap-2 px-3.5 py-1.5 bg-primary-800 text-white rounded-lg hover:bg-primary-900 transition-colors shadow-sm">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
-                        </svg>
-                        <span>جميع الأقسام</span>
-                        <svg class="w-3.5 h-3.5 transition-transform" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
+    <!-- Amazon Tier 2: Sub-Navigation Bar (Contrasting Dark Teal #0B5759) -->
+    <div class="bg-[#0B5759] border-t border-[#09484a] px-2 sm:px-4 text-xs font-semibold">
+        <div class="container mx-auto flex items-center justify-between">
+            
+            <!-- Horizontal Sub-Nav Links -->
+            <div class="flex items-center overflow-x-auto no-scrollbar py-1 gap-1">
+                
+                <!-- ☰ All (Amazon Hamburger) -->
+                <button type="button" 
+                        @click="$dispatch('open-mobile-menu')"
+                        class="flex items-center gap-1.5 px-2.5 py-1.5 border border-transparent hover:border-white rounded-sm transition-colors shrink-0 font-bold text-white cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <span>الكل</span>
+                </button>
 
-                    <div x-show="open"
-                         x-cloak
-                         x-transition:enter="transition ease-out duration-150"
-                         x-transition:enter-start="opacity-0 translate-y-1"
-                         x-transition:enter-end="opacity-100 translate-y-0"
-                         x-transition:leave="transition ease-in duration-100"
-                         x-transition:leave-start="opacity-100 translate-y-0"
-                         x-transition:leave-end="opacity-0 translate-y-1"
-                         class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-cream py-2 z-50">
-                        @foreach($navCategories as $cat)
-                            <a href="{{ route('category.product', $cat->id) }}"
-                               class="flex items-center justify-between px-4 py-2 text-charcoal hover:bg-canvas-subtle hover:text-primary-800 transition-colors">
-                                <span>{{ $cat->name }}</span>
-                                <svg class="w-3.5 h-3.5 text-charcoal-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                                </svg>
-                            </a>
-                        @endforeach
-                        <div class="border-t border-cream my-1"></div>
-                        <a href="{{ route('site.products') }}" class="block px-4 py-2 text-center text-primary-700 font-bold hover:underline">
-                            عرض كل الأقسام والمنتجات ←
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Nav Links -->
-                <a href="{{ route('site.home') }}"
-                   class="px-3.5 py-3 transition-colors {{ request()->routeIs('site.home') ? 'text-primary-800 border-b-2 border-primary-700 font-bold' : 'text-charcoal hover:text-primary-700' }}">
-                    الرئيسية
+                <!-- Core Category Links (Amazon Style) -->
+                <a href="{{ route('categories.index') }}" 
+                   class="px-2.5 py-1.5 border border-transparent hover:border-white rounded-sm transition-colors shrink-0 text-white font-bold whitespace-nowrap {{ request()->routeIs('categories.index') ? 'border-white bg-white/10' : '' }}">
+                    جميع الأقسام
                 </a>
 
-                <a href="{{ route('site.products') }}"
-                   class="px-3.5 py-3 transition-colors {{ request()->routeIs('site.products') ? 'text-primary-800 border-b-2 border-primary-700 font-bold' : 'text-charcoal hover:text-primary-700' }}">
+                <a href="{{ route('category.product', 33) }}" 
+                   class="px-2.5 py-1.5 border border-transparent hover:border-white rounded-sm transition-colors shrink-0 text-white whitespace-nowrap">
+                    دهانات SCIB
+                </a>
+
+                <a href="{{ route('category.product', 34) }}" 
+                   class="px-2.5 py-1.5 border border-transparent hover:border-white rounded-sm transition-colors shrink-0 text-white whitespace-nowrap">
+                    جبسون بورد
+                </a>
+
+                <a href="{{ route('category.product', 35) }}" 
+                   class="px-2.5 py-1.5 border border-transparent hover:border-white rounded-sm transition-colors shrink-0 text-white whitespace-nowrap">
+                    كرانيش فيوتك
+                </a>
+
+                <a href="{{ route('category.product', 36) }}" 
+                   class="px-2.5 py-1.5 border border-transparent hover:border-white rounded-sm transition-colors shrink-0 text-white whitespace-nowrap">
+                    بديل الخشب والرخام
+                </a>
+
+                <a href="{{ route('category.product', 37) }}" 
+                   class="px-2.5 py-1.5 border border-transparent hover:border-white rounded-sm transition-colors shrink-0 text-white whitespace-nowrap">
+                    أدوات ومستلزمات البناء
+                </a>
+
+                <a href="{{ route('category.product', 38) }}" 
+                   class="px-2.5 py-1.5 border border-transparent hover:border-white rounded-sm transition-colors shrink-0 text-white whitespace-nowrap">
+                    مواد التشطيب
+                </a>
+
+                <a href="{{ route('site.products') }}" 
+                   class="px-2.5 py-1.5 border border-transparent hover:border-white rounded-sm transition-colors shrink-0 text-white whitespace-nowrap">
                     كل المنتجات
                 </a>
 
-                <a href="{{ route('shop') }}"
-                   class="px-3.5 py-3 transition-colors {{ request()->routeIs('shop') || request()->routeIs('product.shop') ? 'text-primary-800 border-b-2 border-primary-700 font-bold' : 'text-charcoal hover:text-primary-700' }}">
-                    المتجر
+                <a href="{{ Route::has('branches.index') ? route('branches.index') : url('/branches') }}" 
+                   class="px-2.5 py-1.5 border border-transparent hover:border-white rounded-sm transition-colors shrink-0 text-white whitespace-nowrap">
+                    موقعنا (حدائق الأهرام)
                 </a>
 
-                <a href="{{ route('offers.index') }}"
-                   class="px-3.5 py-3 transition-colors {{ request()->routeIs('offers.index') ? 'text-primary-800 border-b-2 border-primary-700 font-bold' : 'text-red-600 hover:text-red-700 font-bold' }} flex items-center gap-1">
-                    <span>مجلة العروض</span>
-                    <span class="px-1.5 py-0.2 rounded-full bg-red-600 text-white text-[9px] font-black animate-pulse">جديد</span>
-                </a>
-
-                <a href="{{ Route::has('branches.index') ? route('branches.index') : url('/branches') }}"
-                   class="px-3.5 py-3 transition-colors {{ request()->is('branches*') ? 'text-primary-800 border-b-2 border-primary-700 font-bold' : 'text-charcoal hover:text-primary-700' }}">
-                    موقعنا
-                </a>
-
-                <a href="{{ route('orders.track') }}"
-                   class="px-3.5 py-3 transition-colors {{ request()->routeIs('orders.track') ? 'text-primary-800 border-b-2 border-primary-700 font-bold' : 'text-charcoal hover:text-primary-700' }}">
-                    تتبع طلبك
-                </a>
-
-                <a href="{{ Route::has('about') ? route('about') : url('/about') }}"
-                   class="px-3.5 py-3 transition-colors {{ request()->is('about*') ? 'text-primary-800 border-b-2 border-primary-700 font-bold' : 'text-charcoal hover:text-primary-700' }}">
-                    عن حورس
-                </a>
-
-                <a href="{{ Route::has('careers.index') ? route('careers.index') : url('/careers') }}"
-                   class="px-3.5 py-3 transition-colors {{ request()->is('careers*') ? 'text-primary-800 border-b-2 border-primary-700 font-bold' : 'text-charcoal hover:text-primary-700' }}">
-                    انضم لفريقنا
-                </a>
-
-                <a href="{{ route('contact') }}"
-                   class="px-3.5 py-3 transition-colors {{ request()->routeIs('contact') ? 'text-primary-800 border-b-2 border-primary-700 font-bold' : 'text-charcoal hover:text-primary-700' }}">
+                <a href="{{ route('contact') }}" 
+                   class="px-2.5 py-1.5 border border-transparent hover:border-white rounded-sm transition-colors shrink-0 text-white whitespace-nowrap">
                     تواصل معنا
                 </a>
             </div>
 
-            <!-- Quick Hotline Callout -->
-            <div class="flex items-center gap-2 text-primary-800 font-bold">
-                <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>حدائق الأهرام • بوابة حورس</span>
+            <!-- Amazon Right/Left Promo Strip Message -->
+            <div class="hidden xl:flex items-center gap-2 py-1 px-2 border border-transparent hover:border-white rounded-sm shrink-0">
+                <span class="text-[#C8A635] font-black text-xs">وكيل معتمد SCIB</span>
+                <span class="text-white/40">|</span>
+                <span class="text-gray-200 text-[11px] font-medium">توريد مباشر لشركات المقاولات والمهندسين</span>
             </div>
+
         </div>
-    </nav>
+    </div>
+
 </header>

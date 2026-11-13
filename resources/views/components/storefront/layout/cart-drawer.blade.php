@@ -17,12 +17,18 @@
         },
 
         init() {
-            window.addEventListener('cart-updated', () => {
-                this.fetchCartData(true);
+            window.addEventListener('cart-updated', (e) => {
+                // Never open drawer if user is already on the dedicated cart page or checkout
+                const isCartOrCheckout = window.location.pathname.includes('/cart') || window.location.pathname.includes('/checkout');
+                const shouldOpen = (e.detail && e.detail.openDrawer === true) && !isCartOrCheckout;
+                this.fetchCartData(shouldOpen);
             });
             window.addEventListener('open-cart-drawer', () => {
-                this.open = true;
-                this.fetchCartData(false);
+                const isCartOrCheckout = window.location.pathname.includes('/cart') || window.location.pathname.includes('/checkout');
+                if (!isCartOrCheckout) {
+                    this.open = true;
+                    this.fetchCartData(false);
+                }
             });
         },
 
@@ -110,16 +116,16 @@
          dir="rtl">
         
         <!-- Header -->
-        <div class="p-4 sm:p-5 bg-gradient-to-r from-red-700 via-red-600 to-orange-500 text-white flex items-center justify-between shadow-md">
+        <div class="p-4 sm:p-5 bg-primary-800 text-white flex items-center justify-between shadow-md">
             <div class="flex items-center gap-2.5">
-                <div class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center font-black text-sm">
+                <div class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center font-black text-sm text-accent-300">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                     </svg>
                 </div>
                 <div>
-                    <h3 class="font-black text-sm sm:text-base">سلة طلباتك السريعة</h3>
-                    <p class="text-[10px] text-amber-200">مؤسسة حورس • حدائق الأهرام</p>
+                    <h3 class="font-black text-sm sm:text-base">سلة طلباتك</h3>
+                    <p class="text-[10px] text-accent-200">مؤسسة حورس • تشطيبات وديكور</p>
                 </div>
             </div>
 
@@ -239,24 +245,50 @@
         </div>
 
         <!-- Footer Checkout Actions -->
-        <div class="p-4 sm:p-5 bg-gray-50 border-t border-gray-200 space-y-3" x-show="items.length > 0">
-            <div class="flex items-center justify-between text-xs">
-                <span class="text-gray-600 font-bold">المجموع الفرعي:</span>
-                <span class="font-black text-base text-gray-900 tabular-nums" x-text="totals.formatted_subtotal"></span>
+        <div class="p-4 sm:p-5 bg-white border-t border-gray-200 space-y-3 shadow-lg" x-show="items.length > 0">
+            <div class="space-y-1.5 text-xs">
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-600 font-bold">المجموع الفرعي:</span>
+                    <span class="font-bold text-gray-900 tabular-nums" x-text="totals.formatted_subtotal"></span>
+                </div>
+
+                <template x-if="totals.has_coupon && totals.discount_amount > 0">
+                    <div class="flex items-center justify-between text-xs text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 font-bold">
+                        <span>خصم الكوبون (<span x-text="totals.coupon_code"></span>):</span>
+                        <span class="tabular-nums">- <span x-text="totals.formatted_discount"></span></span>
+                    </div>
+                </template>
+
+                <div class="flex items-center justify-between pt-1 border-t border-gray-100 font-black">
+                    <span class="text-gray-900">الإجمالي النهائي:</span>
+                    <span class="text-base text-primary-800 tabular-nums" x-text="totals.formatted_total"></span>
+                </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-2">
+            <div class="space-y-2">
+                <div class="grid grid-cols-2 gap-2">
+                    <a href="{{ route('cart') }}" 
+                       @click="open = false"
+                       class="py-2.5 px-3 rounded-xl border border-gray-300 hover:bg-gray-50 text-gray-900 font-black text-xs text-center transition-all flex items-center justify-center gap-1">
+                        <span>عرض السلة</span>
+                    </a>
+
+                    <a href="{{ route('checkout.index') }}" 
+                       @click="open = false"
+                       class="py-2.5 px-3 rounded-xl bg-primary-800 hover:bg-primary-900 active:scale-[0.98] text-white font-black text-xs text-center shadow-sm transition-all flex items-center justify-center gap-1.5">
+                        <span>إتمام الطلب أونلاين</span>
+                        <span class="rotate-180 text-xs">←</span>
+                    </a>
+                </div>
+
+                <!-- WhatsApp Quick Checkout from Drawer -->
                 <a href="{{ route('cart') }}" 
                    @click="open = false"
-                   class="py-3 px-4 rounded-xl border-2 border-orange-300 hover:bg-orange-50 text-gray-900 font-black text-xs text-center transition-all">
-                    عرض السلة الكاملة
-                </a>
-
-                <a href="{{ route('checkout.index') }}" 
-                   @click="open = false"
-                   class="py-3 px-4 rounded-xl bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600 text-white font-black text-xs text-center shadow-md transition-all flex items-center justify-center gap-1.5">
-                    <span>إتمام الطلب الآن</span>
-                    <span class="rotate-180">←</span>
+                   class="w-full py-2.5 px-3 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-black text-xs text-center shadow-xs transition-all flex items-center justify-center gap-1.5">
+                    <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+                        <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.174.086.275.073.376-.044.101-.116.433-.506.549-.68.116-.173.231-.144.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z" />
+                    </svg>
+                    <span>طلب ومتابعة عبر واتساب</span>
                 </a>
             </div>
         </div>
