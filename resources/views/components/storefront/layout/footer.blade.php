@@ -200,8 +200,36 @@
                 <span>•</span>
                 <a href="{{ route('pages.return-policy') }}" class="hover:text-white transition-colors">سياسة الاسترجاع</a>
                 <span>•</span>
+                <span>•</span>
                 <a href="{{ route('contact.index') }}" class="hover:underline">خدمة العملاء</a>
             </div>
+        </div>
+
+        <!-- Developer Attribution Bar (STACY WAY) -->
+        <div class="mt-6 pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+            <a href="https://wa.me/201202325201?text={{ urlencode('مرحباً، أود الاستفسار عن خدمات تطوير وبرمجة المواقع والمتاجر الإلكترونية من شركة STACY WAY') }}"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="group inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-black/40 hover:bg-black/60 border border-white/15 hover:border-[#E2BF52]/60 shadow-sm transition-all duration-200">
+                <img src="{{ asset('assets/site/img/stacy-way-logo.jpg') }}" 
+                     alt="STACY WAY - Build • Grow • Together" 
+                     class="w-7 h-7 rounded-full object-cover ring-1 ring-[#E2BF52]/70 group-hover:scale-110 transition-transform">
+                <span class="text-[11px] text-white/80 group-hover:text-white font-medium">
+                    تطوير وتصميم بواسطة: <strong class="text-[#E2BF52] font-black tracking-wider">STACY WAY</strong>
+                </span>
+                <span class="w-2 h-2 rounded-full bg-[#25D366] animate-pulse"></span>
+            </a>
+
+            <a href="https://wa.me/201202325201?text={{ urlencode('مرحباً، أود الاستفسار عن خدمات تطوير وبرمجة المواقع والمتاجر الإلكترونية من شركة STACY WAY') }}"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="inline-flex items-center gap-2 text-[11px] text-[#25D366] hover:text-[#20bd5a] font-bold transition-colors bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-full border border-white/10">
+                <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+                    <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.174.086.275.073.376-.044.101-.116.433-.506.549-.68.116-.173.231-.144.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z" />
+                </svg>
+                <span>تواصل مع الشركة المطورة:</span>
+                <span dir="ltr" class="font-black text-white">01202325201</span>
+            </a>
         </div>
     </div>
 </footer>
