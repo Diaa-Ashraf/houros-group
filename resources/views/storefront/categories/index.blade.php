@@ -42,16 +42,17 @@
                     
                     <!-- Card Media Container -->
                     <div class="relative aspect-[4/3] sm:aspect-[16/11] overflow-hidden bg-gray-950">
-                        @if($category->image_url)
-                            <img src="{{ $category->image_url }}" 
-                                 alt="{{ $category->name }}" 
-                                 loading="lazy" 
-                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
-                        @else
-                            <div class="w-full h-full bg-[#073F40] flex items-center justify-center text-white text-3xl font-black">
-                                {{ mb_substr($category->name, 0, 1) }}
-                            </div>
-                        @endif
+                        @php
+                            $catImage = $category->image_url;
+                            if (empty($catImage)) {
+                                $defaultPath = method_exists($category, 'getDefaultImageForCategory') ? $category->getDefaultImageForCategory() : null;
+                                $catImage = asset($defaultPath ?: 'assets/site/img/categories/finishing-materials.jpg');
+                            }
+                        @endphp
+                        <img src="{{ $catImage }}" 
+                             alt="{{ $category->name }}" 
+                             loading="lazy" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
 
                         <!-- Cinematic Dark Gradient Overlay for optimal contrast -->
                         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10 group-hover:from-black/95 transition-colors"></div>

@@ -110,20 +110,42 @@
                 @endif
             </a>
 
-            <!-- The Iconic Quick Add Plus Button (+) in Horus Brand Gold -->
-            <button type="button"
-                    @click.prevent="handleAddClick()"
-                    :disabled="adding"
-                    class="absolute bottom-2 left-2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#C8A635] hover:bg-[#B38F24] active:scale-90 text-[#073F40] flex items-center justify-center shadow-md transition-all duration-150 cursor-pointer z-10 border border-[#B38F24]"
-                    title="إضافة سريعة إلى السلة">
-                <svg x-show="!adding" class="w-5 h-5 font-black stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                </svg>
-                <svg x-show="adding" x-cloak class="w-4 h-4 animate-spin text-[#073F40]" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                </svg>
-            </button>
+            <!-- The Iconic Quick Add Plus Button (+) in Horus Brand Gold or WhatsApp for Quotes -->
+            @if($isQuoteOnly)
+                <a href="https://wa.me/{{ $storeWhatsApp }}?text={{ urlencode('مرحباً مؤسسة حورس، أود الاستفسار عن تفاصيل وسعر صنف: ' . $product->name) }}"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="absolute bottom-2 left-2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#25D366] hover:bg-[#20bd5a] active:scale-90 text-white flex items-center justify-center shadow-md transition-all duration-150 cursor-pointer z-10"
+                   title="استفسار سريع عبر واتساب">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                        <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.174.086.275.073.376-.044.101-.116.433-.506.549-.68.116-.173.231-.144.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z" />
+                    </svg>
+                </a>
+            @elseif(!$isInStock)
+                <a href="https://wa.me/{{ $storeWhatsApp }}?text={{ urlencode('مرحباً مؤسسة حورس، أود حجز صنف غير متوفر حالياً: ' . $product->name) }}"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="absolute bottom-2 left-2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#25D366] hover:bg-[#20bd5a] active:scale-90 text-white flex items-center justify-center shadow-md transition-all duration-150 cursor-pointer z-10"
+                   title="المنتج غير متوفر - احجز عبر واتساب">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                        <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.174.086.275.073.376-.044.101-.116.433-.506.549-.68.116-.173.231-.144.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z" />
+                    </svg>
+                </a>
+            @else
+                <button type="button"
+                        @click.prevent="handleAddClick()"
+                        :disabled="adding"
+                        class="absolute bottom-2 left-2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#C8A635] hover:bg-[#B38F24] active:scale-90 text-[#073F40] flex items-center justify-center shadow-md transition-all duration-150 cursor-pointer z-10 border border-[#B38F24]"
+                        title="إضافة سريعة إلى السلة">
+                    <svg x-show="!adding" class="w-5 h-5 font-black stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                    </svg>
+                    <svg x-show="adding" x-cloak class="w-4 h-4 animate-spin text-[#073F40]" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                    </svg>
+                </button>
+            @endif
 
             <!-- Wishlist Heart Button (Top Right) -->
             <button type="button"
@@ -209,31 +231,55 @@
 
     <!-- Dual Action Row: "أضف للسلة" (Horus Brand Warm Gold) + "تواصل واتساب" -->
     <div class="pt-2 flex items-center gap-1.5 mt-auto">
-        <button type="button"
-                @click.prevent="handleAddClick()"
-                :disabled="adding"
-                class="flex-1 py-2 px-3 rounded-full bg-[#C8A635] hover:bg-[#B38F24] active:scale-95 text-[#073F40] text-xs font-black shadow-2xs border border-[#B38F24] transition-all flex items-center justify-center gap-1.5 cursor-pointer"
-                title="أضف إلى عربة التسوق للمتابعة في المنصة">
-            <svg x-show="!adding" class="w-3.5 h-3.5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-            </svg>
-            <svg x-show="adding" x-cloak class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-            </svg>
-            <span x-text="adding ? 'جاري الإضافة...' : 'أضف للسلة'">أضف للسلة</span>
-        </button>
+        @if($isQuoteOnly)
+            <a href="https://wa.me/{{ $storeWhatsApp }}?text={{ urlencode('مرحباً مؤسسة حورس، أود الاستفسار وتحديد سعر صنف: ' . $product->name) }}"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="flex-1 py-2 px-3 rounded-full bg-[#25D366] hover:bg-[#20bd5a] active:scale-95 text-white text-xs font-black shadow-2xs transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+               title="طلب واستفسار مباشر عبر واتساب">
+                <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+                    <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.174.086.275.073.376-.044.101-.116.433-.506.549-.68.116-.173.231-.144.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z" />
+                </svg>
+                <span>طلب واستفسار عبر واتساب</span>
+            </a>
+        @elseif(!$isInStock)
+            <a href="https://wa.me/{{ $storeWhatsApp }}?text={{ urlencode('مرحباً مؤسسة حورس، أود حجز صنف غير متوفر حالياً: ' . $product->name) }}"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="flex-1 py-2 px-3 rounded-full bg-[#25D366] hover:bg-[#20bd5a] active:scale-95 text-white text-xs font-black shadow-2xs transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+               title="احجز عبر واتساب">
+                <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+                    <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.174.086.275.073.376-.044.101-.116.433-.506.549-.68.116-.173.231-.144.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z" />
+                </svg>
+                <span>طلب حجز عبر واتساب</span>
+            </a>
+        @else
+            <button type="button"
+                    @click.prevent="handleAddClick()"
+                    :disabled="adding"
+                    class="flex-1 py-2 px-3 rounded-full bg-[#C8A635] hover:bg-[#B38F24] active:scale-95 text-[#073F40] text-xs font-black shadow-2xs border border-[#B38F24] transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                    title="أضف إلى عربة التسوق للمتابعة في المنصة">
+                <svg x-show="!adding" class="w-3.5 h-3.5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                <svg x-show="adding" x-cloak class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                </svg>
+                <span x-text="adding ? 'جاري الإضافة...' : 'أضف للسلة'">أضف للسلة</span>
+            </button>
 
-        <!-- Direct WhatsApp Quick Chat Button -->
-        <a href="https://wa.me/{{ $storeWhatsApp }}?text={{ urlencode('مرحباً مؤسسة حورس، أود الاستفسار أو الطلب المباشر للمنتج: ' . $product->name . ($finalPrice > 0 ? ' بسعر ' . format_currency($finalPrice) : '')) }}"
-           target="_blank"
-           rel="noopener noreferrer"
-           class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white flex items-center justify-center shadow-2xs transition-transform active:scale-90 shrink-0"
-           title="تواصل أو اطلب فوراً عبر واتساب">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.174.086.275.073.376-.044.101-.116.433-.506.549-.68.116-.173.231-.144.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z" />
-            </svg>
-        </a>
+            <!-- Direct WhatsApp Quick Chat Button -->
+            <a href="https://wa.me/{{ $storeWhatsApp }}?text={{ urlencode('مرحباً مؤسسة حورس، أود الاستفسار أو الطلب المباشر للمنتج: ' . $product->name . ($finalPrice > 0 ? ' بسعر ' . format_currency($finalPrice) : '')) }}"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white flex items-center justify-center shadow-2xs transition-transform active:scale-90 shrink-0"
+               title="تواصل أو اطلب فوراً عبر واتساب">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.174.086.275.073.376-.044.101-.116.433-.506.549-.68.116-.173.231-.144.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z" />
+                </svg>
+            </a>
+        @endif
     </div>
 
     <!-- Quick Portion / Weight Modal for Weighted Products in Cards -->

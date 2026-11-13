@@ -520,18 +520,19 @@
                     <a href="{{ route('category.product', $category->id) }}" 
                        class="group relative block rounded-xs overflow-hidden bg-white border border-gray-200/90 hover:border-[#073F40] shadow-2xs hover:shadow-md transition-all duration-300">
                         
+                        @php
+                            $catImage = $category->image_url;
+                            if (empty($catImage)) {
+                                $defaultPath = method_exists($category, 'getDefaultImageForCategory') ? $category->getDefaultImageForCategory() : null;
+                                $catImage = asset($defaultPath ?: 'assets/site/img/categories/finishing-materials.jpg');
+                            }
+                        @endphp
                         <!-- Category Image Container -->
                         <div class="relative aspect-[4/3] overflow-hidden bg-gray-100">
-                            @if($category->image_url)
-                                <img src="{{ $category->image_url }}" 
-                                     alt="{{ $category->name }}" 
-                                     loading="lazy" 
-                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            @else
-                                <div class="w-full h-full bg-[#073F40] flex items-center justify-center text-white text-2xl font-black">
-                                    {{ mb_substr($category->name, 0, 1) }}
-                                </div>
-                            @endif
+                            <img src="{{ $catImage }}" 
+                                 alt="{{ $category->name }}" 
+                                 loading="lazy" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
 
                             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
 

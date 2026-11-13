@@ -17,7 +17,7 @@ class CategoryController extends Controller
     public function index(): View
     {
         $horusSlugs = ['scib-paints', 'gypsum-board', 'fyutec-cornices', 'wall-panels', 'construction-tools', 'finishing-materials', 'doors', 'decor'];
-        $categories = Cache::remember('horus_storefront_categories_page_v1_' . request('page', 1), 1800, function () use ($horusSlugs) {
+        $categories = Cache::remember('horus_storefront_categories_page_v2_' . request('page', 1), 1800, function () use ($horusSlugs) {
             return Category::select(['id', 'name', 'slug', 'image', 'description'])
                 ->active()
                 ->whereIn('slug', $horusSlugs)
