@@ -100,7 +100,9 @@
  </div>
  <div>
  <span class="text-[11px] text-charcoal-muted block">المنطقة والخدمة:</span>
- <span class="text-xs font-bold text-charcoal-heading">٢٢ع حدائق الأهرام، بوابة حورس</span>
+ <a href="{{ settings('google_maps_url', 'https://maps.app.goo.gl/AL2gbPB3KYh7Y2VFA?g_st=iwb') }}" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-charcoal-heading hover:text-primary-800 hover:underline block">
+ 📍 ٢٢ع حدائق الأهرام، بوابة حورس (عرض على الخريطة)
+ </a>
  </div>
  </div>
  </div>
@@ -114,8 +116,8 @@
  </svg>
  <span>موقع المؤسسة وبيانات التواصل</span>
  </h3>
- <a href="{{ route('branches.index') }}" class="text-[11px] font-bold text-primary-800 hover:underline">
- عرض الخرائط ←
+ <a href="{{ settings('google_maps_url', 'https://maps.app.goo.gl/AL2gbPB3KYh7Y2VFA?g_st=iwb') }}" target="_blank" rel="noopener noreferrer" class="text-[11px] font-bold text-primary-800 hover:underline">
+ عرض الموقع على الخريطة ←
  </a>
  </div>
 

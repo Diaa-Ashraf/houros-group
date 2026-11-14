@@ -87,7 +87,10 @@
  <ul class="space-y-2 text-xs font-semibold text-white/80">
  <li class="flex items-center gap-2">
  <span class="text-[#18181B]"></span>
-                    <span>{{ settings('address', '٢٢ع حدائق الأهرام، بوابة حورس') }}</span>
+                    <a href="{{ settings('google_maps_url', 'https://maps.app.goo.gl/AL2gbPB3KYh7Y2VFA?g_st=iwb') }}" target="_blank" rel="noopener noreferrer" class="hover:underline flex items-center gap-1.5">
+                        <span>{{ settings('address', '٢٢ع حدائق الأهرام، بوابة حورس') }}</span>
+                        <span class="text-[10px] text-[#C5A059] font-black">📍 الخريطة</span>
+                    </a>
  </li>
  <li class="flex items-center gap-2">
  <span class="text-[#18181B]"></span>

@@ -107,7 +107,7 @@ class SettingsSeeder extends Seeder
             [
                 'group' => 'contact',
                 'key' => 'google_maps_url',
-                'value' => 'https://maps.google.com',
+                'value' => 'https://maps.app.goo.gl/AL2gbPB3KYh7Y2VFA?g_st=iwb',
                 'type' => 'text',
                 'description' => 'رابط موقع الفرع الرئيسي على خرائط جوجل',
             ],

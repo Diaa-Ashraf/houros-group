@@ -71,9 +71,12 @@
             </a>
 
             <!-- 2. Delivery Location (Amazon Style) -->
-            <a href="{{ Route::has('branches.index') ? route('branches.index') : url('/branches') }}" 
+            <a href="{{ settings('google_maps_url', 'https://maps.app.goo.gl/AL2gbPB3KYh7Y2VFA?g_st=iwb') }}" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               title="عرض موقع مؤسسة حورس على Google Maps"
                class="hidden md:flex items-center gap-1.5 p-1.5 border border-transparent hover:border-white rounded-sm transition-colors shrink-0 text-right cursor-pointer">
-                <svg class="w-5 h-5 text-gray-200 shrink-0 mt-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-5 h-5 text-[#C8A635] shrink-0 mt-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
@@ -292,9 +295,16 @@
                     كل المنتجات
                 </a>
 
-                <a href="{{ Route::has('branches.index') ? route('branches.index') : url('/branches') }}" 
-                   class="px-2.5 py-1.5 border border-transparent hover:border-white rounded-sm transition-colors shrink-0 text-white whitespace-nowrap">
-                    موقعنا (حدائق الأهرام)
+                <a href="{{ settings('google_maps_url', 'https://maps.app.goo.gl/AL2gbPB3KYh7Y2VFA?g_st=iwb') }}" 
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="px-2.5 py-1.5 border border-transparent hover:border-white rounded-sm transition-colors shrink-0 text-white whitespace-nowrap flex items-center gap-1"
+                   title="عرض موقعنا على Google Maps">
+                    <svg class="w-3.5 h-3.5 text-[#C8A635]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span>موقعنا (حدائق الأهرام)</span>
                 </a>
 
                 <a href="{{ route('contact') }}" 

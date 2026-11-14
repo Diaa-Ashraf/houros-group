@@ -91,7 +91,7 @@
                     <li><a href="{{ route('site.home') }}" class="hover:text-accent-400 transition-colors">الرئيسية</a></li>
                     <li><a href="{{ route('site.products') }}" class="hover:text-accent-400 transition-colors">تصفح كل المنتجات</a></li>
                     <li><a href="{{ route('categories.index') }}" class="hover:text-accent-400 transition-colors">أقسام وخامات التشطيب</a></li>
-                    <li><a href="{{ route('branches.index') }}" class="hover:text-accent-400 transition-colors">موقعنا في حدائق الأهرام</a></li>
+                    <li><a href="{{ settings('google_maps_url', 'https://maps.app.goo.gl/AL2gbPB3KYh7Y2VFA?g_st=iwb') }}" target="_blank" rel="noopener noreferrer" class="hover:text-accent-400 transition-colors flex items-center gap-1"><span>موقعنا في حدائق الأهرام</span> <span class="text-[10px] text-accent-400">📍 الخريطة</span></a></li>
                     <li><a href="{{ route('pages.about') }}" class="hover:text-accent-400 transition-colors">عن مؤسسة حورس</a></li>
                     <li><a href="{{ route('careers.index') }}" class="hover:text-accent-400 transition-colors">فرص العمل والتوظيف</a></li>
                 </ul>
@@ -105,7 +105,10 @@
                         <svg class="w-4 h-4 text-accent-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         </svg>
-                        <span>{{ $address }}</span>
+                        <a href="{{ settings('google_maps_url', 'https://maps.app.goo.gl/AL2gbPB3KYh7Y2VFA?g_st=iwb') }}" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors group">
+                            <span>{{ $address }}</span>
+                            <span class="block text-[10px] text-accent-400 group-hover:underline">📍 فتح الموقع على خرائط Google Maps ←</span>
+                        </a>
                     </li>
                     <li class="flex items-center gap-2">
                         <svg class="w-4 h-4 text-accent-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

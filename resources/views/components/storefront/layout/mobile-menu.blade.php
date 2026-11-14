@@ -83,8 +83,9 @@
                 <a href="{{ route('orders.track') }}" @click="open = false" class="block py-2 px-2 hover:bg-gray-100 rounded font-semibold text-gray-800">
                     تتبع حالة الشحنات والطلبات
                 </a>
-                <a href="{{ Route::has('branches.index') ? route('branches.index') : url('/branches') }}" @click="open = false" class="block py-2 px-2 hover:bg-gray-100 rounded font-semibold text-gray-800">
-                    موقعنا (حدائق الأهرام - بوابة حورس)
+                <a href="{{ settings('google_maps_url', 'https://maps.app.goo.gl/AL2gbPB3KYh7Y2VFA?g_st=iwb') }}" target="_blank" rel="noopener noreferrer" @click="open = false" class="block py-2 px-2 hover:bg-gray-100 rounded font-semibold text-gray-800 flex items-center justify-between">
+                    <span>موقعنا (حدائق الأهرام - بوابة حورس)</span>
+                    <span class="text-xs text-[#073F40] font-bold">📍 الخريطة</span>
                 </a>
             </div>
 

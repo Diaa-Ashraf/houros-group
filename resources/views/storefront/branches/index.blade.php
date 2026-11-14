@@ -22,7 +22,16 @@
                     </div>
                 </article>
             @empty
-                <article class="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8"><span class="text-xs text-primary-700 font-bold">مؤسسة حورس</span><h2 class="mt-2 text-xl font-black text-gray-900">حدائق الأهرام، بوابة حورس</h2><p class="mt-4 text-sm text-gray-600">٢٢ع حدائق الأهرام، بوابة حورس</p><a class="mt-3 inline-block font-bold text-primary-800" href="tel:01002527072" dir="ltr">010 0252 7072</a></article>
+                <article class="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8">
+                    <span class="text-xs text-primary-700 font-bold">مؤسسة حورس</span>
+                    <h2 class="mt-2 text-xl font-black text-gray-900">حدائق الأهرام، بوابة حورس</h2>
+                    <p class="mt-4 text-sm text-gray-600">٢٢ع حدائق الأهرام، بوابة حورس</p>
+                    <a class="mt-3 inline-block font-bold text-primary-800" href="tel:01002527072" dir="ltr">010 0252 7072</a>
+                    <div class="mt-6 flex flex-wrap gap-3">
+                        <a href="https://maps.app.goo.gl/AL2gbPB3KYh7Y2VFA?g_st=iwb" target="_blank" rel="noopener" class="px-4 py-2 rounded bg-[#eaf5f2] text-primary-800 text-xs font-bold">افتح الموقع على الخريطة</a>
+                        <a href="https://wa.me/201002527072" class="px-4 py-2 rounded bg-[#073f40] text-white text-xs font-bold">تواصل واتساب</a>
+                    </div>
+                </article>
             @endforelse
         </div>
         <div class="bg-[#eaf5f2] rounded-xl p-5 text-sm text-gray-700">للاستفسار عن التوصيل خارج المنطقة، يرجى التواصل معنا للتأكد من التغطية.</div>
